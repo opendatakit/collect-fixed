@@ -253,6 +253,8 @@
     <string name="gif_not_supported">Gif files are not supported</string>
     <string name="invalid_file_type">Application returned an invalid file type</string>
     <!-- Dialog heading for saving annotated image -->
+    <string name="save_drawing_title">Save changes?</string>
+    <string name="save_drawing_explanation">Do you want to save changes before you exit?</string>
     <string name="save_and_close">Save and Close</string>
     <string name="signature_capture">Signature Capture</string>
     <string name="sign_button">Gather Signature</string>

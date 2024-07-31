@@ -36,6 +36,10 @@ android {
             isIncludeAndroidResources = true
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
