@@ -156,8 +156,6 @@
     <string name="data_saved_ok">Form successfully saved!</string>
     <string name="save_point_error">Error saving recovery point: %s</string>
 
-    <!-- Dialog title when exiting a drawing view. The name of the kind of drawing will be included -->
-    <string name="quit_application">Exit %s</string>
     <!-- Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded> -->
     <string name="do_not_save">Discard Form</string>
     <string name="discard_changes">Discard Changes</string>
@@ -1046,7 +1044,6 @@
     <string name="cancel_loading_form">Cancel</string>
     <string name="cancel_location">Cancel</string>
     <string name="do_not_change">Cancel</string>
-    <string name="do_not_exit">Cancel</string>
     <string name="canceling">Canceling</string>
 
     <string name="notification_channel_name">General notifications</string>
