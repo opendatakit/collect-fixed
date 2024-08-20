@@ -24,7 +24,7 @@
             style="?materialButtonOutlinedIconStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin"
+            android:layout_marginTop="@dimen/margin_standard"
             android:text="@string/discard_changes"
             app:icon="@drawable/ic_delete"
             app:iconGravity="textStart"
