@@ -3,7 +3,6 @@ package org.odk.collect.android.widgets
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.util.TypedValue
 import android.view.View
 import com.google.zxing.integration.android.IntentIntegrator
 import org.javarosa.core.model.data.IAnswerData
@@ -26,6 +25,7 @@ import org.odk.collect.strings.R
 class BarcodeWidget(
     context: Context,
     questionDetails: QuestionDetails,
+    private val widgetAnswer: WidgetAnswer,
     private val waitingForDataRegistry: WaitingForDataRegistry,
     private val cameraUtils: CameraUtils
 ) : QuestionWidget(context, questionDetails), WidgetDataReceiver {
@@ -43,59 +43,52 @@ class BarcodeWidget(
         } else {
             binding.barcodeButton.setOnClickListener { onButtonClick() }
         }
-        binding.barcodeAnswerText.setTextSize(
-            TypedValue.COMPLEX_UNIT_DIP,
-            answerFontSize.toFloat()
-        )
 
         val answer = prompt.answerText
         if (!answer.isNullOrEmpty()) {
             binding.barcodeButton.text = getContext().getString(R.string.replace_barcode)
-            binding.barcodeAnswerText.text = answer
         }
+        widgetAnswer.setAnswer(answer)
+        widgetAnswer.setTextSize(answerFontSize.toFloat())
+        binding.answerViewContainer.addView(widgetAnswer)
+        updateAnswerVisibility()
 
-        updateVisibility()
         return binding.root
     }
 
     override fun clearAnswer() {
-        binding.barcodeAnswerText.text = null
+        widgetAnswer.setAnswer(null)
         binding.barcodeButton.text = context.getString(R.string.get_barcode)
+        updateAnswerVisibility()
         widgetValueChanged()
-        updateVisibility()
     }
 
     override fun getAnswer(): IAnswerData? {
-        val answer = binding.barcodeAnswerText.text.toString()
+        val answer = widgetAnswer.getAnswer()
         return if (answer.isEmpty()) null else StringData(answer)
     }
 
     override fun setData(answer: Any) {
-        val response = answer as String
-        binding.barcodeAnswerText.text = stripInvalidCharacters(response)
+        widgetAnswer.setAnswer(answer as String)
         binding.barcodeButton.text = context.getString(R.string.replace_barcode)
-        updateVisibility()
+        updateAnswerVisibility()
         widgetValueChanged()
     }
 
-    private fun updateVisibility() {
-        if (hasAppearance(formEntryPrompt, Appearances.HIDDEN_ANSWER)) {
-            binding.barcodeAnswerText.visibility = GONE
-        } else {
-            binding.barcodeAnswerText.visibility =
-                if (binding.barcodeAnswerText.text.toString().isBlank()) GONE else VISIBLE
-        }
-    }
-
     override fun setOnLongClickListener(l: OnLongClickListener?) {
-        binding.barcodeAnswerText.setOnLongClickListener(l)
         binding.barcodeButton.setOnLongClickListener(l)
+        binding.answerViewContainer.setOnLongClickListener(l)
     }
 
     override fun cancelLongPress() {
         super.cancelLongPress()
         binding.barcodeButton.cancelLongPress()
-        binding.barcodeAnswerText.cancelLongPress()
+        binding.answerViewContainer.cancelLongPress()
+    }
+
+    private fun updateAnswerVisibility() {
+        val isAnswerHidden = hasAppearance(formEntryPrompt, Appearances.HIDDEN_ANSWER)
+        binding.answerViewContainer.visibility = if (isAnswerHidden || widgetAnswer.getAnswer().isBlank()) GONE else VISIBLE
     }
 
     private fun onButtonClick() {
@@ -121,10 +114,5 @@ class BarcodeWidget(
                 showLongToast(R.string.error_front_camera_unavailable)
             }
         }
-    }
-
-    // Remove control characters, invisible characters and unused code points.
-    private fun stripInvalidCharacters(data: String?): String? {
-        return data?.replace("\\p{C}".toRegex(), "")
     }
 }

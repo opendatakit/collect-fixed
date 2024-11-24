@@ -5,7 +5,6 @@ import android.view.View.OnLongClickListener
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers
 import org.javarosa.core.model.FormIndex
 import org.javarosa.core.model.data.StringData
 import org.javarosa.form.api.FormEntryPrompt
@@ -22,7 +21,7 @@ import org.odk.collect.android.utilities.Appearances
 import org.odk.collect.android.widgets.support.FakeWaitingForDataRegistry
 import org.odk.collect.android.widgets.support.QuestionWidgetHelpers
 import org.odk.collect.androidshared.system.CameraUtils
-import org.odk.collect.strings.R
+import org.odk.collect.strings.R.string
 import org.robolectric.Shadows
 import org.robolectric.shadows.ShadowToast
 
@@ -33,6 +32,7 @@ class BarcodeWidgetTest {
         setPermissionGranted(true)
     }
     private val widgetTestActivity = QuestionWidgetHelpers.widgetTestActivity()
+    private val barcodeWidgetAnswer = BarcodeWidgetAnswer(widgetTestActivity)
     private val shadowActivity = Shadows.shadowOf(widgetTestActivity)
     private val cameraUtils = mock<CameraUtils>()
     private val listener = mock<OnLongClickListener>()
@@ -51,15 +51,15 @@ class BarcodeWidgetTest {
         val widget = createWidget(QuestionWidgetHelpers.promptWithAnswer(StringData("blah")))
         assertThat(
             widget.binding.barcodeButton.text.toString(),
-            equalTo(widgetTestActivity.getString(R.string.replace_barcode))
+            equalTo(widgetTestActivity.getString(string.replace_barcode))
         )
     }
 
     @Test
     fun `Display the answer if answer is present`() {
-        val widget = createWidget(QuestionWidgetHelpers.promptWithAnswer(StringData("blah")))
+        createWidget(QuestionWidgetHelpers.promptWithAnswer(StringData("blah")))
         assertThat(
-            widget.binding.barcodeAnswerText.text.toString(),
+            barcodeWidgetAnswer.getAnswer(),
             equalTo("blah")
         )
     }
@@ -86,12 +86,12 @@ class BarcodeWidgetTest {
         widget.clearAnswer()
 
         assertThat(
-            widget.binding.barcodeAnswerText.text.toString(),
+            barcodeWidgetAnswer.getAnswer(),
             equalTo("")
         )
         assertThat(
             widget.binding.barcodeButton.text.toString(),
-            equalTo(widgetTestActivity.getString(R.string.get_barcode))
+            equalTo(widgetTestActivity.getString(string.get_barcode))
         )
     }
 
@@ -109,7 +109,7 @@ class BarcodeWidgetTest {
         val widget = createWidget(QuestionWidgetHelpers.promptWithAnswer(null))
         widget.setData("\ud800blah\b")
         assertThat(
-            widget.binding.barcodeAnswerText.text.toString(),
+            barcodeWidgetAnswer.getAnswer(),
             equalTo("blah")
         )
     }
@@ -120,7 +120,7 @@ class BarcodeWidgetTest {
         widget.setData("\ud800blah\b")
         assertThat(
             widget.binding.barcodeButton.text,
-            equalTo(widgetTestActivity.getString(R.string.replace_barcode))
+            equalTo(widgetTestActivity.getString(string.replace_barcode))
         )
     }
 
@@ -138,10 +138,10 @@ class BarcodeWidgetTest {
         val widget = createWidget(QuestionWidgetHelpers.promptWithAnswer(null))
         widget.setOnLongClickListener(listener)
         widget.binding.barcodeButton.performLongClick()
-        widget.binding.barcodeAnswerText.performLongClick()
+        widget.binding.answerViewContainer.performLongClick()
 
         verify(listener).onLongClick(widget.binding.barcodeButton)
-        verify(listener).onLongClick(widget.binding.barcodeAnswerText)
+        verify(listener).onLongClick(widget.binding.answerViewContainer)
     }
 
     @Test
@@ -179,7 +179,7 @@ class BarcodeWidgetTest {
 
         assertThat(
             ShadowToast.getTextOfLatestToast(),
-            equalTo(widgetTestActivity.getString(R.string.error_front_camera_unavailable))
+            equalTo(widgetTestActivity.getString(string.error_front_camera_unavailable))
         )
     }
 
@@ -207,24 +207,24 @@ class BarcodeWidgetTest {
 
         // Check initial value is not shown
         assertThat(
-            widget.binding.barcodeAnswerText.visibility,
+            widget.binding.answerViewContainer.visibility,
             equalTo(View.GONE)
         )
         assertThat(
             widget.binding.barcodeButton.text,
-            equalTo(widgetTestActivity.getString(R.string.replace_barcode))
+            equalTo(widgetTestActivity.getString(string.replace_barcode))
         )
-        assertThat(widget.answer, Matchers.equalTo(StringData("original contents")))
+        assertThat(widget.answer, equalTo(StringData("original contents")))
 
         // Check updates aren't shown
         widget.setData("updated contents")
         assertThat(
-            widget.binding.barcodeAnswerText.visibility,
+            widget.binding.answerViewContainer.visibility,
             equalTo(View.GONE)
         )
         assertThat(
             widget.binding.barcodeButton.text,
-            equalTo(widgetTestActivity.getString(R.string.replace_barcode))
+            equalTo(widgetTestActivity.getString(string.replace_barcode))
         )
         assertThat(
             widget.answer,
@@ -235,6 +235,7 @@ class BarcodeWidgetTest {
     private fun createWidget(prompt: FormEntryPrompt?) = BarcodeWidget(
         widgetTestActivity,
         QuestionDetails(prompt),
+        barcodeWidgetAnswer,
         waitingForDataRegistry,
         cameraUtils
     )
