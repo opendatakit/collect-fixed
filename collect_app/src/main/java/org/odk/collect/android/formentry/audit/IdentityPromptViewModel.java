@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModel;
 import org.odk.collect.android.javarosawrapper.FormController;
 import org.odk.collect.android.utilities.FileUtils;
 
+import java.io.File;
+
 public class IdentityPromptViewModel extends ViewModel {
 
     private final MutableLiveData<Boolean> formEntryCancelled = new MutableLiveData<>(false);
@@ -59,7 +61,14 @@ public class IdentityPromptViewModel extends ViewModel {
     }
 
     public void promptDismissed() {
-        FileUtils.purgeMediaPath(instanceFolder);
+        File instanceFolderFile = new File(instanceFolder);
+        if (instanceFolderFile.isDirectory()) {
+            String[] instanceFolderContent = instanceFolderFile.list();
+            if (instanceFolderContent != null && instanceFolderContent.length == 0) {
+                FileUtils.purgeMediaPath(instanceFolder);
+            }
+        }
+
         formEntryCancelled.setValue(true);
     }
 
