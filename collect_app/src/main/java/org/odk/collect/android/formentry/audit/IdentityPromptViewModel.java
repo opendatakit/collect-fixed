@@ -59,6 +59,7 @@ public class IdentityPromptViewModel extends ViewModel {
     }
 
     public void promptDismissed() {
+        FileUtils.purgeMediaPath(instanceFolder);
         formEntryCancelled.setValue(true);
     }
 
@@ -74,9 +75,5 @@ public class IdentityPromptViewModel extends ViewModel {
 
     public String getFormTitle() {
         return formName;
-    }
-
-    public void exit() {
-        FileUtils.purgeMediaPath(instanceFolder);
     }
 }

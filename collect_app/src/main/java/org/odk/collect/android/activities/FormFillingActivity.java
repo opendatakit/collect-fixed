@@ -559,7 +559,6 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
 
         identityPromptViewModel.isFormEntryCancelled().observe(this, isFormEntryCancelled -> {
             if (isFormEntryCancelled) {
-                identityPromptViewModel.exit();
                 exit();
             }
         });
