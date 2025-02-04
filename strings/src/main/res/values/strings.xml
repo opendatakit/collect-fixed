@@ -1381,4 +1381,6 @@
     <string name="view_or_change_polygon">View or change polygon</string>
     <!-- Text for the button that displays a map for viewing an already existing polygon -->
     <string name="view_polygon">View polygon</string>
+    <!-- Text to describe a field for setting settings JSON in a mobile device management platform (MDM) -->
+    <string name="settings_json">Settings JSON</string>
 </resources>
