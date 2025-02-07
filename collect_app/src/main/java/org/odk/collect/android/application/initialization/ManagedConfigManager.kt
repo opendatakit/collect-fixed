@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.RestrictionsManager
+import android.os.Bundle
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import org.odk.collect.android.projects.ProjectCreator
@@ -49,11 +50,17 @@ class ManagedConfigManager(
 
     private fun applyConfig() {
         val managedConfig = restrictionsManager.applicationRestrictions
+        applyDeviceId(managedConfig)
+        applySettingsJson(managedConfig)
+    }
 
+    private fun applyDeviceId(managedConfig: Bundle) {
         if (managedConfig.containsKey(DEVICE_ID_KEY) && !managedConfig.getString(DEVICE_ID_KEY).isNullOrBlank()) {
             settingsProvider.getMetaSettings().save(KEY_INSTALL_ID, managedConfig.getString(DEVICE_ID_KEY))
         }
+    }
 
+    private fun applySettingsJson(managedConfig: Bundle) {
         if (managedConfig.containsKey(SETTINGS_JSON_KEY) && !managedConfig.getString(SETTINGS_JSON_KEY).isNullOrBlank()) {
             val settingsJson = managedConfig.getString(SETTINGS_JSON_KEY)
 
