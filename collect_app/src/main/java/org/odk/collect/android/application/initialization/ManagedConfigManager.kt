@@ -18,7 +18,7 @@ import org.odk.collect.settings.keys.MetaKeys.KEY_INSTALL_ID
  *
  * See android.content.APP_RESTRICTIONS in AndroidManifest for supported configuration keys.
  */
-class ManagedConfigManager (
+class ManagedConfigManager(
     private val settingsProvider: SettingsProvider,
     private val projectsRepository: ProjectsRepository,
     private val projectCreator: ProjectCreator,
@@ -42,7 +42,7 @@ class ManagedConfigManager (
 
     fun applyConfig(managedConfig: Bundle) {
         if (managedConfig.containsKey("device_id") && !managedConfig.getString("device_id").isNullOrBlank()) {
-            settingsProvider.getMetaSettings().save(KEY_INSTALL_ID, managedConfig.getString("device_id"));
+            settingsProvider.getMetaSettings().save(KEY_INSTALL_ID, managedConfig.getString("device_id"))
         }
 
         if (managedConfig.containsKey("settings_json") && !managedConfig.getString("settings_json").isNullOrBlank()) {
