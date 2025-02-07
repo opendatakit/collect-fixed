@@ -62,6 +62,7 @@ import org.odk.collect.android.instancemanagement.autosend.AutoSendSettingsProvi
 import org.odk.collect.android.instancemanagement.send.ReadyToSendViewModel;
 import org.odk.collect.android.itemsets.FastExternalItemsetsRepository;
 import org.odk.collect.android.mainmenu.MainMenuViewModelFactory;
+import org.odk.collect.android.mdm.ManagedConfigSaver;
 import org.odk.collect.android.notifications.NotificationManagerNotifier;
 import org.odk.collect.android.notifications.Notifier;
 import org.odk.collect.android.openrosa.CollectThenSystemContentTypeMapper;
@@ -629,11 +630,15 @@ public class AppDependencyModule {
             ODKAppSettingsImporter settingsImporter,
             Context context
     ) {
-        return new ManagedConfigManager(
+        ManagedConfigSaver managedConfigSaver = new ManagedConfigSaver(
                 settingsProvider,
                 projectsRepository,
                 projectCreator,
-                settingsImporter,
+                settingsImporter
+        );
+
+        return new ManagedConfigManager(
+                managedConfigSaver,
                 (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE),
                 context
         );
