@@ -32,7 +32,7 @@ import org.odk.collect.android.application.initialization.CachedFormsCleaner;
 import org.odk.collect.android.application.initialization.ExistingProjectMigrator;
 import org.odk.collect.android.application.initialization.ExistingSettingsMigrator;
 import org.odk.collect.android.application.initialization.GoogleDriveProjectsDeleter;
-import org.odk.collect.android.application.initialization.ManagedConfigManager;
+import org.odk.collect.android.mdm.ManagedConfigManager;
 import org.odk.collect.android.application.initialization.MapsInitializer;
 import org.odk.collect.android.application.initialization.SavepointsImporter;
 import org.odk.collect.android.application.initialization.ScheduledWorkUpgrade;

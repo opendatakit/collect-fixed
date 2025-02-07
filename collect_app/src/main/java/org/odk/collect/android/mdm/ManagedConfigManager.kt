@@ -1,4 +1,4 @@
-package org.odk.collect.android.application.initialization
+package org.odk.collect.android.mdm
 
 import android.content.BroadcastReceiver
 import android.content.Context
