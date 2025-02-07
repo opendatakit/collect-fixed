@@ -50,12 +50,12 @@ class ManagedConfigManager(
     private fun applyConfig() {
         val managedConfig = restrictionsManager.applicationRestrictions
 
-        if (managedConfig.containsKey("device_id") && !managedConfig.getString("device_id").isNullOrBlank()) {
-            settingsProvider.getMetaSettings().save(KEY_INSTALL_ID, managedConfig.getString("device_id"))
+        if (managedConfig.containsKey(DEVICE_ID_KEY) && !managedConfig.getString(DEVICE_ID_KEY).isNullOrBlank()) {
+            settingsProvider.getMetaSettings().save(KEY_INSTALL_ID, managedConfig.getString(DEVICE_ID_KEY))
         }
 
-        if (managedConfig.containsKey("settings_json") && !managedConfig.getString("settings_json").isNullOrBlank()) {
-            val settingsJson = managedConfig.getString("settings_json")
+        if (managedConfig.containsKey(SETTINGS_JSON_KEY) && !managedConfig.getString(SETTINGS_JSON_KEY).isNullOrBlank()) {
+            val settingsJson = managedConfig.getString(SETTINGS_JSON_KEY)
 
             val settingsConnectionMatcher = SettingsConnectionMatcher(projectsRepository, settingsProvider)
             when (val matchingProjectUUID = settingsJson?.let { settingsConnectionMatcher.getProjectWithMatchingConnection(it) }) {
@@ -63,5 +63,10 @@ class ManagedConfigManager(
                 else -> settingsImporter.fromJSON(settingsJson, projectsRepository.get(matchingProjectUUID)!!)
             }
         }
+    }
+
+    companion object {
+        private const val DEVICE_ID_KEY = "device_id"
+        private const val SETTINGS_JSON_KEY = "settings_json"
     }
 }
