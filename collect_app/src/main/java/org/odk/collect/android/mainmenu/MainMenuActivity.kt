@@ -85,21 +85,8 @@ class MainMenuActivity : LocalizedActivity() {
 
             super.onCreate(savedInstanceState)
             setContentView(R.layout.main_menu_activity)
+            lifecycle.addObserver(managedConfigManager)
         }
-    }
-
-    @Override
-    override fun onResume() {
-        super.onResume()
-
-        managedConfigManager.initialize()
-    }
-
-    @Override
-    override fun onPause() {
-        super.onPause()
-
-        managedConfigManager.unregisterReceiver()
     }
 
     private fun initSplashScreen() {

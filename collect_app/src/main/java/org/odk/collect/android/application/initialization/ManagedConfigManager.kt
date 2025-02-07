@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.RestrictionsManager
 import android.os.Bundle
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import org.odk.collect.android.projects.ProjectCreator
 import org.odk.collect.android.projects.SettingsConnectionMatcher
 import org.odk.collect.projects.ProjectsRepository
@@ -24,7 +26,7 @@ class ManagedConfigManager(
     private val projectCreator: ProjectCreator,
     private val settingsImporter: ODKAppSettingsImporter,
     private val context: Context
-) {
+) : DefaultLifecycleObserver {
     private val restrictionsManager = context.getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
 
     private val restrictionsReceiver = object : BroadcastReceiver() {
@@ -33,14 +35,20 @@ class ManagedConfigManager(
         }
     }
 
-    fun initialize() {
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
         applyConfig(restrictionsManager.applicationRestrictions)
 
         val restrictionsFilter = IntentFilter(Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED)
         context.registerReceiver(restrictionsReceiver, restrictionsFilter)
     }
 
-    fun applyConfig(managedConfig: Bundle) {
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
+        context.unregisterReceiver(restrictionsReceiver)
+    }
+
+    private fun applyConfig(managedConfig: Bundle) {
         if (managedConfig.containsKey("device_id") && !managedConfig.getString("device_id").isNullOrBlank()) {
             settingsProvider.getMetaSettings().save(KEY_INSTALL_ID, managedConfig.getString("device_id"))
         }
@@ -54,9 +62,5 @@ class ManagedConfigManager(
                 else -> settingsImporter.fromJSON(settingsJson, projectsRepository.get(matchingProjectUUID)!!)
             }
         }
-    }
-
-    fun unregisterReceiver() {
-        context.unregisterReceiver(restrictionsReceiver)
     }
 }
