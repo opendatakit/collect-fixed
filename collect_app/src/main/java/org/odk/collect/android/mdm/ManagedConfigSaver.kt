@@ -41,7 +41,7 @@ class ManagedConfigSaver(
     }
 
     companion object {
-        private const val DEVICE_ID_KEY = "device_id"
-        private const val SETTINGS_JSON_KEY = "settings_json"
+        const val DEVICE_ID_KEY = "device_id"
+        const val SETTINGS_JSON_KEY = "settings_json"
     }
 }
