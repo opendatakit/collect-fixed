@@ -10,14 +10,11 @@ import org.odk.collect.android.activities.CrashHandlerActivity
 import org.odk.collect.android.activities.FirstLaunchActivity
 import org.odk.collect.android.application.initialization.ManagedConfigManager
 import org.odk.collect.android.injection.DaggerUtils
-import org.odk.collect.android.projects.ProjectCreator
 import org.odk.collect.android.projects.ProjectSettingsDialog
 import org.odk.collect.android.utilities.ThemeUtils
 import org.odk.collect.androidshared.ui.FragmentFactoryBuilder
 import org.odk.collect.crashhandler.CrashHandler
 import org.odk.collect.permissions.PermissionsProvider
-import org.odk.collect.projects.ProjectsRepository
-import org.odk.collect.settings.ODKAppSettingsImporter
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.strings.localization.LocalizedActivity
 import javax.inject.Inject
@@ -34,17 +31,9 @@ class MainMenuActivity : LocalizedActivity() {
     lateinit var permissionsProvider: PermissionsProvider
 
     @Inject
-    lateinit var settingsImporter: ODKAppSettingsImporter
-
-    @Inject
-    lateinit var projectsRepository: ProjectsRepository
-
-    @Inject
-    lateinit var projectCreator: ProjectCreator
+    lateinit var managedConfigManager: ManagedConfigManager
 
     private lateinit var currentProjectViewModel: CurrentProjectViewModel
-
-    private lateinit var managedConfigManager: ManagedConfigManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()
@@ -103,7 +92,6 @@ class MainMenuActivity : LocalizedActivity() {
     override fun onResume() {
         super.onResume()
 
-        managedConfigManager = ManagedConfigManager(settingsProvider, projectsRepository, projectCreator, settingsImporter, this)
         managedConfigManager.initialize()
     }
 

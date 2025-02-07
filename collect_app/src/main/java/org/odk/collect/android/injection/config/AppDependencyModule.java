@@ -31,6 +31,7 @@ import org.odk.collect.android.application.initialization.CachedFormsCleaner;
 import org.odk.collect.android.application.initialization.ExistingProjectMigrator;
 import org.odk.collect.android.application.initialization.ExistingSettingsMigrator;
 import org.odk.collect.android.application.initialization.GoogleDriveProjectsDeleter;
+import org.odk.collect.android.application.initialization.ManagedConfigManager;
 import org.odk.collect.android.application.initialization.MapsInitializer;
 import org.odk.collect.android.application.initialization.SavepointsImporter;
 import org.odk.collect.android.application.initialization.ScheduledWorkUpgrade;
@@ -617,5 +618,22 @@ public class AppDependencyModule {
         String projectId = projectsDataService.requireCurrentProject().getUuid();
         EntitiesRepository entitiesRepository = entitiesRepositoryProvider.create(projectId);
         return new CollectFormEntryControllerFactory(entitiesRepository, settingsProvider.getUnprotectedSettings(projectId));
+    }
+
+    @Provides
+    public ManagedConfigManager providesManagedConfigManager(
+            SettingsProvider settingsProvider,
+            ProjectsRepository projectsRepository,
+            ProjectCreator projectCreator,
+            ODKAppSettingsImporter settingsImporter,
+            Context context
+    ) {
+        return new ManagedConfigManager(
+                settingsProvider,
+                projectsRepository,
+                projectCreator,
+                settingsImporter,
+                context
+        );
     }
 }
