@@ -8,6 +8,7 @@ import static java.util.Collections.singletonList;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.RestrictionsManager;
 import android.media.MediaPlayer;
 import android.webkit.MimeTypeMap;
 
@@ -633,6 +634,7 @@ public class AppDependencyModule {
                 projectsRepository,
                 projectCreator,
                 settingsImporter,
+                (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE),
                 context
         );
     }
