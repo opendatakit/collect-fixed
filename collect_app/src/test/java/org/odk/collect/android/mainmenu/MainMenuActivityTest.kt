@@ -1,6 +1,7 @@
 package org.odk.collect.android.mainmenu
 
 import android.app.Application
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
@@ -35,6 +36,8 @@ import org.odk.collect.android.injection.config.AppDependencyModule
 import org.odk.collect.android.instancemanagement.InstancesDataService
 import org.odk.collect.android.instancemanagement.autosend.AutoSendSettingsProvider
 import org.odk.collect.android.instancemanagement.send.InstanceUploaderListActivity
+import org.odk.collect.android.mdm.ManagedConfigManager
+import org.odk.collect.android.projects.ProjectCreator
 import org.odk.collect.android.projects.ProjectsDataService
 import org.odk.collect.android.support.CollectHelpers
 import org.odk.collect.android.utilities.ApplicationConstants
@@ -47,6 +50,8 @@ import org.odk.collect.crashhandler.CrashHandler
 import org.odk.collect.permissions.PermissionsChecker
 import org.odk.collect.permissions.PermissionsProvider
 import org.odk.collect.projects.Project
+import org.odk.collect.projects.ProjectsRepository
+import org.odk.collect.settings.ODKAppSettingsImporter
 import org.odk.collect.settings.SettingsProvider
 import org.robolectric.Robolectric
 import org.robolectric.Shadows.shadowOf
@@ -120,6 +125,16 @@ class MainMenuActivityTest {
 
             override fun providesPermissionsProvider(permissionsChecker: PermissionsChecker?): PermissionsProvider {
                 return permissionsProvider
+            }
+
+            override fun providesManagedConfigManager(
+                settingsProvider: SettingsProvider,
+                projectsRepository: ProjectsRepository,
+                projectCreator: ProjectCreator,
+                settingsImporter: ODKAppSettingsImporter,
+                context: Context
+            ): ManagedConfigManager {
+                return mock<ManagedConfigManager>()
             }
         })
 
