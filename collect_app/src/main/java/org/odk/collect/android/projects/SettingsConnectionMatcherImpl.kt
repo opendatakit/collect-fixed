@@ -4,16 +4,17 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.odk.collect.android.preferences.Defaults
 import org.odk.collect.projects.ProjectsRepository
+import org.odk.collect.projects.SettingsConnectionMatcher
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.settings.keys.AppConfigurationKeys
 import org.odk.collect.settings.keys.ProjectKeys
 
-class SettingsConnectionMatcher(
+class SettingsConnectionMatcherImpl(
     private val projectsRepository: ProjectsRepository,
     private val settingsProvider: SettingsProvider
-) {
+) : SettingsConnectionMatcher {
 
-    fun getProjectWithMatchingConnection(settingsJson: String): String? {
+    override fun getProjectWithMatchingConnection(settingsJson: String): String? {
         try {
             val jsonObject = JSONObject(settingsJson)
             val jsonSettings = jsonObject.getJSONObject(AppConfigurationKeys.GENERAL)

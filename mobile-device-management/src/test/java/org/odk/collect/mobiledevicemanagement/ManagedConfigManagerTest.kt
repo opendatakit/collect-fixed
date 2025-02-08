@@ -1,4 +1,4 @@
-package org.odk.collect.android.mdm
+package org.odk.collect.mobiledevicemanagement
 
 import android.app.Application
 import android.content.Context

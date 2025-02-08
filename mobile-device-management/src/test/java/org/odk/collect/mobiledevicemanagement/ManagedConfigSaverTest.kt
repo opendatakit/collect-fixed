@@ -1,4 +1,4 @@
-package org.odk.collect.android.mdm
+package org.odk.collect.mobiledevicemanagement
 
 import android.os.Bundle
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -10,18 +10,18 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
-import org.odk.collect.android.mdm.ManagedConfigSaver.Companion.DEVICE_ID_KEY
-import org.odk.collect.android.mdm.ManagedConfigSaver.Companion.SETTINGS_JSON_KEY
-import org.odk.collect.android.projects.ProjectCreator
+import org.mockito.kotlin.whenever
+import org.odk.collect.mobiledevicemanagement.ManagedConfigSaver.Companion.DEVICE_ID_KEY
+import org.odk.collect.mobiledevicemanagement.ManagedConfigSaver.Companion.SETTINGS_JSON_KEY
 import org.odk.collect.projects.InMemProjectsRepository
 import org.odk.collect.projects.Project
+import org.odk.collect.projects.ProjectCreator
 import org.odk.collect.projects.ProjectsRepository
+import org.odk.collect.projects.SettingsConnectionMatcher
 import org.odk.collect.settings.InMemSettingsProvider
 import org.odk.collect.settings.ODKAppSettingsImporter
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.settings.keys.MetaKeys.KEY_INSTALL_ID
-import org.odk.collect.settings.keys.ProjectKeys.KEY_SERVER_URL
-import org.odk.collect.settings.keys.ProjectKeys.KEY_USERNAME
 
 @RunWith(AndroidJUnit4::class)
 class ManagedConfigSaverTest {
@@ -29,6 +29,7 @@ class ManagedConfigSaverTest {
     private lateinit var projectsRepository: ProjectsRepository
     private lateinit var projectCreator: ProjectCreator
     private lateinit var settingsImporter: ODKAppSettingsImporter
+    private lateinit var settingsConnectionMatcher: SettingsConnectionMatcher
     private lateinit var managedConfigSaver: ManagedConfigSaver
 
     @Before
@@ -37,8 +38,15 @@ class ManagedConfigSaverTest {
         projectsRepository = InMemProjectsRepository()
         projectCreator = mock<ProjectCreator>()
         settingsImporter = mock<ODKAppSettingsImporter>()
+        settingsConnectionMatcher = mock<SettingsConnectionMatcher>()
 
-        managedConfigSaver = ManagedConfigSaver(settingsProvider, projectsRepository, projectCreator, settingsImporter)
+        managedConfigSaver = ManagedConfigSaver(
+            settingsProvider,
+            projectsRepository,
+            projectCreator,
+            settingsImporter,
+            settingsConnectionMatcher
+        )
     }
 
     @Test
@@ -124,15 +132,12 @@ class ManagedConfigSaverTest {
 
     @Test
     fun `new project is created when settingsJson contains a URL and username combination that does not match an existing project`() {
-        val project = Project.Saved("1", "project", "Q", "#000000")
-        projectsRepository.save(project)
-        settingsProvider.getUnprotectedSettings("1").save(KEY_SERVER_URL, "https://example.com")
-        settingsProvider.getUnprotectedSettings("1").save(KEY_USERNAME, "foo")
-
         val settingsJson = "{ \"general\": { \"server_url\": \"https://example.com\", \"username\": \"bar\" }, \"admin\": {} }"
         val managedConfig = Bundle().apply {
             putString(SETTINGS_JSON_KEY, settingsJson)
         }
+        whenever(settingsConnectionMatcher.getProjectWithMatchingConnection(settingsJson)).thenReturn(null)
+
         managedConfigSaver.applyConfig(managedConfig)
 
         verify(projectCreator).createNewProject(settingsJson)
@@ -142,13 +147,13 @@ class ManagedConfigSaverTest {
     fun `existing project is updated when settingsJson contains a URL and username combination that matches an existing project`() {
         val project = Project.Saved("1", "project", "Q", "#000000")
         projectsRepository.save(project)
-        settingsProvider.getUnprotectedSettings("1").save(KEY_SERVER_URL, "https://example.com")
-        settingsProvider.getUnprotectedSettings("1").save(KEY_USERNAME, "foo")
 
         val settingsJson = "{ \"general\": { \"server_url\": \"https://example.com\", \"username\": \"foo\" }, \"admin\": {} }"
         val managedConfig = Bundle().apply {
             putString(SETTINGS_JSON_KEY, settingsJson)
         }
+        whenever(settingsConnectionMatcher.getProjectWithMatchingConnection(settingsJson)).thenReturn("1")
+
         managedConfigSaver.applyConfig(managedConfig)
 
         verifyNoInteractions(projectCreator)

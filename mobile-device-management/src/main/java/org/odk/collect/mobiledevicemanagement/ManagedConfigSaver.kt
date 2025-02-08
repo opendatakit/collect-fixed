@@ -1,9 +1,9 @@
-package org.odk.collect.android.mdm
+package org.odk.collect.mobiledevicemanagement
 
 import android.os.Bundle
-import org.odk.collect.android.projects.ProjectCreator
-import org.odk.collect.android.projects.SettingsConnectionMatcher
+import org.odk.collect.projects.ProjectCreator
 import org.odk.collect.projects.ProjectsRepository
+import org.odk.collect.projects.SettingsConnectionMatcher
 import org.odk.collect.settings.ODKAppSettingsImporter
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.settings.keys.MetaKeys.KEY_INSTALL_ID
@@ -12,7 +12,8 @@ class ManagedConfigSaver(
     private val settingsProvider: SettingsProvider,
     private val projectsRepository: ProjectsRepository,
     private val projectCreator: ProjectCreator,
-    private val settingsImporter: ODKAppSettingsImporter
+    private val settingsImporter: ODKAppSettingsImporter,
+    private val settingsConnectionMatcher: SettingsConnectionMatcher
 ) {
     fun applyConfig(managedConfig: Bundle) {
         applyDeviceId(managedConfig)
@@ -32,7 +33,6 @@ class ManagedConfigSaver(
         if (managedConfig.containsKey(SETTINGS_JSON_KEY) && !managedConfig.getString(SETTINGS_JSON_KEY).isNullOrBlank()) {
             val settingsJson = managedConfig.getString(SETTINGS_JSON_KEY)
 
-            val settingsConnectionMatcher = SettingsConnectionMatcher(projectsRepository, settingsProvider)
             when (val matchingProjectUUID = settingsJson?.let { settingsConnectionMatcher.getProjectWithMatchingConnection(it) }) {
                 null -> projectCreator.createNewProject(settingsJson!!)
                 else -> settingsImporter.fromJSON(settingsJson, projectsRepository.get(matchingProjectUUID)!!)

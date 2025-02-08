@@ -32,11 +32,13 @@ import org.odk.collect.androidshared.utils.CompressionUtils
 import org.odk.collect.material.MaterialFullScreenDialogFragment
 import org.odk.collect.permissions.PermissionListener
 import org.odk.collect.permissions.PermissionsProvider
+import org.odk.collect.projects.ProjectConfigurationResult
+import org.odk.collect.projects.ProjectCreator
 import org.odk.collect.projects.ProjectsRepository
+import org.odk.collect.projects.SettingsConnectionMatcher
 import org.odk.collect.qrcode.QRCodeDecoder
 import org.odk.collect.settings.ODKAppSettingsImporter
 import org.odk.collect.settings.SettingsProvider
-import org.odk.collect.settings.importing.SettingsImportingResult
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -124,7 +126,7 @@ class QrCodeProjectCreatorDialog :
         super.onAttach(context)
         DaggerUtils.getComponent(context).inject(this)
 
-        settingsConnectionMatcher = SettingsConnectionMatcher(projectsRepository, settingsProvider)
+        settingsConnectionMatcher = SettingsConnectionMatcherImpl(projectsRepository, settingsProvider)
     }
 
     override fun onCreateView(
@@ -290,7 +292,7 @@ class QrCodeProjectCreatorDialog :
 
     override fun createProject(settingsJson: String) {
         when (projectCreator.createNewProject(settingsJson)) {
-            SettingsImportingResult.SUCCESS -> {
+            ProjectConfigurationResult.SUCCESS -> {
                 Analytics.log(AnalyticsEvents.QR_CREATE_PROJECT)
 
                 ActivityUtils.startActivityAndCloseAllOthers(activity, MainMenuActivity::class.java)
@@ -303,14 +305,14 @@ class QrCodeProjectCreatorDialog :
                 )
             }
 
-            SettingsImportingResult.INVALID_SETTINGS -> ToastUtils.showLongToast(
+            ProjectConfigurationResult.INVALID_SETTINGS -> ToastUtils.showLongToast(
                 requireContext(),
                 getString(
                     org.odk.collect.strings.R.string.invalid_qrcode
                 )
             )
 
-            SettingsImportingResult.GD_PROJECT -> ToastUtils.showLongToast(
+            ProjectConfigurationResult.GD_PROJECT -> ToastUtils.showLongToast(
                 requireContext(),
                 getString(
                     org.odk.collect.strings.R.string.settings_with_gd_protocol

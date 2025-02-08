@@ -13,8 +13,8 @@ import org.odk.collect.android.projects.ProjectsDataService
 import org.odk.collect.android.storage.StoragePathProvider
 import org.odk.collect.androidshared.ui.ToastUtils.showLongToast
 import org.odk.collect.androidshared.utils.CompressionUtils
+import org.odk.collect.projects.ProjectConfigurationResult
 import org.odk.collect.settings.ODKAppSettingsImporter
-import org.odk.collect.settings.importing.SettingsImportingResult
 import java.io.File
 import java.io.IOException
 import java.util.zip.DataFormatException
@@ -46,7 +46,7 @@ class QRCodeScannerFragment : BarCodeScannerFragment() {
         )
 
         when (settingsImportingResult) {
-            SettingsImportingResult.SUCCESS -> {
+            ProjectConfigurationResult.SUCCESS -> {
                 Analytics.log(AnalyticsEvents.RECONFIGURE_PROJECT)
 
                 val newProjectName = projectsDataService.requireCurrentProject().name
@@ -65,14 +65,14 @@ class QRCodeScannerFragment : BarCodeScannerFragment() {
                 )
             }
 
-            SettingsImportingResult.INVALID_SETTINGS -> showLongToast(
+            ProjectConfigurationResult.INVALID_SETTINGS -> showLongToast(
                 requireContext(),
                 getString(
                     org.odk.collect.strings.R.string.invalid_qrcode
                 )
             )
 
-            SettingsImportingResult.GD_PROJECT -> showLongToast(
+            ProjectConfigurationResult.GD_PROJECT -> showLongToast(
                 requireContext(),
                 getString(org.odk.collect.strings.R.string.settings_with_gd_protocol)
             )

@@ -40,6 +40,7 @@ import org.odk.collect.androidshared.utils.CompressionUtils
 import org.odk.collect.fragmentstest.FragmentScenarioLauncherRule
 import org.odk.collect.permissions.PermissionsChecker
 import org.odk.collect.permissions.PermissionsProvider
+import org.odk.collect.projects.ProjectCreator
 import org.robolectric.shadows.ShadowToast
 
 @RunWith(AndroidJUnit4::class)

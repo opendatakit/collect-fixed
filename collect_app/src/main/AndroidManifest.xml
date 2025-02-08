@@ -327,9 +327,6 @@ the specific language governing permissions and limitations under the License.
             </intent-filter>
         </activity>
         <activity android:name="org.odk.collect.android.formhierarchy.FormHierarchyFragmentHostActivity" />
-
-        <meta-data android:name="android.content.APP_RESTRICTIONS"
-            android:resource="@xml/managed_configuration" />
     </application>
 
     <queries>
