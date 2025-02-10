@@ -11,8 +11,8 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
-import org.odk.collect.mobiledevicemanagement.ManagedConfigSaver.Companion.DEVICE_ID_KEY
-import org.odk.collect.mobiledevicemanagement.ManagedConfigSaver.Companion.SETTINGS_JSON_KEY
+import org.odk.collect.mobiledevicemanagement.MDMConfigHandler.Companion.DEVICE_ID_KEY
+import org.odk.collect.mobiledevicemanagement.MDMConfigHandler.Companion.SETTINGS_JSON_KEY
 import org.odk.collect.projects.InMemProjectsRepository
 import org.odk.collect.projects.Project
 import org.odk.collect.projects.ProjectCreator
@@ -24,13 +24,13 @@ import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.settings.keys.MetaKeys.KEY_INSTALL_ID
 
 @RunWith(AndroidJUnit4::class)
-class ManagedConfigSaverTest {
+class MDMConfigHandlerTest {
     private lateinit var settingsProvider: SettingsProvider
     private lateinit var projectsRepository: ProjectsRepository
     private lateinit var projectCreator: ProjectCreator
     private lateinit var settingsImporter: ODKAppSettingsImporter
     private lateinit var settingsConnectionMatcher: SettingsConnectionMatcher
-    private lateinit var managedConfigSaver: ManagedConfigSaver
+    private lateinit var mdmConfigHandler: MDMConfigHandler
 
     @Before
     fun setup() {
@@ -40,7 +40,7 @@ class ManagedConfigSaverTest {
         settingsImporter = mock<ODKAppSettingsImporter>()
         settingsConnectionMatcher = mock<SettingsConnectionMatcher>()
 
-        managedConfigSaver = ManagedConfigSaver(
+        mdmConfigHandler = MDMConfigHandler(
             settingsProvider,
             projectsRepository,
             projectCreator,
@@ -56,7 +56,7 @@ class ManagedConfigSaverTest {
         val managedConfig = Bundle().apply {
             putString(DEVICE_ID_KEY, null)
         }
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         assertThat(settingsProvider.getMetaSettings().getString(KEY_INSTALL_ID), equalTo("foo"))
     }
@@ -68,7 +68,7 @@ class ManagedConfigSaverTest {
         val managedConfig = Bundle().apply {
             putString(DEVICE_ID_KEY, "")
         }
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         assertThat(settingsProvider.getMetaSettings().getString(KEY_INSTALL_ID), equalTo("foo"))
     }
@@ -80,7 +80,7 @@ class ManagedConfigSaverTest {
         val managedConfig = Bundle().apply {
             putString(DEVICE_ID_KEY, " ")
         }
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         assertThat(settingsProvider.getMetaSettings().getString(KEY_INSTALL_ID), equalTo("foo"))
     }
@@ -92,7 +92,7 @@ class ManagedConfigSaverTest {
         val managedConfig = Bundle().apply {
             putString(DEVICE_ID_KEY, "bar")
         }
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         assertThat(settingsProvider.getMetaSettings().getString(KEY_INSTALL_ID), equalTo("bar"))
     }
@@ -102,7 +102,7 @@ class ManagedConfigSaverTest {
         val managedConfig = Bundle().apply {
             putString(SETTINGS_JSON_KEY, null)
         }
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         verifyNoInteractions(projectCreator)
         verifyNoInteractions(settingsImporter)
@@ -113,7 +113,7 @@ class ManagedConfigSaverTest {
         val managedConfig = Bundle().apply {
             putString(SETTINGS_JSON_KEY, "")
         }
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         verifyNoInteractions(projectCreator)
         verifyNoInteractions(settingsImporter)
@@ -124,7 +124,7 @@ class ManagedConfigSaverTest {
         val managedConfig = Bundle().apply {
             putString(SETTINGS_JSON_KEY, " ")
         }
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         verifyNoInteractions(projectCreator)
         verifyNoInteractions(settingsImporter)
@@ -138,7 +138,7 @@ class ManagedConfigSaverTest {
         }
         whenever(settingsConnectionMatcher.getProjectWithMatchingConnection(settingsJson)).thenReturn(null)
 
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         verify(projectCreator).createNewProject(settingsJson)
     }
@@ -154,7 +154,7 @@ class ManagedConfigSaverTest {
         }
         whenever(settingsConnectionMatcher.getProjectWithMatchingConnection(settingsJson)).thenReturn("1")
 
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         verifyNoInteractions(projectCreator)
         verify(settingsImporter).fromJSON(settingsJson, project)
@@ -165,7 +165,7 @@ class ManagedConfigSaverTest {
         val managedConfig = Bundle().apply {
             putString("foo", "bar")
         }
-        managedConfigSaver.applyConfig(managedConfig)
+        mdmConfigHandler.applyConfig(managedConfig)
 
         assertThat(settingsProvider.getMetaSettings().contains("foo"), equalTo(false))
     }

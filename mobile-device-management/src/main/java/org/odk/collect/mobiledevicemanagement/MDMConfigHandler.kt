@@ -8,7 +8,7 @@ import org.odk.collect.settings.ODKAppSettingsImporter
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.settings.keys.MetaKeys.KEY_INSTALL_ID
 
-class ManagedConfigSaver(
+class MDMConfigHandler(
     private val settingsProvider: SettingsProvider,
     private val projectsRepository: ProjectsRepository,
     private val projectCreator: ProjectCreator,

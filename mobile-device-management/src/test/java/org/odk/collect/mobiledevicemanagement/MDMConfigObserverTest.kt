@@ -18,23 +18,23 @@ import org.mockito.kotlin.whenever
 import org.robolectric.Shadows.shadowOf
 
 @RunWith(AndroidJUnit4::class)
-class ManagedConfigManagerTest {
-    private lateinit var managedConfigSaver: ManagedConfigSaver
+class MDMConfigObserverTest {
+    private lateinit var mdmConfigHandler: MDMConfigHandler
     private lateinit var restrictionsManager: RestrictionsManager
     private lateinit var context: Context
     private lateinit var lifecycleOwner: LifecycleOwner
-    private lateinit var managedConfigManager: ManagedConfigManager
+    private lateinit var mdmConfigObserver: MDMConfigObserver
     private lateinit var managedConfig: Bundle
 
     @Before
     fun setup() {
-        managedConfigSaver = mock<ManagedConfigSaver>()
+        mdmConfigHandler = mock<MDMConfigHandler>()
         restrictionsManager = mock<RestrictionsManager>()
         context = ApplicationProvider.getApplicationContext()
         lifecycleOwner = mock<LifecycleOwner>()
         managedConfig = Bundle()
 
-        managedConfigManager = ManagedConfigManager(managedConfigSaver, restrictionsManager, context)
+        mdmConfigObserver = MDMConfigObserver(mdmConfigHandler, restrictionsManager, context)
 
         whenever(restrictionsManager.applicationRestrictions).thenReturn(managedConfig)
     }
@@ -47,7 +47,7 @@ class ManagedConfigManagerTest {
             it.intentFilter.hasAction(Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED)
         })
 
-        managedConfigManager.onResume(lifecycleOwner)
+        mdmConfigObserver.onResume(lifecycleOwner)
 
         assert(shadowApp.registeredReceivers.any {
             it.intentFilter.hasAction(Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED)
@@ -56,8 +56,8 @@ class ManagedConfigManagerTest {
 
     @Test
     fun `broadcast receiver is unregistered in #onPause`() {
-        managedConfigManager.onResume(lifecycleOwner)
-        managedConfigManager.onPause(lifecycleOwner)
+        mdmConfigObserver.onResume(lifecycleOwner)
+        mdmConfigObserver.onPause(lifecycleOwner)
 
         val shadowApp = shadowOf(context as Application)
 
@@ -68,20 +68,20 @@ class ManagedConfigManagerTest {
 
     @Test
     fun `#onResume triggers ManagedConfigSaver#applyConfig`() {
-        managedConfigManager.onResume(lifecycleOwner)
+        mdmConfigObserver.onResume(lifecycleOwner)
 
-        verify(managedConfigSaver, times(1)).applyConfig(managedConfig)
+        verify(mdmConfigHandler, times(1)).applyConfig(managedConfig)
     }
 
     @Test
     fun `broadcast receiver triggers ManagedConfigSaver#applyConfig`() {
-        managedConfigManager.onResume(lifecycleOwner)
+        mdmConfigObserver.onResume(lifecycleOwner)
 
         val intent = Intent(Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED)
         context.sendBroadcast(intent)
 
         shadowOf(context.mainLooper).idle()
 
-        verify(managedConfigSaver, times(2)).applyConfig(managedConfig)
+        verify(mdmConfigHandler, times(2)).applyConfig(managedConfig)
     }
 }

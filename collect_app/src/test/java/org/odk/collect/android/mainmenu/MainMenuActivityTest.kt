@@ -45,7 +45,7 @@ import org.odk.collect.android.version.VersionInformation
 import org.odk.collect.androidtest.ActivityScenarioLauncherRule
 import org.odk.collect.async.Scheduler
 import org.odk.collect.crashhandler.CrashHandler
-import org.odk.collect.mobiledevicemanagement.ManagedConfigManager
+import org.odk.collect.mobiledevicemanagement.MDMConfigObserver
 import org.odk.collect.permissions.PermissionsChecker
 import org.odk.collect.permissions.PermissionsProvider
 import org.odk.collect.projects.Project
@@ -133,8 +133,8 @@ class MainMenuActivityTest {
                 projectCreator: ProjectCreator,
                 settingsImporter: ODKAppSettingsImporter,
                 context: Context
-            ): ManagedConfigManager {
-                return mock<ManagedConfigManager>()
+            ): MDMConfigObserver {
+                return mock<MDMConfigObserver>()
             }
         })
 

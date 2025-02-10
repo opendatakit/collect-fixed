@@ -13,7 +13,7 @@ import org.odk.collect.android.projects.ProjectSettingsDialog
 import org.odk.collect.android.utilities.ThemeUtils
 import org.odk.collect.androidshared.ui.FragmentFactoryBuilder
 import org.odk.collect.crashhandler.CrashHandler
-import org.odk.collect.mobiledevicemanagement.ManagedConfigManager
+import org.odk.collect.mobiledevicemanagement.MDMConfigObserver
 import org.odk.collect.permissions.PermissionsProvider
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.strings.localization.LocalizedActivity
@@ -31,7 +31,7 @@ class MainMenuActivity : LocalizedActivity() {
     lateinit var permissionsProvider: PermissionsProvider
 
     @Inject
-    lateinit var managedConfigManager: ManagedConfigManager
+    lateinit var mdmConfigObserver: MDMConfigObserver
 
     private lateinit var currentProjectViewModel: CurrentProjectViewModel
 
@@ -85,7 +85,7 @@ class MainMenuActivity : LocalizedActivity() {
 
             super.onCreate(savedInstanceState)
             setContentView(R.layout.main_menu_activity)
-            lifecycle.addObserver(managedConfigManager)
+            lifecycle.addObserver(mdmConfigObserver)
         }
     }
 

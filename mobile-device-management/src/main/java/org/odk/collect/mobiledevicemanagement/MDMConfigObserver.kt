@@ -13,21 +13,21 @@ import androidx.lifecycle.LifecycleOwner
  *
  * See android.content.APP_RESTRICTIONS in AndroidManifest for supported configuration keys.
  */
-class ManagedConfigManager(
-    private val managedConfigSaver: ManagedConfigSaver,
+class MDMConfigObserver(
+    private val mdmConfigHandler: MDMConfigHandler,
     private val restrictionsManager: RestrictionsManager,
     private val context: Context
 ) : DefaultLifecycleObserver {
 
     private val restrictionsReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            managedConfigSaver.applyConfig(restrictionsManager.applicationRestrictions)
+            mdmConfigHandler.applyConfig(restrictionsManager.applicationRestrictions)
         }
     }
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
-        managedConfigSaver.applyConfig(restrictionsManager.applicationRestrictions)
+        mdmConfigHandler.applyConfig(restrictionsManager.applicationRestrictions)
 
         val restrictionsFilter = IntentFilter(Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED)
         context.registerReceiver(restrictionsReceiver, restrictionsFilter)
