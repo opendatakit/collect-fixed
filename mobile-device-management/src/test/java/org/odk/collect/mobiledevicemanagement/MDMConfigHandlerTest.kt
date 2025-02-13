@@ -131,8 +131,8 @@ class MDMConfigHandlerTest {
     }
 
     @Test
-    fun `new project is created when settingsJson contains a URL and username combination that does not match an existing project`() {
-        val settingsJson = "{ \"general\": { \"server_url\": \"https://example.com\", \"username\": \"bar\" }, \"admin\": {} }"
+    fun `new project is created and switched to if there are no saved projects yet`() {
+        val settingsJson = "{ \"general\": {}, \"admin\": {} }"
         val managedConfig = Bundle().apply {
             putString(SETTINGS_JSON_KEY, settingsJson)
         }
@@ -140,7 +140,23 @@ class MDMConfigHandlerTest {
 
         mdmConfigHandler.applyConfig(managedConfig)
 
-        verify(projectCreator).createNewProject(settingsJson)
+        verify(projectCreator).createNewProject(settingsJson, true)
+    }
+
+    @Test
+    fun `new project is created but not switched to if there are projects saved but none of them contains a URL and username combination that matches an existing project`() {
+        val project = Project.Saved("1", "project", "Q", "#000000")
+        projectsRepository.save(project)
+
+        val settingsJson = "{ \"general\": {}, \"admin\": {} }"
+        val managedConfig = Bundle().apply {
+            putString(SETTINGS_JSON_KEY, settingsJson)
+        }
+        whenever(settingsConnectionMatcher.getProjectWithMatchingConnection(settingsJson)).thenReturn(null)
+
+        mdmConfigHandler.applyConfig(managedConfig)
+
+        verify(projectCreator).createNewProject(settingsJson, false)
     }
 
     @Test
@@ -148,7 +164,7 @@ class MDMConfigHandlerTest {
         val project = Project.Saved("1", "project", "Q", "#000000")
         projectsRepository.save(project)
 
-        val settingsJson = "{ \"general\": { \"server_url\": \"https://example.com\", \"username\": \"foo\" }, \"admin\": {} }"
+        val settingsJson = "{ \"general\": {}, \"admin\": {} }"
         val managedConfig = Bundle().apply {
             putString(SETTINGS_JSON_KEY, settingsJson)
         }

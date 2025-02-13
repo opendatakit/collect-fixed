@@ -52,7 +52,7 @@ class ProjectCreatorImplTest {
 
     @Test
     fun `Importing settings should be triggered with proper params`() {
-        projectCreator.createNewProject(json)
+        projectCreator.createNewProject(json, true)
         verify(settingsImporter).fromJSON(json, savedProject)
     }
 
@@ -60,31 +60,31 @@ class ProjectCreatorImplTest {
     fun `When importing settings failed createNewProject() should return 'INVALID_SETTINGS'`() {
         whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.INVALID_SETTINGS)
 
-        projectCreator.createNewProject(json)
-        assertThat(projectCreator.createNewProject(json), `is`(ProjectConfigurationResult.INVALID_SETTINGS))
+        projectCreator.createNewProject(json, true)
+        assertThat(projectCreator.createNewProject(json, true), `is`(ProjectConfigurationResult.INVALID_SETTINGS))
     }
 
     @Test
     fun `When importing settings contain GD protocol createNewProject() should return 'GD_PROJECT'`() {
         whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.GD_PROJECT)
 
-        projectCreator.createNewProject(json)
-        assertThat(projectCreator.createNewProject(json), `is`(ProjectConfigurationResult.GD_PROJECT))
+        projectCreator.createNewProject(json, true)
+        assertThat(projectCreator.createNewProject(json, true), `is`(ProjectConfigurationResult.GD_PROJECT))
     }
 
     @Test
     fun `When importing settings succeeded createNewProject() should return 'SUCCESS'`() {
         whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.SUCCESS)
 
-        projectCreator.createNewProject(json)
-        assertThat(projectCreator.createNewProject(json), `is`(ProjectConfigurationResult.SUCCESS))
+        projectCreator.createNewProject(json, true)
+        assertThat(projectCreator.createNewProject(json, true), `is`(ProjectConfigurationResult.SUCCESS))
     }
 
     @Test
     fun `When importing settings failed should created project be deleted`() {
         whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.INVALID_SETTINGS)
 
-        projectCreator.createNewProject(json)
+        projectCreator.createNewProject(json, true)
         verify(projectsRepository).delete(savedProject.uuid)
     }
 
@@ -92,7 +92,7 @@ class ProjectCreatorImplTest {
     fun `When importing settings contain GD protocol should created project be deleted`() {
         whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.GD_PROJECT)
 
-        projectCreator.createNewProject(json)
+        projectCreator.createNewProject(json, true)
         verify(projectsRepository).delete(savedProject.uuid)
     }
 
@@ -100,7 +100,7 @@ class ProjectCreatorImplTest {
     fun `When importing settings failed should prefs be cleared`() {
         whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.INVALID_SETTINGS)
 
-        projectCreator.createNewProject(json)
+        projectCreator.createNewProject(json, true)
 
         verify(unProtectedSettings).clear()
         verify(protectedSettings).clear()
@@ -110,7 +110,7 @@ class ProjectCreatorImplTest {
     fun `New project id should be set`() {
         whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.SUCCESS)
 
-        projectCreator.createNewProject(json)
+        projectCreator.createNewProject(json, true)
         verify(projectsDataService).setCurrentProject("1")
     }
 }

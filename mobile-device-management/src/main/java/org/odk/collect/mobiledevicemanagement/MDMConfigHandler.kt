@@ -34,7 +34,7 @@ class MDMConfigHandler(
             val settingsJson = managedConfig.getString(SETTINGS_JSON_KEY)
 
             when (val matchingProjectUUID = settingsJson?.let { settingsConnectionMatcher.getProjectWithMatchingConnection(it) }) {
-                null -> projectCreator.createNewProject(settingsJson!!)
+                null -> projectCreator.createNewProject(settingsJson!!, projectsRepository.getAll().isEmpty())
                 else -> settingsImporter.fromJSON(settingsJson, projectsRepository.get(matchingProjectUUID)!!)
             }
         }

@@ -14,7 +14,7 @@ class ProjectCreatorImpl(
     private val settingsProvider: SettingsProvider
 ) : ProjectCreator {
 
-    override fun createNewProject(settingsJson: String): ProjectConfigurationResult {
+    override fun createNewProject(settingsJson: String, switchToTheNewProject: Boolean): ProjectConfigurationResult {
         val savedProject = projectsRepository.save(Project.New("", "", ""))
         val settingsImportingResult = settingsImporter.fromJSON(settingsJson, savedProject)
 
