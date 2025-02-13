@@ -21,6 +21,7 @@ import org.odk.collect.androidshared.system.ContextUtils.getThemeAttributeValue
 import org.odk.collect.androidshared.ui.DialogFragmentUtils
 import org.odk.collect.async.Scheduler
 import org.odk.collect.material.MaterialProgressDialogFragment
+import org.odk.collect.mobiledevicemanagement.MDMConfigObserver
 import org.odk.collect.projects.Project
 import org.odk.collect.projects.ProjectsRepository
 import org.odk.collect.settings.SettingsProvider
@@ -43,6 +44,9 @@ class FirstLaunchActivity : LocalizedActivity() {
 
     @Inject
     lateinit var scheduler: Scheduler
+
+    @Inject
+    lateinit var mdmConfigObserver: MDMConfigObserver
 
     private val viewModel: FirstLaunchViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -111,6 +115,7 @@ class FirstLaunchActivity : LocalizedActivity() {
                 }
             }
         }
+        lifecycle.addObserver(mdmConfigObserver)
     }
 }
 
