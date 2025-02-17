@@ -14,14 +14,6 @@ interface EntitiesRepository {
     @Deprecated(
         message = "Should use #query instead",
         ReplaceWith(
-            "query(list, Query.Eq(EntitiesTable.COLUMN_ID, id))"
-        )
-    )
-    fun getById(list: String, id: String): Entity.Saved?
-
-    @Deprecated(
-        message = "Should use #query instead",
-        ReplaceWith(
             "query(list, Query.Eq(property, value))"
         )
     )
