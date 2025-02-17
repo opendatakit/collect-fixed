@@ -14,24 +14,8 @@ class InMemEntitiesRepository : EntitiesRepository {
         return lists
     }
 
-    override fun getEntities(list: String): List<Entity.Saved> {
-        val entities = entities[list] ?: emptyList()
-        return entities.mapIndexed { index, entity ->
-            Entity.Saved(
-                entity.id,
-                entity.label,
-                entity.version,
-                buildProperties(list, entity),
-                entity.state,
-                index,
-                entity.trunkVersion,
-                entity.branchId
-            )
-        }
-    }
-
     override fun getCount(list: String): Int {
-        return getEntities(list).count()
+        return query(list).count()
     }
 
     override fun addList(list: String) {
@@ -44,8 +28,19 @@ class InMemEntitiesRepository : EntitiesRepository {
         }
     }
 
-    override fun query(list: String, query: Query): List<Entity.Saved> {
-        val entities = getEntities(list)
+    override fun query(list: String, query: Query?): List<Entity.Saved> {
+        val entities = (entities[list] ?: emptyList()).mapIndexed { index, entity ->
+            Entity.Saved(
+                entity.id,
+                entity.label,
+                entity.version,
+                buildProperties(list, entity),
+                entity.state,
+                index,
+                entity.trunkVersion,
+                entity.branchId
+            )
+        }
 
         return when (query) {
             is Query.Eq -> {
@@ -84,11 +79,13 @@ class InMemEntitiesRepository : EntitiesRepository {
                 val queryBResult = query(list, query.queryB)
                 queryAResult.union(queryBResult.toSet()).toList()
             }
+
+            null -> entities
         }
     }
 
     override fun getById(list: String, id: String): Entity.Saved? {
-        return getEntities(list).firstOrNull { it.id == id }
+        return query(list).firstOrNull { it.id == id }
     }
 
     override fun getAllByProperty(
@@ -97,18 +94,18 @@ class InMemEntitiesRepository : EntitiesRepository {
         value: String
     ): List<Entity.Saved> {
         return if (listProperties[list]?.contains(property) == true) {
-            getEntities(list).filter { entity ->
+            query(list).filter { entity ->
                 entity.properties.any { (first, second) -> first == property && second == value }
             }.toList()
         } else if (value == "") {
-            getEntities(list)
+            query(list)
         } else {
             emptyList()
         }
     }
 
     override fun getByIndex(list: String, index: Int): Entity.Saved? {
-        return getEntities(list).firstOrNull { it.index == index }
+        return query(list).firstOrNull { it.index == index }
     }
 
     override fun updateListHash(list: String, hash: String) {

@@ -74,7 +74,7 @@ object LocalEntityUseCases {
             return
         }
 
-        val localEntities = entitiesRepository.getEntities(list)
+        val localEntities = entitiesRepository.query(list)
 
         val missingFromServer = localEntities.associateBy { it.id }.toMutableMap()
         val newAndUpdated = ArrayList<Entity>()

@@ -6,17 +6,10 @@ interface EntitiesRepository {
     fun save(list: String, vararg entities: Entity)
     fun getLists(): Set<String>
 
-    @Deprecated(
-        message = "Should use #query instead",
-        ReplaceWith(
-            "query(list, null)"
-        )
-    )
-    fun getEntities(list: String): List<Entity.Saved>
     fun getCount(list: String): Int
     fun addList(list: String)
     fun delete(id: String)
-    fun query(list: String, query: Query): List<Entity.Saved>
+    fun query(list: String, query: Query? = null): List<Entity.Saved>
 
     @Deprecated(
         message = "Should use #query instead",

@@ -32,7 +32,7 @@ class LocalEntityUseCasesTest {
         val formEntities = EntitiesExtra(listOf(formEntity))
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
 
-        val entities = entitiesRepository.getEntities("things")
+        val entities = entitiesRepository.query("things")
         assertThat(entities.size, equalTo(1))
         assertThat(entities[0].id, equalTo(formEntity.id))
         assertThat(entities[0].label, equalTo(formEntity.label))
@@ -56,7 +56,7 @@ class LocalEntityUseCasesTest {
         val formEntities = EntitiesExtra(listOf(formEntity))
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        val entities = entitiesRepository.getEntities("things")
+        val entities = entitiesRepository.query("things")
         assertThat(entities.size, equalTo(1))
         assertThat(entities[0].version, equalTo(2))
     }
@@ -78,7 +78,7 @@ class LocalEntityUseCasesTest {
         val formEntities = EntitiesExtra(listOf(formEntity))
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        val entities = entitiesRepository.getEntities("things")
+        val entities = entitiesRepository.query("things")
         assertThat(entities.size, equalTo(1))
         assertThat(entities[0].properties.size, equalTo(1))
         assertThat(entities[0].properties[0], equalTo("prop" to "value 2"))
@@ -101,7 +101,7 @@ class LocalEntityUseCasesTest {
         val formEntities = EntitiesExtra(listOf(formEntity))
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        val entities = entitiesRepository.getEntities("things")
+        val entities = entitiesRepository.query("things")
         assertThat(entities.size, equalTo(1))
         assertThat(entities[0].label, equalTo("label"))
         assertThat(entities[0].properties.size, equalTo(1))
@@ -125,7 +125,7 @@ class LocalEntityUseCasesTest {
         val formEntities = EntitiesExtra(listOf(formEntity))
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        val entities = entitiesRepository.getEntities("things")
+        val entities = entitiesRepository.query("things")
         assertThat(entities.size, equalTo(1))
         assertThat(entities[0].label, equalTo("label"))
         assertThat(entities[0].properties.size, equalTo(1))
@@ -150,7 +150,7 @@ class LocalEntityUseCasesTest {
         val formEntities = EntitiesExtra(listOf(formEntity))
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        val entities = entitiesRepository.getEntities("things")
+        val entities = entitiesRepository.query("things")
         assertThat(entities.size, equalTo(1))
         assertThat(entities[0].trunkVersion, equalTo(1))
         assertThat(entities[0].branchId, equalTo("branch-1"))
@@ -164,7 +164,7 @@ class LocalEntityUseCasesTest {
         entitiesRepository.addList("things")
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        assertThat(entitiesRepository.getEntities("things").size, equalTo(0))
+        assertThat(entitiesRepository.query("things").size, equalTo(0))
     }
 
     @Test
@@ -175,7 +175,7 @@ class LocalEntityUseCasesTest {
         entitiesRepository.addList("things")
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        assertThat(entitiesRepository.getEntities("things").size, equalTo(0))
+        assertThat(entitiesRepository.query("things").size, equalTo(0))
     }
 
     @Test
@@ -186,7 +186,7 @@ class LocalEntityUseCasesTest {
         entitiesRepository.addList("things")
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        assertThat(entitiesRepository.getEntities("things").size, equalTo(0))
+        assertThat(entitiesRepository.query("things").size, equalTo(0))
     }
 
     @Test
@@ -197,7 +197,7 @@ class LocalEntityUseCasesTest {
         entitiesRepository.addList("things")
 
         LocalEntityUseCases.updateLocalEntitiesFromForm(formEntities, entitiesRepository)
-        assertThat(entitiesRepository.getEntities("things").size, equalTo(0))
+        assertThat(entitiesRepository.query("things").size, equalTo(0))
     }
 
     @Test
@@ -212,7 +212,7 @@ class LocalEntityUseCasesTest {
         )
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].label, equalTo("Noah"))
         assertThat(songs[0].version, equalTo(2))
@@ -229,7 +229,7 @@ class LocalEntityUseCasesTest {
         val csv = createEntityList(Entity.New("noah", "Noah", 2))
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].label, equalTo("Noah"))
         assertThat(songs[0].version, equalTo(2))
@@ -246,7 +246,7 @@ class LocalEntityUseCasesTest {
         val csv = createEntityList(Entity.New("noah", "Noah", 2))
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].label, equalTo("Noah"))
         assertThat(songs[0].version, equalTo(2))
@@ -263,7 +263,7 @@ class LocalEntityUseCasesTest {
         val csv = createEntityList(Entity.New("noah", "Noa", 1))
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].label, equalTo("Noah"))
         assertThat(songs[0].version, equalTo(2))
@@ -299,7 +299,7 @@ class LocalEntityUseCasesTest {
         val csv2 = createEntityList(Entity.New("noah", "Noah", 3))
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv2, entitiesRepository)
 
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].version, equalTo(3))
         assertThat(songs[0].state, equalTo(Entity.State.ONLINE))
@@ -322,7 +322,7 @@ class LocalEntityUseCasesTest {
         )
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].label, equalTo("Noa"))
         assertThat(songs[0].properties, containsInAnyOrder("length" to "4:33"))
@@ -340,7 +340,7 @@ class LocalEntityUseCasesTest {
             createEntityList(Entity.New("noah", "Noah", 2, listOf(Pair("length", "6:38"))))
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].properties, equalTo(emptyList()))
     }
@@ -355,7 +355,7 @@ class LocalEntityUseCasesTest {
             createEntityList(Entity.New("noah", "Noah", 2, listOf(Pair("length", "4:58"))))
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].version, equalTo(2))
         assertThat(songs[0].properties, equalTo(listOf(Pair("length", "4:58"))))
@@ -402,7 +402,7 @@ class LocalEntityUseCasesTest {
         val csv = createEntityList(Entity.New("cathedrals", label = ""))
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].label, equalTo(""))
     }
@@ -421,7 +421,7 @@ class LocalEntityUseCasesTest {
         val csv = createEntityList(Entity.New("cathedrals", "Cathedrals"))
 
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", csv, entitiesRepository)
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(2))
     }
 
@@ -435,7 +435,7 @@ class LocalEntityUseCasesTest {
         val secondCsv = createEntityList(Entity.New("noah", "Noah"))
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", secondCsv, entitiesRepository)
 
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
         assertThat(songs[0].id, equalTo("noah"))
     }
@@ -451,7 +451,7 @@ class LocalEntityUseCasesTest {
         val secondCsv = createEntityList()
         LocalEntityUseCases.updateLocalEntitiesFromServer("songs", secondCsv, entitiesRepository)
 
-        val songs = entitiesRepository.getEntities("songs")
+        val songs = entitiesRepository.query("songs")
         assertThat(songs.isEmpty(), equalTo(true))
     }
 
@@ -518,11 +518,6 @@ private class MeasurableEntitiesRepository(private val wrapped: EntitiesReposito
         return wrapped.getLists()
     }
 
-    override fun getEntities(list: String): List<Entity.Saved> {
-        accesses += 1
-        return wrapped.getEntities(list)
-    }
-
     override fun getCount(list: String): Int {
         return wrapped.getCount(list)
     }
@@ -537,7 +532,7 @@ private class MeasurableEntitiesRepository(private val wrapped: EntitiesReposito
         wrapped.delete(id)
     }
 
-    override fun query(list: String, query: Query): List<Entity.Saved> {
+    override fun query(list: String, query: Query?): List<Entity.Saved> {
         accesses += 1
         return wrapped.query(list, query)
     }
