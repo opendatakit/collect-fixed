@@ -82,22 +82,6 @@ class InMemEntitiesRepository : EntitiesRepository {
         }
     }
 
-    override fun getAllByProperty(
-        list: String,
-        property: String,
-        value: String
-    ): List<Entity.Saved> {
-        return if (listProperties[list]?.contains(property) == true) {
-            query(list).filter { entity ->
-                entity.properties.any { (first, second) -> first == property && second == value }
-            }.toList()
-        } else if (value == "") {
-            query(list)
-        } else {
-            emptyList()
-        }
-    }
-
     override fun getByIndex(list: String, index: Int): Entity.Saved? {
         return query(list).firstOrNull { it.index == index }
     }

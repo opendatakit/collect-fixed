@@ -537,15 +537,6 @@ private class MeasurableEntitiesRepository(private val wrapped: EntitiesReposito
         return wrapped.query(list, query)
     }
 
-    override fun getAllByProperty(
-        list: String,
-        property: String,
-        value: String
-    ): List<Entity.Saved> {
-        accesses += 1
-        return wrapped.getAllByProperty(list, property, value)
-    }
-
     override fun getByIndex(list: String, index: Int): Entity.Saved? {
         accesses += 1
         return wrapped.getByIndex(list, index)

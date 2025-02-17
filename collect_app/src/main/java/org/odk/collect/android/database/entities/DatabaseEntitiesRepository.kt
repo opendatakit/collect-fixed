@@ -17,7 +17,6 @@ import org.odk.collect.db.sqlite.RowNumbers.invalidateRowNumbers
 import org.odk.collect.db.sqlite.RowNumbers.rawQueryWithRowNumber
 import org.odk.collect.db.sqlite.SQLiteColumns.ROW_NUMBER
 import org.odk.collect.db.sqlite.SQLiteDatabaseExt.delete
-import org.odk.collect.db.sqlite.SQLiteDatabaseExt.doesColumnExist
 import org.odk.collect.db.sqlite.SQLiteDatabaseExt.getColumnNames
 import org.odk.collect.db.sqlite.SQLiteDatabaseExt.query
 import org.odk.collect.db.sqlite.SynchronizedDatabaseConnection
@@ -204,31 +203,6 @@ class DatabaseEntitiesRepository(context: Context, dbPath: String) : EntitiesRep
                 else -> EntitiesTable.getPropertyColumn(columnName)
             }
         })
-    }
-
-    override fun getAllByProperty(
-        list: String,
-        property: String,
-        value: String
-    ): List<Entity.Saved> {
-        if (!listExists(list)) {
-            return emptyList()
-        }
-
-        val propertyExists = databaseConnection.withConnection {
-            readableDatabase.doesColumnExist(quote(list), EntitiesTable.getPropertyColumn(property))
-        }
-
-        return if (propertyExists) {
-            queryWithAttachedRowNumber(
-                list,
-                Query.Eq(EntitiesTable.getPropertyColumn(property), value)
-            )
-        } else if (value == "") {
-            queryWithAttachedRowNumber(list, null)
-        } else {
-            emptyList()
-        }
     }
 
     override fun getByIndex(list: String, index: Int): Entity.Saved? {
