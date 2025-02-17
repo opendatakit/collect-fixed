@@ -18,6 +18,13 @@ interface EntitiesRepository {
         )
     )
     fun getById(list: String, id: String): Entity.Saved?
+
+    @Deprecated(
+        message = "Should use #query instead",
+        ReplaceWith(
+            "query(list, Query.Eq(property, value))"
+        )
+    )
     fun getAllByProperty(list: String, property: String, value: String): List<Entity.Saved>
 
     @Deprecated(
