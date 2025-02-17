@@ -18,13 +18,6 @@ interface EntitiesRepository {
         )
     )
     fun getAllByProperty(list: String, property: String, value: String): List<Entity.Saved>
-
-    @Deprecated(
-        message = "Should use #query instead",
-        ReplaceWith(
-            "query(list, Query.Eq(\"i.\$ROW_ID\", (index + 1).toString()))"
-        )
-    )
     fun getByIndex(list: String, index: Int): Entity.Saved?
     fun updateListHash(list: String, hash: String)
     fun getListHash(list: String): String?
