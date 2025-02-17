@@ -114,7 +114,7 @@ object LocalEntityUseCases {
 
         missingFromServer.values.forEach {
             if (it.state == Entity.State.ONLINE) {
-                entitiesRepository.delete(it.id)
+                entitiesRepository.delete(list, it.id)
             }
         }
 

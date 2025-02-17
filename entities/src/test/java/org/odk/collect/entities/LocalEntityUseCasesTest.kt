@@ -527,9 +527,9 @@ private class MeasurableEntitiesRepository(private val wrapped: EntitiesReposito
         wrapped.addList(list)
     }
 
-    override fun delete(id: String) {
+    override fun delete(list: String, id: String) {
         accesses += 1
-        wrapped.delete(id)
+        wrapped.delete(list, id)
     }
 
     override fun query(list: String, query: Query?): List<Entity.Saved> {

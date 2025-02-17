@@ -183,15 +183,9 @@ class DatabaseEntitiesRepository(context: Context, dbPath: String) : EntitiesRep
         }
     }
 
-    override fun delete(id: String) {
+    override fun delete(list: String, id: String) {
         databaseConnection.withConnection {
-            getLists().forEach {
-                writableDatabase.delete(
-                    quote(it),
-                    "${EntitiesTable.COLUMN_ID} = ?",
-                    arrayOf(id)
-                )
-            }
+            writableDatabase.delete(quote(list), "${EntitiesTable.COLUMN_ID} = ?", arrayOf(id))
         }
 
         invalidateRowNumbers()

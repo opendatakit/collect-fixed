@@ -22,10 +22,8 @@ class InMemEntitiesRepository : EntitiesRepository {
         lists.add(list)
     }
 
-    override fun delete(id: String) {
-        entities.forEach { (_, list) ->
-            list.removeIf { it.id == id }
-        }
+    override fun delete(list: String, id: String) {
+        entities[list]?.removeIf { it.id == id }
     }
 
     override fun query(list: String, query: Query?): List<Entity.Saved> {

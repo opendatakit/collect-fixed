@@ -8,7 +8,7 @@ interface EntitiesRepository {
 
     fun getCount(list: String): Int
     fun addList(list: String)
-    fun delete(id: String)
+    fun delete(list: String, id: String)
     fun query(list: String, query: Query? = null): List<Entity.Saved>
 
     @Deprecated(

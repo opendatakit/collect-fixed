@@ -365,7 +365,7 @@ abstract class EntitiesRepositoryTest {
         val canet = Entity.New("2", "Pontet-Canet 2014")
         repository.save("wines", leoville, canet)
 
-        repository.delete("1")
+        repository.delete("wines", "1")
 
         assertThat(
             repository.query("wines"),
@@ -382,7 +382,8 @@ abstract class EntitiesRepositoryTest {
         repository.save("wines.x", leoville)
         repository.save("wines-x", leoville)
 
-        repository.delete("1")
+        repository.delete("wines.x", "1")
+        repository.delete("wines-x", "1")
 
         assertThat(
             repository.query("wines.x").isEmpty(),
@@ -403,8 +404,7 @@ abstract class EntitiesRepositoryTest {
         val gloria = Entity.New("3", "Chateau Gloria 2016")
         repository.save("wines", leoville, canet, gloria)
 
-        repository.delete("1")
-
+        repository.delete("wines", "1")
         var wines = repository.query("wines")
         assertThat(wines[0].index, equalTo(0))
         assertThat(wines[1].index, equalTo(1))
