@@ -417,155 +417,6 @@ abstract class EntitiesRepositoryTest {
     }
 
     @Test
-    fun `#getAllByProperty returns entities with matching property value`() {
-        val repository = buildSubject()
-
-        val leoville = Entity.New(
-            "1",
-            "Léoville Barton 2008",
-            properties = listOf("vintage" to "2008")
-        )
-
-        val canet = Entity.New(
-            "2",
-            "Pontet-Canet 2014",
-            properties = listOf("vintage" to "2014")
-        )
-
-        repository.save("wines", leoville, canet)
-
-        val wines = repository.query("wines")
-        assertThat(
-            repository.getAllByProperty("wines", "vintage", "2014"),
-            containsInAnyOrder(wines.first { it.id == "2" })
-        )
-    }
-
-    @Test
-    fun `#getAllByProperty returns entities without property when searching for empty string`() {
-        val repository = buildSubject()
-
-        val leoville = Entity.New(
-            "1",
-            "Léoville Barton 2008",
-            properties = listOf("vintage" to "2008")
-        )
-
-        val canet = Entity.New(
-            "2",
-            "Pontet-Canet 2014",
-            properties = listOf("score" to "93")
-        )
-
-        repository.save("wines", leoville)
-        repository.save("wines", canet)
-
-        val allByProperty = repository.getAllByProperty("wines", "score", "")
-        assertThat(allByProperty.size, equalTo(1))
-        assertThat(allByProperty[0].id, equalTo("1"))
-    }
-
-    @Test
-    fun `#getAllByProperty returns entities when searching for empty string for property that doesn't exist`() {
-        val repository = buildSubject()
-
-        val leoville = Entity.New(
-            "1",
-            "Léoville Barton 2008",
-            properties = listOf("vintage" to "2008")
-        )
-
-        repository.save("wines", leoville)
-        assertThat(repository.getAllByProperty("wines", "score", "").size, equalTo(1))
-    }
-
-    @Test
-    fun `#getAllByProperty returns empty list when searching for non empty string for property that doesn't exist`() {
-        val repository = buildSubject()
-
-        val leoville = Entity.New(
-            "1",
-            "Léoville Barton 2008",
-            properties = listOf("vintage" to "2008")
-        )
-
-        repository.save("wines", leoville)
-        assertThat(repository.getAllByProperty("wines", "score", "92").size, equalTo(0))
-    }
-
-    @Test
-    fun `#getAllByProperty returns empty list when there are no matches`() {
-        val repository = buildSubject()
-
-        val leoville = Entity.New(
-            "1",
-            "Léoville Barton 2008",
-            properties = listOf("vintage" to "2008")
-        )
-
-        val canet = Entity.New(
-            "2",
-            "Pontet-Canet 2014",
-            properties = listOf("vintage" to "2014")
-        )
-
-        repository.save("wines", leoville, canet)
-        assertThat(repository.getAllByProperty("wines", "vintage", "2024"), equalTo(emptyList()))
-    }
-
-    @Test
-    fun `#getAllByProperty returns empty list when there is a match in a different list`() {
-        val repository = buildSubject()
-
-        val leoville = Entity.New(
-            "1",
-            "Léoville Barton 2008",
-            properties = listOf("vintage" to "2008")
-        )
-        val dows = Entity.New(
-            "2",
-            "Dow's 1983",
-            properties = listOf("vintage" to "1983")
-        )
-
-        repository.save("wines", leoville)
-        repository.save("ports", dows)
-        assertThat(repository.getAllByProperty("wines", "vintage", "1983"), equalTo(emptyList()))
-    }
-
-    @Test
-    fun `#getAllByProperty returns empty list when there are no entities`() {
-        val repository = buildSubject()
-        assertThat(repository.getAllByProperty("wines", "vintage", "1983"), equalTo(emptyList()))
-    }
-
-    @Test
-    fun `#getAllByProperty supports list names with dots and dashes`() {
-        val repository = buildSubject()
-
-        val leoville = Entity.New(
-            "1",
-            "Léoville Barton 2008",
-            properties = listOf("vintage" to "2008")
-        )
-
-        repository.save("favourite-wines", leoville)
-        repository.save("favourite.wines", leoville)
-
-        var wines = repository.query("favourite-wines")
-        assertThat(
-            repository.getAllByProperty("favourite-wines", "vintage", "2008"),
-            containsInAnyOrder(wines.first { it.id == "1" })
-        )
-
-        wines = repository.query("favourite.wines")
-        assertThat(
-            repository.getAllByProperty("favourite.wines", "vintage", "2008"),
-            containsInAnyOrder(wines.first { it.id == "1" })
-        )
-    }
-
-    @Test
     fun `#getCount returns 0 when a list is empty`() {
         val repository = buildSubject()
         repository.addList("wines")
@@ -815,5 +666,33 @@ abstract class EntitiesRepositoryTest {
         val whiskys = repository.query("whiskys")
         assertThat(whiskys.size, equalTo(1))
         assertThat(whiskys[0], sameEntityAs(whisky))
+    }
+
+    @Test
+    fun `#query returns entities when searching for empty string for property that doesn't exist`() {
+        val repository = buildSubject()
+
+        val leoville = Entity.New(
+            "1",
+            "Léoville Barton 2008",
+            properties = listOf("vintage" to "2008")
+        )
+
+        repository.save("wines", leoville)
+        assertThat(repository.query("wines", Query.Eq("score", "")).size, equalTo(1))
+    }
+
+    @Test
+    fun `#query returns empty list when searching for non empty string for property that doesn't exist`() {
+        val repository = buildSubject()
+
+        val leoville = Entity.New(
+            "1",
+            "Léoville Barton 2008",
+            properties = listOf("vintage" to "2008")
+        )
+
+        repository.save("wines", leoville)
+        assertThat(repository.query("wines", Query.Eq("score", "92")).size, equalTo(0))
     }
 }
