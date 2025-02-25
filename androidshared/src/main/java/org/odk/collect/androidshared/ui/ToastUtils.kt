@@ -2,7 +2,6 @@ package org.odk.collect.androidshared.ui
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import android.view.Gravity
 import android.view.ViewGroup
@@ -21,30 +20,29 @@ object ToastUtils {
     private var recordedToasts = mutableListOf<String>()
 
     private lateinit var lastToast: Toast
+    private lateinit var application: Application
 
     @JvmStatic
-    fun showShortToast(context: Context, message: String) {
-        showToast(context.applicationContext as Application, message)
+    fun showShortToast(message: String) {
+        showToast(message)
     }
 
     @JvmStatic
-    fun showShortToast(context: Context, messageResource: Int) {
+    fun showShortToast(messageResource: Int) {
         showToast(
-            context.applicationContext as Application,
-            context.getLocalizedString(messageResource)
+            application.getLocalizedString(messageResource)
         )
     }
 
     @JvmStatic
-    fun showLongToast(context: Context, message: String) {
-        showToast(context.applicationContext as Application, message, Toast.LENGTH_LONG)
+    fun showLongToast(message: String) {
+        showToast(message, Toast.LENGTH_LONG)
     }
 
     @JvmStatic
-    fun showLongToast(context: Context, messageResource: Int) {
+    fun showLongToast(messageResource: Int) {
         showToast(
-            context.applicationContext as Application,
-            context.getLocalizedString(messageResource),
+            application.getLocalizedString(messageResource),
             Toast.LENGTH_LONG
         )
     }
@@ -63,13 +61,17 @@ object ToastUtils {
         return copy
     }
 
+    @JvmStatic
+    fun setApplication(application: Application) {
+        this.application = application
+    }
+
     private fun showToast(
-        context: Application,
         message: String,
         duration: Int = Toast.LENGTH_SHORT
     ) {
         hideLastToast()
-        lastToast = Toast.makeText(context, message, duration)
+        lastToast = Toast.makeText(application, message, duration)
         lastToast.show()
 
         if (recordToasts) {

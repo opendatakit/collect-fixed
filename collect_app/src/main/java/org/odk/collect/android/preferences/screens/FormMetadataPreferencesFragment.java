@@ -59,7 +59,7 @@ public class FormMetadataPreferencesFragment extends BaseProjectPreferencesFragm
         emailPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             String newValueString = newValue.toString();
             if (!newValueString.isEmpty() && !Validator.isEmailAddressValid(newValueString)) {
-                ToastUtils.showLongToast(requireContext(), org.odk.collect.strings.R.string.invalid_email_address);
+                ToastUtils.showLongToast(org.odk.collect.strings.R.string.invalid_email_address);
                 return false;
             }
 

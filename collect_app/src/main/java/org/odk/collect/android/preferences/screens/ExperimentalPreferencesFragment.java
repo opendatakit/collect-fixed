@@ -36,7 +36,7 @@ public class ExperimentalPreferencesFragment extends BaseProjectPreferencesFragm
         super.onViewCreated(view, savedInstanceState);
 
         if (getPreferenceScreen().getPreferenceCount() == 0) {
-            ToastUtils.showLongToast(requireContext(), "No experimental settings at the moment!");
+            ToastUtils.showLongToast("No experimental settings at the moment!");
             getParentFragmentManager().popBackStack();
         }
     }

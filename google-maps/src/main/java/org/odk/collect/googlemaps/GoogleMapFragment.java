@@ -152,7 +152,7 @@ public class GoogleMapFragment extends Fragment implements
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync((GoogleMap googleMap) -> {
             if (googleMap == null) {
-                ToastUtils.showShortToast(requireContext(), org.odk.collect.strings.R.string.google_play_services_error_occured);
+                ToastUtils.showShortToast(org.odk.collect.strings.R.string.google_play_services_error_occured);
                 if (errorListener != null) {
                     errorListener.onError();
                 }

@@ -102,7 +102,7 @@ public class ExAudioWidget extends QuestionWidget implements FileWidget, WidgetD
             }
         } else if (object != null) {
             if (object instanceof File) {
-                ToastUtils.showLongToast(getContext(), org.odk.collect.strings.R.string.invalid_file_type);
+                ToastUtils.showLongToast(org.odk.collect.strings.R.string.invalid_file_type);
                 mediaUtils.deleteMediaFile(((File) object).getAbsolutePath());
                 Timber.e(new Error("ExAudioWidget's setBinaryData must receive a audio file but received: " + FileUtils.getMimeType((File) object)));
             } else {

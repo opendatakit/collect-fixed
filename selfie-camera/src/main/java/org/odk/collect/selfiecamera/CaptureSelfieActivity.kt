@@ -58,7 +58,7 @@ class CaptureSelfieActivity : LocalizedActivity() {
                 Camera.State.UNINITIALIZED -> {}
                 Camera.State.INITIALIZED -> setupCamera(camera)
                 Camera.State.FAILED_TO_INITIALIZE -> {
-                    showLongToast(this, org.odk.collect.strings.R.string.camera_failed_to_initialize)
+                    showLongToast(org.odk.collect.strings.R.string.camera_failed_to_initialize)
                 }
             }
         }
@@ -72,11 +72,11 @@ class CaptureSelfieActivity : LocalizedActivity() {
             camera.takePicture(
                 imagePath,
                 { ExternalAppUtils.returnSingleValue(this, imagePath) },
-                { showLongToast(this, org.odk.collect.strings.R.string.camera_error) }
+                { showLongToast(org.odk.collect.strings.R.string.camera_error) }
             )
         }
 
-        showLongToast(this, org.odk.collect.strings.R.string.take_picture_instruction)
+        showLongToast(org.odk.collect.strings.R.string.take_picture_instruction)
     }
 
     private fun permissionsGranted(): Boolean {

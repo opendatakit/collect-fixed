@@ -89,7 +89,7 @@ public class ServerPreferencesFragment extends BaseProjectPreferencesFragment {
                     if (Validator.isUrlValid(url)) {
                         preference.setSummary(newValue.toString());
                     } else {
-                        ToastUtils.showShortToast(requireContext(), org.odk.collect.strings.R.string.url_error);
+                        ToastUtils.showShortToast(org.odk.collect.strings.R.string.url_error);
                         return false;
                     }
                     break;
@@ -99,7 +99,7 @@ public class ServerPreferencesFragment extends BaseProjectPreferencesFragment {
 
                     // do not allow leading and trailing whitespace
                     if (!username.equals(username.trim())) {
-                        ToastUtils.showShortToast(requireContext(), org.odk.collect.strings.R.string.username_error_whitespace);
+                        ToastUtils.showShortToast(org.odk.collect.strings.R.string.username_error_whitespace);
                         return false;
                     }
 
@@ -111,7 +111,7 @@ public class ServerPreferencesFragment extends BaseProjectPreferencesFragment {
 
                     // do not allow leading and trailing whitespace
                     if (!pw.equals(pw.trim())) {
-                        ToastUtils.showShortToast(requireContext(), org.odk.collect.strings.R.string.password_error_whitespace);
+                        ToastUtils.showShortToast(org.odk.collect.strings.R.string.password_error_whitespace);
                         return false;
                     }
 

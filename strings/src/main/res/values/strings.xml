@@ -1227,6 +1227,10 @@
     <!-- An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close -->
     <string name="crash_app_summary">Force an uncaught exception causing the app to crash</string>
 
+    <!-- Option provided in the Developer tools settings to allow debugging filters during form entry -->
+    <string name="debug_filters">Debug filters</string>
+    <string name="debug_filters_summary">Show debug information for filter expression executions during form entry</string>
+
     <string name="permission_dialog_title">About permissions</string>
     <string name="permission_dialog_text">You will be asked to allow ODK Collect access to the features below, select “allow” if you want to use them.</string>
     <string name="notifications">Notifications</string>

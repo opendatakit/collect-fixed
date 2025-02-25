@@ -154,7 +154,7 @@ public class GeoPointMapActivity extends LocalizedActivity {
             setContentView(R.layout.geopoint_layout);
         } catch (NoClassDefFoundError e) {
             Timber.e(e, "Google maps not accessible due to: %s ", e.getMessage());
-            ToastUtils.showShortToast(this, org.odk.collect.strings.R.string.google_play_services_error_occured);
+            ToastUtils.showShortToast(org.odk.collect.strings.R.string.google_play_services_error_occured);
             finish();
             return;
         }

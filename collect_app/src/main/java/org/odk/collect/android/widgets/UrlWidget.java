@@ -51,7 +51,7 @@ public class UrlWidget extends QuestionWidget {
 
     @Override
     public void clearAnswer() {
-        ToastUtils.showShortToast(getContext(), "URL is readonly");
+        ToastUtils.showShortToast("URL is readonly");
     }
 
     @Override
@@ -85,7 +85,7 @@ public class UrlWidget extends QuestionWidget {
             externalWebPageHelper.bindCustomTabsService(getContext(), null);
             externalWebPageHelper.openWebPageInCustomTab((Activity) getContext(), Uri.parse(getFormEntryPrompt().getAnswerText()));
         } else {
-            ToastUtils.showShortToast(getContext(), "No URL set");
+            ToastUtils.showShortToast("No URL set");
         }
     }
 }

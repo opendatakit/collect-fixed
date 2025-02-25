@@ -147,7 +147,7 @@ public class BarcodeWidget extends QuestionWidget implements WidgetDataReceiver 
             if (cameraUtils.isFrontCameraAvailable(getContext())) {
                 intent.addExtra(FRONT, true);
             } else {
-                ToastUtils.showLongToast(getContext(), org.odk.collect.strings.R.string.error_front_camera_unavailable);
+                ToastUtils.showLongToast(org.odk.collect.strings.R.string.error_front_camera_unavailable);
             }
         }
     }

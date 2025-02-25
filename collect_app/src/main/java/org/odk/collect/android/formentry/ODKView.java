@@ -471,11 +471,11 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
             } catch (ExternalParamsException e) {
                 Timber.e(e, "ExternalParamsException");
 
-                ToastUtils.showShortToast(getContext(), e.getMessage());
+                ToastUtils.showShortToast(e.getMessage());
             } catch (ActivityNotFoundException e) {
                 Timber.d(e, "ActivityNotFoundExcept");
 
-                ToastUtils.showShortToast(getContext(), errorString);
+                ToastUtils.showShortToast(errorString);
             }
         });
     }

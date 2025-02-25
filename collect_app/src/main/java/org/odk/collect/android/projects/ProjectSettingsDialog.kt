@@ -118,7 +118,6 @@ class ProjectSettingsDialog(private val viewModelFactory: ViewModelProvider.Fact
             MainMenuActivity::class.java
         )
         ToastUtils.showLongToast(
-            requireContext(),
             getString(org.odk.collect.strings.R.string.switched_project, project.name)
         )
         dismiss()

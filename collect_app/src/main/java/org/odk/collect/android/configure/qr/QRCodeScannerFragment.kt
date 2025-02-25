@@ -56,7 +56,6 @@ class QRCodeScannerFragment : BarCodeScannerFragment() {
                 }
 
                 showLongToast(
-                    requireContext(),
                     getString(org.odk.collect.strings.R.string.successfully_imported_settings)
                 )
                 ActivityUtils.startActivityAndCloseAllOthers(
@@ -66,14 +65,12 @@ class QRCodeScannerFragment : BarCodeScannerFragment() {
             }
 
             SettingsImportingResult.INVALID_SETTINGS -> showLongToast(
-                requireContext(),
                 getString(
                     org.odk.collect.strings.R.string.invalid_qrcode
                 )
             )
 
             SettingsImportingResult.GD_PROJECT -> showLongToast(
-                requireContext(),
                 getString(org.odk.collect.strings.R.string.settings_with_gd_protocol)
             )
         }

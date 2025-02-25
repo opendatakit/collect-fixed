@@ -15,7 +15,7 @@ internal object GeoActivityUtils {
         )
 
         if (!permissionGranted) {
-            ToastUtils.showLongToast(activity, org.odk.collect.strings.R.string.not_granted_permission)
+            ToastUtils.showLongToast(org.odk.collect.strings.R.string.not_granted_permission)
             activity.finish()
         }
     }

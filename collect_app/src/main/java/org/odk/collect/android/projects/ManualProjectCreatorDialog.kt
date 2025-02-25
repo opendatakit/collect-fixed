@@ -104,7 +104,7 @@ class ManualProjectCreatorDialog :
 
     private fun handleAddingNewProject() {
         if (!Validator.isUrlValid(binding.urlInputText.text?.trim().toString())) {
-            ToastUtils.showShortToast(requireContext(), org.odk.collect.strings.R.string.url_error)
+            ToastUtils.showShortToast(org.odk.collect.strings.R.string.url_error)
         } else {
             val settingsJson = appConfigurationGenerator.getAppConfigurationAsJsonWithServerDetails(
                 binding.urlInputText.text?.trim().toString(),
@@ -132,7 +132,6 @@ class ManualProjectCreatorDialog :
         projectCreator.createNewProject(settingsJson)
         ActivityUtils.startActivityAndCloseAllOthers(activity, MainMenuActivity::class.java)
         ToastUtils.showLongToast(
-            requireContext(),
             getString(org.odk.collect.strings.R.string.switched_project, projectsDataService.requireCurrentProject().name)
         )
     }
@@ -141,7 +140,6 @@ class ManualProjectCreatorDialog :
         projectsDataService.setCurrentProject(uuid)
         ActivityUtils.startActivityAndCloseAllOthers(activity, MainMenuActivity::class.java)
         ToastUtils.showLongToast(
-            requireContext(),
             getString(
                 org.odk.collect.strings.R.string.switched_project,
                 projectsDataService.requireCurrentProject().name

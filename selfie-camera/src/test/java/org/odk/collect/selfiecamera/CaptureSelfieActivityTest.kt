@@ -19,11 +19,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.odk.collect.androidshared.livedata.MutableNonNullLiveData
 import org.odk.collect.androidshared.livedata.NonNullLiveData
+import org.odk.collect.androidshared.ui.ToastUtils
 import org.odk.collect.androidtest.ActivityScenarioLauncherRule
 import org.odk.collect.externalapp.ExternalAppUtils
 import org.odk.collect.permissions.PermissionsChecker
 import org.odk.collect.selfiecamera.support.RobolectricApplication
-import org.robolectric.shadows.ShadowToast
 
 @RunWith(AndroidJUnit4::class)
 class CaptureSelfieActivityTest {
@@ -94,6 +94,7 @@ class CaptureSelfieActivityTest {
 
     @Test
     fun clickingPreview_whenThereIsAnErrorSavingImage_showsToast() {
+        ToastUtils.recordToasts = true
         camera.failToSave = true
 
         val intent = Intent(application, CaptureSelfieActivity::class.java).also {
@@ -103,12 +104,13 @@ class CaptureSelfieActivityTest {
         launcher.launch<CaptureSelfieActivity>(intent)
         onView(withId(R.id.preview)).perform(click())
 
-        val latestToast = ShadowToast.getTextOfLatestToast()
+        val latestToast = ToastUtils.popRecordedToasts().last()
         assertThat(latestToast, equalTo(application.getString(org.odk.collect.strings.R.string.camera_error)))
     }
 
     @Test
     fun whenCameraFailsToInitialize_showsToast() {
+        ToastUtils.recordToasts = true
         camera.failToInitialize = true
 
         val intent = Intent(application, CaptureSelfieActivity::class.java).also {
@@ -116,7 +118,7 @@ class CaptureSelfieActivityTest {
         }
 
         launcher.launch<CaptureSelfieActivity>(intent)
-        val latestToast = ShadowToast.getTextOfLatestToast()
+        val latestToast = ToastUtils.popRecordedToasts().first()
         assertThat(latestToast, equalTo(application.getString(org.odk.collect.strings.R.string.camera_failed_to_initialize)))
     }
 }

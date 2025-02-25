@@ -10,6 +10,7 @@ import org.odk.collect.android.application.Collect
 import org.odk.collect.android.application.initialization.upgrade.UpgradeInitializer
 import org.odk.collect.android.entities.EntitiesRepositoryProvider
 import org.odk.collect.android.projects.ProjectsDataService
+import org.odk.collect.androidshared.ui.ToastUtils
 import org.odk.collect.metadata.PropertyManager
 import org.odk.collect.projects.ProjectsRepository
 import org.odk.collect.settings.SettingsProvider
@@ -49,6 +50,7 @@ class ApplicationInitializer(
     }
 
     private fun initializeFrameworks() {
+        ToastUtils.setApplication(context)
         initializeLogging()
         AppInitializer.getInstance(context).initializeComponent(JodaTimeInitializer::class.java)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)

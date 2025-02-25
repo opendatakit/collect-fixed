@@ -51,8 +51,7 @@ public class MapboxMapConfigurator implements MapConfigurator {
     }
 
     @Override public void showUnavailableMessage(Context context) {
-        ToastUtils.showLongToast(context, context.getString(
-            org.odk.collect.strings.R.string.basemap_source_unavailable, context.getString(sourceLabelId)));
+        ToastUtils.showLongToast(context.getString(org.odk.collect.strings.R.string.basemap_source_unavailable, context.getString(sourceLabelId)));
     }
 
     @Override public List<Preference> createPrefs(Context context, Settings settings) {

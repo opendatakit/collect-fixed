@@ -121,7 +121,7 @@ public class BearingWidget extends QuestionWidget implements WidgetDataReceiver 
 
             waitingForDataRegistry.waitForData(getFormEntryPrompt().getIndex());
         } else {
-            ToastUtils.showLongToast(getContext(), org.odk.collect.strings.R.string.bearing_lack_of_sensors);
+            ToastUtils.showLongToast(org.odk.collect.strings.R.string.bearing_lack_of_sensors);
 
             binding.bearingButton.setEnabled(false);
             binding.widgetAnswerText.updateState(false);

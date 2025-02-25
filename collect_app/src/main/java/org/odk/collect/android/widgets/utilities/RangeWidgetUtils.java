@@ -221,7 +221,7 @@ public class RangeWidgetUtils {
         boolean result = true;
         if (rangeStep.compareTo(BigDecimal.ZERO) == 0
                 || rangeEnd.subtract(rangeStart).remainder(rangeStep).compareTo(BigDecimal.ZERO) != 0) {
-            ToastUtils.showLongToast(context, org.odk.collect.strings.R.string.invalid_range_widget);
+            ToastUtils.showLongToast(org.odk.collect.strings.R.string.invalid_range_widget);
             result = false;
         }
         return result;

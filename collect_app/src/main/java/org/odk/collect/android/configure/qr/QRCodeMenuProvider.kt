@@ -62,7 +62,6 @@ class QRCodeMenuProvider internal constructor(
                 photoPickerIntent.type = "image/*"
                 intentLauncher.launchForResult(activity, photoPickerIntent, SELECT_PHOTO) {
                     showShortToast(
-                        activity,
                         activity.getString(
                             org.odk.collect.strings.R.string.activity_not_found,
                             activity.getString(org.odk.collect.strings.R.string.choose_image)

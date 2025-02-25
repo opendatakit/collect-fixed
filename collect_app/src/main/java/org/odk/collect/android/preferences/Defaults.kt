@@ -1,6 +1,7 @@
 package org.odk.collect.android.preferences
 
 import com.google.android.gms.maps.GoogleMap
+import org.odk.collect.android.BuildConfig
 import org.odk.collect.android.application.Collect
 import org.odk.collect.android.widgets.utilities.QuestionFontSizeUtils
 import org.odk.collect.settings.keys.ProjectKeys
@@ -50,6 +51,8 @@ object Defaults {
             hashMap[ProjectKeys.KEY_USGS_MAP_STYLE] = "topographic"
             hashMap[ProjectKeys.KEY_GOOGLE_MAP_STYLE] = GoogleMap.MAP_TYPE_NORMAL.toString()
             hashMap[ProjectKeys.KEY_MAPBOX_MAP_STYLE] = "mapbox://styles/mapbox/streets-v11"
+            // experimental_preferences.xml
+            hashMap[ProjectKeys.KEY_DEBUG_FILTERS] = BuildConfig.BUILD_TYPE == "selfSignedRelease"
             return hashMap
         }
 

@@ -93,7 +93,7 @@ public class ExVideoWidget extends QuestionWidget implements FileWidget, WidgetD
             }
         } else if (object != null) {
             if (object instanceof File) {
-                ToastUtils.showLongToast(getContext(), org.odk.collect.strings.R.string.invalid_file_type);
+                ToastUtils.showLongToast(org.odk.collect.strings.R.string.invalid_file_type);
                 mediaUtils.deleteMediaFile(((File) object).getAbsolutePath());
                 Timber.e(new Error("ExVideoWidget's setBinaryData must receive a video file but received: " + FileUtils.getMimeType((File) object)));
             } else {

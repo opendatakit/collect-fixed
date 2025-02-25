@@ -10,7 +10,6 @@ import android.widget.CompoundButton
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.odk.collect.android.R
 import org.odk.collect.android.databinding.PasswordDialogLayoutBinding
 import org.odk.collect.android.injection.DaggerUtils
 import org.odk.collect.android.preferences.ProjectPreferencesViewModel
@@ -66,13 +65,11 @@ class ChangeAdminPasswordDialog : DialogFragment() {
                 if (password.isEmpty()) {
                     projectPreferencesViewModel.setStateNotProtected()
                     ToastUtils.showShortToast(
-                        requireContext(),
                         org.odk.collect.strings.R.string.admin_password_disabled
                     )
                 } else {
                     projectPreferencesViewModel.setStateUnlocked()
                     ToastUtils.showShortToast(
-                        requireContext(),
                         org.odk.collect.strings.R.string.admin_password_changed
                     )
                 }

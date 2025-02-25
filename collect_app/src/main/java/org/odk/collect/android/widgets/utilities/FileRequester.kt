@@ -2,7 +2,6 @@ package org.odk.collect.android.widgets.utilities
 
 import android.app.Activity
 import org.javarosa.form.api.FormEntryPrompt
-import org.odk.collect.android.R
 import org.odk.collect.android.javarosawrapper.FormController
 import org.odk.collect.android.utilities.ExternalAppIntentProvider
 import org.odk.collect.androidshared.system.IntentLauncher
@@ -40,13 +39,13 @@ class FileRequesterImpl(
                     intentWithoutDefaultCategory,
                     requestCode
                 ) {
-                    showLongToast(activity, getErrorMessage(formEntryPrompt, activity))
+                    showLongToast(getErrorMessage(formEntryPrompt, activity))
                 }
             }
         } catch (e: Exception) {
-            showLongToast(activity, e.message!!)
+            showLongToast(e.message!!)
         } catch (e: Error) {
-            showLongToast(activity, e.message!!)
+            showLongToast(e.message!!)
         }
     }
 

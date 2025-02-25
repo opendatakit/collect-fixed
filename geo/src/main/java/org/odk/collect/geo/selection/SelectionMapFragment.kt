@@ -117,7 +117,7 @@ class SelectionMapFragment(
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
         ) {
-            ToastUtils.showLongToast(requireContext(), org.odk.collect.strings.R.string.not_granted_permission)
+            ToastUtils.showLongToast(org.odk.collect.strings.R.string.not_granted_permission)
             requireActivity().finish()
         }
 

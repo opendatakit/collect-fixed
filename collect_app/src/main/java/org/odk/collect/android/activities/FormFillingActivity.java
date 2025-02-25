@@ -865,7 +865,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
         if (intent == null && requestCode != RequestCodes.DRAW_IMAGE && requestCode != RequestCodes.ANNOTATE_IMAGE
                 && requestCode != RequestCodes.SIGNATURE_CAPTURE && requestCode != RequestCodes.IMAGE_CAPTURE) {
             Timber.d("The intent has a null value for requestCode: %s", requestCode);
-            showLongToast(this, getString(org.odk.collect.strings.R.string.null_intent_value));
+            showLongToast(getString(org.odk.collect.strings.R.string.null_intent_value));
             return;
         }
 
@@ -978,7 +978,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                             waitingForDataRegistry.cancelWaitingForData();
                         } catch (Exception e) {
                             Timber.e(e);
-                            ToastUtils.showLongToast(this, currentViewIfODKView.getContext().getString(org.odk.collect.strings.R.string.error_attaching_binary_file,
+                            ToastUtils.showLongToast(currentViewIfODKView.getContext().getString(org.odk.collect.strings.R.string.error_attaching_binary_file,
                                     e.getMessage()));
                         }
                         set = true;
@@ -1552,7 +1552,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
         // save current answer
         if (current) {
             if (!formEntryViewModel.updateAnswersForScreen(getAnswers(), complete)) {
-                showShortToast(this, org.odk.collect.strings.R.string.data_saved_error);
+                showShortToast(org.odk.collect.strings.R.string.data_saved_error);
                 return false;
             }
         }
@@ -1584,7 +1584,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                 if (result.getRequest().viewExiting()) {
                     finishAndReturnInstance();
                 } else {
-                    showShortToast(this, org.odk.collect.strings.R.string.data_saved_ok);
+                    showShortToast(org.odk.collect.strings.R.string.data_saved_ok);
                 }
 
                 formSessionRepository.update(sessionId, formSaveViewModel.getInstance());
@@ -1604,7 +1604,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                     message = getString(org.odk.collect.strings.R.string.data_saved_error);
                 }
 
-                showLongToast(this, message);
+                showLongToast(message);
                 formSaveViewModel.resumeFormEntry();
                 break;
 
@@ -1612,7 +1612,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                 DialogFragmentUtils.dismissDialog(SaveFormProgressDialogFragment.class, getSupportFragmentManager());
                 DialogFragmentUtils.dismissDialog(ChangesReasonPromptDialogFragment.class, getSupportFragmentManager());
 
-                showLongToast(this, String.format(getString(org.odk.collect.strings.R.string.encryption_error_message),
+                showLongToast(String.format(getString(org.odk.collect.strings.R.string.encryption_error_message),
                         result.getMessage()));
                 finishAndReturnInstance();
                 formSaveViewModel.resumeFormEntry();
@@ -1954,7 +1954,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
             boolean hasUsedSavepoint = task.hasUsedSavepoint();
 
             if (hasUsedSavepoint) {
-                runOnUiThread(() -> showLongToast(this, org.odk.collect.strings.R.string.savepoint_used));
+                runOnUiThread(() -> showLongToast(org.odk.collect.strings.R.string.savepoint_used));
             }
 
             if (formController.getInstanceFile() == null) {
@@ -1992,7 +1992,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                         formEntryViewModel.refresh();
 
                         if (warningMsg != null) {
-                            showLongToast(this, warningMsg);
+                            showLongToast(warningMsg);
                             Timber.w(warningMsg);
                         }
                     }
@@ -2050,7 +2050,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
             }
         } else {
             Timber.e(new Error("FormController is null"));
-            showLongToast(this, org.odk.collect.strings.R.string.loading_form_failed);
+            showLongToast(org.odk.collect.strings.R.string.loading_form_failed);
             exit();
         }
     }
@@ -2129,14 +2129,14 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
     @Override
     public void onSavePointError(String errorMessage) {
         if (errorMessage != null && errorMessage.trim().length() > 0) {
-            showLongToast(this, getString(org.odk.collect.strings.R.string.save_point_error, errorMessage));
+            showLongToast(getString(org.odk.collect.strings.R.string.save_point_error, errorMessage));
         }
     }
 
     @Override
     public void onSaveFormIndexError(String errorMessage) {
         if (errorMessage != null && errorMessage.trim().length() > 0) {
-            showLongToast(this, getString(org.odk.collect.strings.R.string.save_point_error, errorMessage));
+            showLongToast(getString(org.odk.collect.strings.R.string.save_point_error, errorMessage));
         }
     }
 
