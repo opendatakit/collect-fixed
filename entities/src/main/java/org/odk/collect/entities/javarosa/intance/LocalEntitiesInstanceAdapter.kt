@@ -33,7 +33,7 @@ class LocalEntitiesInstanceAdapter(private val entitiesRepository: EntitiesRepos
                 emptyList()
             }
         } else {
-            entitiesRepository.getEntities(instanceId).map { entity ->
+            entitiesRepository.query(instanceId).map { entity ->
                 convertToElement(entity)
             }
         }
