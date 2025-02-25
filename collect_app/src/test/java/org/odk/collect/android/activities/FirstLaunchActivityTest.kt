@@ -1,5 +1,6 @@
 package org.odk.collect.android.activities
 
+import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -14,6 +15,7 @@ import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.CoreMatchers.nullValue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,6 +32,11 @@ import org.odk.collect.android.version.VersionInformation
 import org.odk.collect.androidtest.ActivityScenarioLauncherRule
 import org.odk.collect.androidtest.RecordedIntentsRule
 import org.odk.collect.material.MaterialProgressDialogFragment
+import org.odk.collect.mobiledevicemanagement.MDMConfigObserver
+import org.odk.collect.projects.ProjectCreator
+import org.odk.collect.projects.ProjectsRepository
+import org.odk.collect.settings.ODKAppSettingsImporter
+import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.strings.localization.getLocalizedString
 import org.odk.collect.testshared.RobolectricHelpers
 
@@ -41,6 +48,21 @@ class FirstLaunchActivityTest {
 
     @get:Rule
     val activityRule = RecordedIntentsRule()
+
+    @Before
+    fun setup() {
+        CollectHelpers.overrideAppDependencyModule(object : AppDependencyModule() {
+            override fun providesManagedConfigManager(
+                settingsProvider: SettingsProvider,
+                projectsRepository: ProjectsRepository,
+                projectCreator: ProjectCreator,
+                settingsImporter: ODKAppSettingsImporter,
+                context: Context
+            ): MDMConfigObserver {
+                return mock()
+            }
+        })
+    }
 
     @Test
     fun `The QrCodeProjectCreatorDialog should be displayed after clicking on the 'Configure with QR code' button`() {
@@ -81,6 +103,16 @@ class FirstLaunchActivityTest {
         CollectHelpers.overrideAppDependencyModule(object : AppDependencyModule() {
             override fun providesVersionInformation(): VersionInformation {
                 return versionInformation
+            }
+
+            override fun providesManagedConfigManager(
+                settingsProvider: SettingsProvider,
+                projectsRepository: ProjectsRepository,
+                projectCreator: ProjectCreator,
+                settingsImporter: ODKAppSettingsImporter,
+                context: Context
+            ): MDMConfigObserver {
+                return mock()
             }
         })
 
