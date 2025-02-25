@@ -127,7 +127,7 @@ class MainMenuActivityTest {
                 return permissionsProvider
             }
 
-            override fun providesManagedConfigManager(
+            override fun providesMDMConfigObserver(
                 settingsProvider: SettingsProvider,
                 projectsRepository: ProjectsRepository,
                 projectCreator: ProjectCreator,

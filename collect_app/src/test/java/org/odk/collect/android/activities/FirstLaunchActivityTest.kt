@@ -52,7 +52,7 @@ class FirstLaunchActivityTest {
     @Before
     fun setup() {
         CollectHelpers.overrideAppDependencyModule(object : AppDependencyModule() {
-            override fun providesManagedConfigManager(
+            override fun providesMDMConfigObserver(
                 settingsProvider: SettingsProvider,
                 projectsRepository: ProjectsRepository,
                 projectCreator: ProjectCreator,
@@ -105,7 +105,7 @@ class FirstLaunchActivityTest {
                 return versionInformation
             }
 
-            override fun providesManagedConfigManager(
+            override fun providesMDMConfigObserver(
                 settingsProvider: SettingsProvider,
                 projectsRepository: ProjectsRepository,
                 projectCreator: ProjectCreator,
