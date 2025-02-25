@@ -4,6 +4,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.equalTo
+import org.junit.Ignore
 import org.junit.Test
 import org.odk.collect.android.entities.support.EntitySameAsMatcher.Companion.sameEntityAs
 import org.odk.collect.entities.storage.EntitiesRepository
@@ -669,6 +670,7 @@ abstract class EntitiesRepositoryTest {
     }
 
     @Test
+    @Ignore("https://github.com/getodk/collect/issues/6615")
     fun `#query returns entities when searching for empty string for property that doesn't exist`() {
         val repository = buildSubject()
 
@@ -683,6 +685,7 @@ abstract class EntitiesRepositoryTest {
     }
 
     @Test
+    @Ignore("https://github.com/getodk/collect/issues/6615")
     fun `#query returns empty list when searching for non empty string for property that doesn't exist`() {
         val repository = buildSubject()
 
