@@ -7,6 +7,7 @@ import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.odk.collect.projects.Project
 import org.odk.collect.projects.ProjectConfigurationResult
@@ -107,10 +108,18 @@ class ProjectCreatorImplTest {
     }
 
     @Test
-    fun `New project id should be set`() {
+    fun `New project id should be set when switchToTheNewProject is true`() {
         whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.SUCCESS)
 
         projectCreator.createNewProject(json, true)
         verify(projectsDataService).setCurrentProject("1")
+    }
+
+    @Test
+    fun `New project id should not be set when switchToTheNewProject is false`() {
+        whenever(settingsImporter.fromJSON(json, savedProject)).thenReturn(ProjectConfigurationResult.SUCCESS)
+
+        projectCreator.createNewProject(json, false)
+        verifyNoInteractions(projectsDataService)
     }
 }

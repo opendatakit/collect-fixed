@@ -19,7 +19,9 @@ class ProjectCreatorImpl(
         val settingsImportingResult = settingsImporter.fromJSON(settingsJson, savedProject)
 
         return if (settingsImportingResult == ProjectConfigurationResult.SUCCESS) {
-            projectsDataService.setCurrentProject(savedProject.uuid)
+            if (switchToTheNewProject) {
+                projectsDataService.setCurrentProject(savedProject.uuid)
+            }
             settingsImportingResult
         } else {
             settingsProvider.getUnprotectedSettings(savedProject.uuid).clear()
