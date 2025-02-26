@@ -1,11 +1,14 @@
 package org.odk.collect.android.activities
 
+import android.app.Application
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -24,7 +27,9 @@ import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 import org.odk.collect.android.R
 import org.odk.collect.android.application.Collect
+import org.odk.collect.android.injection.DaggerUtils
 import org.odk.collect.android.injection.config.AppDependencyModule
+import org.odk.collect.android.mainmenu.MainMenuActivity
 import org.odk.collect.android.projects.ManualProjectCreatorDialog
 import org.odk.collect.android.projects.QrCodeProjectCreatorDialog
 import org.odk.collect.android.support.CollectHelpers
@@ -147,6 +152,21 @@ class FirstLaunchActivityTest {
             ).perform(scrollTo()).perform(click())
 
             assertThat(RobolectricHelpers.getFragmentByClass(it.supportFragmentManager, dialogClass), notNullValue())
+        }
+    }
+
+    @Test
+    fun `Navigate to the main menu when a new project is detected`() {
+        val context = ApplicationProvider.getApplicationContext<Application>()
+        val projectCreator = DaggerUtils.getComponent(context).projectCreator()
+
+        val scenario = launcherRule.launch(FirstLaunchActivity::class.java)
+        scenario.onActivity {
+            projectCreator.createNewProject("{\"general\":{},\"admin\":{}}", true)
+            assertThat(
+                Intents.getIntents()[0],
+                hasComponent(MainMenuActivity::class.java.name)
+            )
         }
     }
 }
