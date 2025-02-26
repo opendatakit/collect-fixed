@@ -2,11 +2,11 @@ package org.odk.collect.settings
 
 import org.json.JSONObject
 import org.odk.collect.projects.Project
+import org.odk.collect.projects.ProjectConfigurationResult
 import org.odk.collect.projects.ProjectsRepository
 import org.odk.collect.settings.importing.ProjectDetailsCreatorImpl
 import org.odk.collect.settings.importing.SettingsChangeHandler
 import org.odk.collect.settings.importing.SettingsImporter
-import org.odk.collect.settings.importing.SettingsImportingResult
 import org.odk.collect.settings.validation.JsonSchemaSettingsValidator
 
 class ODKAppSettingsImporter(
@@ -30,11 +30,11 @@ class ODKAppSettingsImporter(
         ProjectDetailsCreatorImpl(projectColors, generalDefaults)
     )
 
-    fun fromJSON(json: String, project: Project.Saved): SettingsImportingResult {
+    fun fromJSON(json: String, project: Project.Saved): ProjectConfigurationResult {
         return try {
             settingsImporter.fromJSON(json, project, deviceUnsupportedSettings)
         } catch (e: Throwable) {
-            SettingsImportingResult.INVALID_SETTINGS
+            ProjectConfigurationResult.INVALID_SETTINGS
         }
     }
 }

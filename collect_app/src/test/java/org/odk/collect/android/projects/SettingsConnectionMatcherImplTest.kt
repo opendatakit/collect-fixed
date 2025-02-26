@@ -13,11 +13,11 @@ import org.odk.collect.settings.InMemSettingsProvider
 import org.odk.collect.settings.keys.ProjectKeys
 
 @RunWith(AndroidJUnit4::class)
-class SettingsConnectionMatcherTest {
+class SettingsConnectionMatcherImplTest {
     private val inMemProjectsRepository = InMemProjectsRepository()
     private val inMemSettingsProvider = InMemSettingsProvider()
     private val settingsConnectionMatcher =
-        SettingsConnectionMatcher(inMemProjectsRepository, inMemSettingsProvider)
+        SettingsConnectionMatcherImpl(inMemProjectsRepository, inMemSettingsProvider)
 
     @Test
     fun `returns null when no projects exist`() {

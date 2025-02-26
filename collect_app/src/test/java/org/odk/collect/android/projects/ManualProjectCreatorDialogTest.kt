@@ -31,6 +31,7 @@ import org.odk.collect.android.support.CollectHelpers
 import org.odk.collect.android.support.Matchers.isPasswordHidden
 import org.odk.collect.fragmentstest.FragmentScenarioLauncherRule
 import org.odk.collect.projects.Project
+import org.odk.collect.projects.ProjectCreator
 import org.odk.collect.projects.ProjectsRepository
 import org.odk.collect.settings.ODKAppSettingsImporter
 import org.odk.collect.settings.SettingsProvider
@@ -147,7 +148,7 @@ class ManualProjectCreatorDialogTest {
             onView(withHint(org.odk.collect.strings.R.string.password)).inRoot(isDialog()).perform(replaceText("1234"))
 
             onView(withText(org.odk.collect.strings.R.string.add)).inRoot(isDialog()).perform(click())
-            verify(projectCreator).createNewProject("{\"general\":{\"server_url\":\"https:\\/\\/my-server.com\",\"username\":\"adam\",\"password\":\"1234\"},\"admin\":{},\"project\":{}}")
+            verify(projectCreator).createNewProject("{\"general\":{\"server_url\":\"https:\\/\\/my-server.com\",\"username\":\"adam\",\"password\":\"1234\"},\"admin\":{},\"project\":{}}", true)
         }
     }
 

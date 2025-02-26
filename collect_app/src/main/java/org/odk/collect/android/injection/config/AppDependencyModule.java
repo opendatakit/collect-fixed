@@ -8,6 +8,7 @@ import static java.util.Collections.singletonList;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.RestrictionsManager;
 import android.media.MediaPlayer;
 import android.webkit.MimeTypeMap;
 
@@ -70,7 +71,8 @@ import org.odk.collect.android.preferences.Defaults;
 import org.odk.collect.android.preferences.PreferenceVisibilityHandler;
 import org.odk.collect.android.preferences.ProjectPreferencesViewModel;
 import org.odk.collect.android.preferences.source.SharedPreferencesSettingsProvider;
-import org.odk.collect.android.projects.ProjectCreator;
+import org.odk.collect.android.projects.SettingsConnectionMatcherImpl;
+import org.odk.collect.android.projects.ProjectCreatorImpl;
 import org.odk.collect.android.projects.ProjectDeleter;
 import org.odk.collect.android.projects.ProjectResetter;
 import org.odk.collect.android.projects.ProjectsDataService;
@@ -116,11 +118,15 @@ import org.odk.collect.maps.layers.ReferenceLayerRepository;
 import org.odk.collect.metadata.InstallIDProvider;
 import org.odk.collect.metadata.PropertyManager;
 import org.odk.collect.metadata.SettingsInstallIDProvider;
+import org.odk.collect.mobiledevicemanagement.MDMConfigObserver;
+import org.odk.collect.mobiledevicemanagement.MDMConfigHandler;
 import org.odk.collect.permissions.ContextCompatPermissionChecker;
 import org.odk.collect.permissions.PermissionsChecker;
 import org.odk.collect.permissions.PermissionsProvider;
 import org.odk.collect.projects.Project;
+import org.odk.collect.projects.ProjectCreator;
 import org.odk.collect.projects.ProjectsRepository;
+import org.odk.collect.projects.SettingsConnectionMatcher;
 import org.odk.collect.projects.SharedPreferencesProjectsRepository;
 import org.odk.collect.qrcode.QRCodeCreatorImpl;
 import org.odk.collect.qrcode.QRCodeDecoder;
@@ -407,7 +413,7 @@ public class AppDependencyModule {
     @Provides
     public ProjectCreator providesProjectCreator(ProjectsRepository projectsRepository, ProjectsDataService projectsDataService,
                                                  ODKAppSettingsImporter settingsImporter, SettingsProvider settingsProvider) {
-        return new ProjectCreator(projectsRepository, projectsDataService, settingsImporter, settingsProvider);
+        return new ProjectCreatorImpl(projectsRepository, projectsDataService, settingsImporter, settingsProvider);
     }
 
     @Provides
@@ -617,5 +623,33 @@ public class AppDependencyModule {
         String projectId = projectsDataService.requireCurrentProject().getUuid();
         EntitiesRepository entitiesRepository = entitiesRepositoryProvider.create(projectId);
         return new CollectFormEntryControllerFactory(entitiesRepository, settingsProvider.getUnprotectedSettings(projectId));
+    }
+
+    @Provides
+    public MDMConfigObserver providesMDMConfigObserver(
+            SettingsProvider settingsProvider,
+            ProjectsRepository projectsRepository,
+            ProjectCreator projectCreator,
+            ODKAppSettingsImporter settingsImporter,
+            Context context
+    ) {
+        SettingsConnectionMatcher settingsConnectionMatcher = new SettingsConnectionMatcherImpl(
+                projectsRepository,
+                settingsProvider
+        );
+
+        MDMConfigHandler mdmConfigHandler = new MDMConfigHandler(
+                settingsProvider,
+                projectsRepository,
+                projectCreator,
+                settingsImporter,
+                settingsConnectionMatcher
+        );
+
+        return new MDMConfigObserver(
+                mdmConfigHandler,
+                (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE),
+                context
+        );
     }
 }

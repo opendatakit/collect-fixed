@@ -9,8 +9,8 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.odk.collect.projects.InMemProjectsRepository
 import org.odk.collect.projects.Project
+import org.odk.collect.projects.ProjectConfigurationResult
 import org.odk.collect.settings.importing.SettingsChangeHandler
-import org.odk.collect.settings.importing.SettingsImportingResult
 import org.odk.collect.settings.support.SettingsUtils.assertSettingsEmpty
 import java.lang.RuntimeException
 
@@ -40,7 +40,7 @@ class ODKAppSettingsImporterTest {
                 "}",
             projectsRepository.save(Project.New("Flat", "AS", "#ff0000"))
         )
-        assertThat(result, equalTo(SettingsImportingResult.SUCCESS))
+        assertThat(result, equalTo(ProjectConfigurationResult.SUCCESS))
     }
 
     @Test
@@ -49,7 +49,7 @@ class ODKAppSettingsImporterTest {
             "{ \"admin\": {}}",
             projectsRepository.save(Project.New("Flat", "AS", "#ff0000"))
         )
-        assertThat(result, equalTo(SettingsImportingResult.INVALID_SETTINGS))
+        assertThat(result, equalTo(ProjectConfigurationResult.INVALID_SETTINGS))
         assertSettingsEmpty(settingsProvider.getUnprotectedSettings())
         assertSettingsEmpty(settingsProvider.getProtectedSettings())
     }
@@ -60,7 +60,7 @@ class ODKAppSettingsImporterTest {
             "{ \"general\": {}}",
             projectsRepository.save(Project.New("Flat", "AS", "#ff0000"))
         )
-        assertThat(result, equalTo(SettingsImportingResult.INVALID_SETTINGS))
+        assertThat(result, equalTo(ProjectConfigurationResult.INVALID_SETTINGS))
         assertSettingsEmpty(settingsProvider.getUnprotectedSettings())
         assertSettingsEmpty(settingsProvider.getProtectedSettings())
     }
@@ -71,7 +71,7 @@ class ODKAppSettingsImporterTest {
             "{\"general\":{*},\"admin\":{}}",
             projectsRepository.save(Project.New("Flat", "AS", "#ff0000"))
         )
-        assertThat(result, equalTo(SettingsImportingResult.INVALID_SETTINGS))
+        assertThat(result, equalTo(ProjectConfigurationResult.INVALID_SETTINGS))
         assertSettingsEmpty(settingsProvider.getUnprotectedSettings())
         assertSettingsEmpty(settingsProvider.getProtectedSettings())
     }
@@ -89,7 +89,7 @@ class ODKAppSettingsImporterTest {
                 "}",
             projectsRepository.save(Project.New("Flat", "AS", "#ff0000"))
         )
-        assertThat(result, equalTo(SettingsImportingResult.INVALID_SETTINGS))
+        assertThat(result, equalTo(ProjectConfigurationResult.INVALID_SETTINGS))
     }
 
     @Test
@@ -104,7 +104,7 @@ class ODKAppSettingsImporterTest {
                 "}",
             projectsRepository.save(Project.New("Flat", "AS", "#ff0000"))
         )
-        assertThat(result, equalTo(SettingsImportingResult.GD_PROJECT))
+        assertThat(result, equalTo(ProjectConfigurationResult.GD_PROJECT))
         assertSettingsEmpty(settingsProvider.getUnprotectedSettings())
         assertSettingsEmpty(settingsProvider.getProtectedSettings())
     }
