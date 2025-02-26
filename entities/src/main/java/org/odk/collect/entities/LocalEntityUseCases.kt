@@ -5,6 +5,7 @@ import org.javarosa.core.model.instance.SecondaryInstanceCSVParserBuilder
 import org.odk.collect.entities.javarosa.finalization.EntitiesExtra
 import org.odk.collect.entities.javarosa.parse.EntitySchema
 import org.odk.collect.entities.javarosa.spec.EntityAction
+import org.odk.collect.entities.server.EntitySource
 import org.odk.collect.entities.storage.EntitiesRepository
 import org.odk.collect.entities.storage.Entity
 import org.odk.collect.shared.Query
@@ -62,7 +63,9 @@ object LocalEntityUseCases {
     fun updateLocalEntitiesFromServer(
         list: String,
         serverList: File,
-        entitiesRepository: EntitiesRepository
+        entitiesRepository: EntitiesRepository,
+        entitySource: EntitySource,
+        integrityUrl: String? = null
     ) {
         val listHash = getListHash(serverList)
         val existingListVersion = entitiesRepository.getListHash(list)
@@ -113,8 +116,18 @@ object LocalEntityUseCases {
         }
 
         missingFromServer.values.forEach {
-            if (it.state == Entity.State.ONLINE) {
-                entitiesRepository.delete(list, it.id)
+            when (it.state) {
+                Entity.State.ONLINE -> {
+                    entitiesRepository.delete(list, it.id)
+                }
+
+                Entity.State.OFFLINE -> {
+                    if (integrityUrl != null) {
+                        if (entitySource.isDeleted(integrityUrl, listOf(it.id)).first().second) {
+                            entitiesRepository.delete(list, it.id)
+                        }
+                    }
+                }
             }
         }
 

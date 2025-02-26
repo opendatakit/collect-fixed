@@ -21,5 +21,6 @@ data class MediaFile @JvmOverloads constructor(
     val filename: String,
     val hash: String,
     val downloadUrl: String,
-    val isEntityList: Boolean = false
+    val isEntityList: Boolean = false,
+    val integrityUrl: String? = null
 ) : Serializable

@@ -115,7 +115,12 @@ object ServerFormUseCases {
                  */
                 try {
                     val entityListName = getEntityListFromFileName(mediaFile)
-                    LocalEntityUseCases.updateLocalEntitiesFromServer(entityListName, tempMediaFile, entitiesRepository)
+                    LocalEntityUseCases.updateLocalEntitiesFromServer(
+                        entityListName,
+                        tempMediaFile,
+                        entitiesRepository,
+                        StubEntitySource()
+                    )
                     entitiesDownloaded = true
                 } catch (t: Throwable) {
                     throw EntityListUpdateException(t)
