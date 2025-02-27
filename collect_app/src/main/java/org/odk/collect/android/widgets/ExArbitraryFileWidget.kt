@@ -44,14 +44,14 @@ class ExArbitraryFileWidget(
             binding.exArbitraryFileAnswerText.setOnClickListener {
                 mediaUtils.openFile(
                     getContext(),
-                    answerFile,
+                    answerFile!!,
                     null
                 )
             }
         }
 
         if (answerFile != null) {
-            binding.exArbitraryFileAnswerText.text = answerFile.name
+            binding.exArbitraryFileAnswerText.text = answerFile!!.name
             binding.exArbitraryFileAnswerText.visibility = VISIBLE
         }
 
@@ -70,7 +70,7 @@ class ExArbitraryFileWidget(
     }
 
     override fun showAnswerText() {
-        binding.exArbitraryFileAnswerText.text = answerFile.name
+        binding.exArbitraryFileAnswerText.text = answerFile!!.name
         binding.exArbitraryFileAnswerText.visibility = VISIBLE
     }
 

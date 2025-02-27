@@ -42,13 +42,13 @@ class ArbitraryFileWidget(
         binding.arbitraryFileAnswerText.setOnClickListener {
             mediaUtils.openFile(
                 getContext(),
-                answerFile,
+                answerFile!!,
                 null
             )
         }
 
         if (answerFile != null) {
-            binding.arbitraryFileAnswerText.text = answerFile.name
+            binding.arbitraryFileAnswerText.text = answerFile!!.name
             binding.arbitraryFileAnswerText.visibility = VISIBLE
         }
 
@@ -76,7 +76,7 @@ class ArbitraryFileWidget(
     }
 
     override fun showAnswerText() {
-        binding.arbitraryFileAnswerText.text = answerFile.name
+        binding.arbitraryFileAnswerText.text = answerFile!!.name
         binding.arbitraryFileAnswerText.visibility = VISIBLE
     }
 
