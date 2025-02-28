@@ -12,6 +12,7 @@ import org.odk.collect.android.projects.ProjectDependencyModule
 import org.odk.collect.android.state.DataKeys
 import org.odk.collect.androidshared.data.AppState
 import org.odk.collect.androidshared.data.DataService
+import org.odk.collect.entities.server.EntitySource
 import org.odk.collect.forms.Form
 import org.odk.collect.forms.FormSourceException
 import org.odk.collect.projects.ProjectDependencyFactory
@@ -225,7 +226,8 @@ private fun formDownloader(
         projectDependencyModule.formsDir,
         FormMetadataParser,
         clock,
-        projectDependencyModule.entitiesRepository
+        projectDependencyModule.entitiesRepository,
+        projectDependencyModule.formSource as EntitySource
     )
 }
 
