@@ -6,7 +6,7 @@ import android.content.Context
 import android.util.TypedValue
 import android.view.View
 import org.javarosa.form.api.FormEntryPrompt
-import org.odk.collect.android.databinding.ExArbitraryFileWidgetAnswerBinding
+import org.odk.collect.android.databinding.ExArbitraryFileWidgetBinding
 import org.odk.collect.android.formentry.questions.QuestionDetails
 import org.odk.collect.android.utilities.ApplicationConstants
 import org.odk.collect.android.utilities.QuestionMediaManager
@@ -26,10 +26,10 @@ class ExArbitraryFileWidget(
         questionMediaManager,
         waitingForDataRegistry
     ) {
-    lateinit var binding: ExArbitraryFileWidgetAnswerBinding
+    lateinit var binding: ExArbitraryFileWidgetBinding
 
     override fun onCreateAnswerView(context: Context, prompt: FormEntryPrompt, answerFontSize: Int): View {
-        binding = ExArbitraryFileWidgetAnswerBinding.inflate((context as Activity).layoutInflater)
+        binding = ExArbitraryFileWidgetBinding.inflate((context as Activity).layoutInflater)
         setupAnswerFile(prompt.answerText)
 
         binding.exArbitraryFileAnswerText.setTextSize(
