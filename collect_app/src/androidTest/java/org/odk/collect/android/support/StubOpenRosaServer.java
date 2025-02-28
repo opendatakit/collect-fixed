@@ -52,6 +52,7 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
      * A list of submitted forms, maintained in the original order of submission, with the oldest forms appearing first.
      */
     private final List<File> submittedForms = new ArrayList<>();
+    private List<String> deletedEntities = new ArrayList<>();
 
     @NonNull
     @Override
@@ -82,6 +83,8 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
             }
         } else if (uri.getPath().startsWith("/mediaFile")) {
             return new HttpGetResult(getMediaFile(uri), new HashMap<>(), "", 200);
+        } else if (uri.getPath().startsWith("/integrityUrl")) {
+            return new HttpGetResult(getIntegrityResponse(uri), new HashMap<>(), "", 200);
         } else {
             return new HttpGetResult(null, new HashMap<>(), "", 404);
         }
@@ -290,13 +293,42 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
                 }
 
                 stringBuilder
-                        .append("<downloadUrl>" + getURL() + "/mediaFile/" + formID + "/" + mediaFile.getId() + "</downloadUrl>\n")
-                        .append("</mediaFile>\n");
+                        .append("<downloadUrl>" + getURL() + "/mediaFile/" + formID + "/" + mediaFile.getId() + "</downloadUrl>\n");
+
+                if (mediaFile instanceof EntityListItem) {
+                    stringBuilder.append("<integrityUrl>" + getURL() + "/integrityUrl</integrityUrl>\n");
+                }
+
+                 stringBuilder.append("</mediaFile>\n");
             }
 
             stringBuilder.append("</manifest>");
             return new ByteArrayInputStream(stringBuilder.toString().getBytes());
         }
+    }
+
+    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
+    private InputStream getIntegrityResponse(URI uri) {
+        String[] ids = uri.getQuery().split("=")[1].split(",");
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder
+                .append("<?xml version='1.0' encoding='UTF-8' ?>\n")
+                .append("<data>\n")
+                .append("<entities>\n");
+
+        for (String id : ids) {
+            stringBuilder
+                    .append("<entity id=\"" + id + "\">\n")
+                    .append("<deleted>" + deletedEntities.contains(id) + "</deleted>\n")
+                    .append("</entity>\n");
+        }
+
+        stringBuilder
+                .append("</entities>\n")
+                .append("</data>\n");
+
+        return new ByteArrayInputStream(stringBuilder.toString().getBytes());
     }
 
     @NotNull
@@ -317,6 +349,10 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
     private void addFormFromInputStream(String formXML, List<MediaFileItem> mediaFiles, InputStream formDefStream) {
         FormMetadata formMetadata = FormMetadataParser.readMetadata(formDefStream);
         forms.add(new XFormItem(formMetadata.getTitle(), formXML, formMetadata.getId(), formMetadata.getVersion(), mediaFiles));
+    }
+
+    public void deleteEntity(@NotNull String id) {
+        deletedEntities.add(id);
     }
 
     private static class XFormItem {

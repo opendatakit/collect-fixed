@@ -232,4 +232,35 @@ class EntityFormTest {
             .pressBackAndDiscardForm()
             .startBlankForm("One Question Entity Registration")
     }
+
+    @Test
+    fun aLocallyCreatedEntity_thatIsDeletedOnTheServer_isNotAvailableToFollowUpForms() {
+        testDependencies.server.addForm("one-question-entity-registration-id.xml")
+        testDependencies.server.addForm(
+            "one-question-entity-update.xml",
+            listOf(EntityListItem("people.csv"))
+        )
+
+        rule.withMatchExactlyProject(testDependencies.server.url)
+            .startBlankForm("One Question Entity Registration")
+            .fillOutAndFinalize(FormEntryPage.QuestionAndAnswer("Name", "Logan Roy"))
+
+            .also {
+                testDependencies.server.deleteEntity("Logan Roy")
+
+                testDependencies.server.removeForm("One Question Entity Update")
+                testDependencies.server.addForm(
+                    "one-question-entity-update.xml",
+                    listOf(EntityListItem("people.csv", "updated-people.csv"))
+                )
+            }
+
+            .clickFillBlankForm()
+            .clickRefresh()
+
+            .clickOnForm("One Question Entity Update")
+            .assertQuestion("Select person")
+            .assertText("Ro-Ro Roy")
+            .assertTextDoesNotExist("Logan Roy")
+    }
 }
