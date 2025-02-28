@@ -119,7 +119,8 @@ object ServerFormUseCases {
                         entityListName,
                         tempMediaFile,
                         entitiesRepository,
-                        StubEntitySource()
+                        StubEntitySource(),
+                        mediaFile.integrityUrl
                     )
                     entitiesDownloaded = true
                 } catch (t: Throwable) {
