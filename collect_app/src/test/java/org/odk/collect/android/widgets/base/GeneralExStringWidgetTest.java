@@ -88,4 +88,7 @@ public abstract class GeneralExStringWidgetTest<W extends ExStringWidget, A exte
 
     @Test
     public abstract void verifyInputType();
+
+    @Test
+    public abstract void whenPromptHasHiddenAnswerAppearance_answerIsNotDisplayed();
 }
