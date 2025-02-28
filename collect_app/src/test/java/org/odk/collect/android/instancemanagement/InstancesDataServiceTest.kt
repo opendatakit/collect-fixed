@@ -48,6 +48,7 @@ class InstancesDataServiceTest {
             { ChangeLocks(BooleanChangeLock(), BooleanChangeLock()) },
             mock(),
             mock(),
+            mock(),
             mock()
         )
     }

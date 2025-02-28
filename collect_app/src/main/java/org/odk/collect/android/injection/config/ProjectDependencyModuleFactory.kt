@@ -1,7 +1,7 @@
 package org.odk.collect.android.injection.config
 
 import org.odk.collect.android.entities.EntitiesRepositoryProvider
-import org.odk.collect.android.formmanagement.FormSourceProvider
+import org.odk.collect.android.formmanagement.OpenRosaClientProvider
 import org.odk.collect.android.projects.ProjectDependencyModule
 import org.odk.collect.android.storage.StoragePathProvider
 import org.odk.collect.android.utilities.ChangeLockProvider
@@ -18,7 +18,7 @@ class ProjectDependencyModuleFactory @Inject constructor(
     private val instancesRepositoryProvider: InstancesRepositoryProvider,
     private val storagePathProvider: StoragePathProvider,
     private val changeLockProvider: ChangeLockProvider,
-    private val formSourceProvider: FormSourceProvider,
+    private val openRosaClientProvider: OpenRosaClientProvider,
     private val savepointsRepositoryProvider: SavepointsRepositoryProvider,
     private val entitiesRepositoryProvider: EntitiesRepositoryProvider,
 ) : ProjectDependencyFactory<ProjectDependencyModule> {
@@ -30,9 +30,10 @@ class ProjectDependencyModuleFactory @Inject constructor(
             instancesRepositoryProvider,
             storagePathProvider,
             changeLockProvider,
-            formSourceProvider,
+            { openRosaClientProvider.create(projectId) },
             savepointsRepositoryProvider,
-            entitiesRepositoryProvider
+            entitiesRepositoryProvider,
+            { openRosaClientProvider.create(projectId) }
         )
     }
 }

@@ -34,7 +34,7 @@ import org.odk.collect.android.formentry.saving.SaveAnswerFileErrorDialogFragmen
 import org.odk.collect.android.formentry.saving.SaveFormProgressDialogFragment;
 import org.odk.collect.android.formhierarchy.FormHierarchyFragmentHostActivity;
 import org.odk.collect.android.formlists.blankformlist.BlankFormListActivity;
-import org.odk.collect.android.formmanagement.FormSourceProvider;
+import org.odk.collect.android.formmanagement.OpenRosaClientProvider;
 import org.odk.collect.android.formmanagement.FormsDataService;
 import org.odk.collect.android.fragments.BarCodeScannerFragment;
 import org.odk.collect.android.fragments.dialogs.FormsDownloadResultDialog;
@@ -279,7 +279,7 @@ public interface AppDependencyComponent {
 
     SavepointsRepositoryProvider savepointsRepositoryProvider();
 
-    FormSourceProvider formSourceProvider();
+    OpenRosaClientProvider formSourceProvider();
 
     ExistingProjectMigrator existingProjectMigrator();
 

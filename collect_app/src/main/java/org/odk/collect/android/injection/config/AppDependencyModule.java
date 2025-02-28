@@ -50,7 +50,7 @@ import org.odk.collect.android.formentry.media.AudioHelperFactory;
 import org.odk.collect.android.formentry.media.ScreenContextAudioHelperFactory;
 import org.odk.collect.android.formlists.blankformlist.BlankFormListViewModel;
 import org.odk.collect.android.formmanagement.CollectFormEntryControllerFactory;
-import org.odk.collect.android.formmanagement.FormSourceProvider;
+import org.odk.collect.android.formmanagement.OpenRosaClientProvider;
 import org.odk.collect.android.formmanagement.FormsDataService;
 import org.odk.collect.android.formmanagement.ServerFormsDetailsFetcher;
 import org.odk.collect.android.geo.MapConfiguratorProvider;
@@ -332,7 +332,7 @@ public class AppDependencyModule {
     }
 
     @Provides
-    public ServerFormsDetailsFetcher providesServerFormDetailsFetcher(FormsRepositoryProvider formsRepositoryProvider, FormSourceProvider formSourceProvider, ProjectsDataService projectsDataService) {
+    public ServerFormsDetailsFetcher providesServerFormDetailsFetcher(FormsRepositoryProvider formsRepositoryProvider, OpenRosaClientProvider formSourceProvider, ProjectsDataService projectsDataService) {
         Project.Saved currentProject = projectsDataService.requireCurrentProject();
         FormsRepository formsRepository = formsRepositoryProvider.create(currentProject.getUuid());
         return new ServerFormsDetailsFetcher(formsRepository, formSourceProvider.create(currentProject.getUuid()));
@@ -484,8 +484,8 @@ public class AppDependencyModule {
     }
 
     @Provides
-    public FormSourceProvider providesFormSourceProvider(SettingsProvider settingsProvider, OpenRosaHttpInterface openRosaHttpInterface) {
-        return new FormSourceProvider(settingsProvider::getUnprotectedSettings, openRosaHttpInterface);
+    public OpenRosaClientProvider providesFormSourceProvider(SettingsProvider settingsProvider, OpenRosaHttpInterface openRosaHttpInterface) {
+        return new OpenRosaClientProvider(settingsProvider::getUnprotectedSettings, openRosaHttpInterface);
     }
 
     @Provides

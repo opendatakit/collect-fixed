@@ -11,7 +11,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.verifyNoInteractions
-import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -21,6 +20,7 @@ import org.odk.collect.analytics.Analytics
 import org.odk.collect.android.injection.DaggerUtils
 import org.odk.collect.android.injection.config.ProjectDependencyModuleFactory
 import org.odk.collect.android.notifications.Notifier
+import org.odk.collect.android.projects.ProjectDependencyModule
 import org.odk.collect.android.storage.StorageSubdirectory
 import org.odk.collect.android.utilities.ChangeLockProvider
 import org.odk.collect.androidshared.data.AppState
@@ -64,18 +64,18 @@ class FormsDataServiceTest {
     fun setup() {
         project = setupProject()
 
-        val formSourceProvider = mock<FormSourceProvider> { on { create(any()) } doReturn formSource }
-
-        val projectDependencyModule = ProjectDependencyModuleFactory(
-            settingsProvider,
+        val projectDependencyModule = ProjectDependencyModule(
+            project.uuid,
+            { settingsProvider.getUnprotectedSettings(project.uuid) },
             formsRepositoryProvider,
             mock(),
             storagePathProvider,
             changeLockProvider,
-            formSourceProvider,
+            { formSource },
+            mock(),
             mock(),
             mock()
-        ).create(project.uuid)
+        )
 
         val projectDependencyModuleFactory = mock<ProjectDependencyModuleFactory>()
         whenever(projectDependencyModuleFactory.create(project.uuid)).thenReturn(projectDependencyModule)

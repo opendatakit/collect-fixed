@@ -2,6 +2,7 @@ package org.odk.collect.android.projects
 
 import org.odk.collect.android.storage.StoragePaths
 import org.odk.collect.android.utilities.ChangeLocks
+import org.odk.collect.entities.server.EntitySource
 import org.odk.collect.entities.storage.EntitiesRepository
 import org.odk.collect.forms.FormSource
 import org.odk.collect.forms.FormsRepository
@@ -23,7 +24,8 @@ data class ProjectDependencyModule(
     private val changeLockFactory: ProjectDependencyFactory<ChangeLocks>,
     private val formSourceFactory: ProjectDependencyFactory<FormSource>,
     private val savepointsRepositoryFactory: ProjectDependencyFactory<SavepointsRepository>,
-    private val entitiesRepositoryFactory: ProjectDependencyFactory<EntitiesRepository>
+    private val entitiesRepositoryFactory: ProjectDependencyFactory<EntitiesRepository>,
+    private val entitySourceFactory: ProjectDependencyFactory<EntitySource>
 ) {
     val generalSettings by lazy { settingsFactory.create(projectId) }
     val formsRepository by lazy { formsRepositoryFactory.create(projectId) }
@@ -37,4 +39,5 @@ data class ProjectDependencyModule(
     val savepointsRepository by lazy { savepointsRepositoryFactory.create(projectId) }
     val rootDir by lazy { storagePathsFactory.create(projectId).rootDir }
     val instancesDir by lazy { storagePathsFactory.create(projectId).instancesDir }
+    val entitySource by lazy { entitySourceFactory.create(projectId) }
 }
