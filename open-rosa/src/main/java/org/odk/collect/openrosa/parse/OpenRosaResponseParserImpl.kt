@@ -165,6 +165,7 @@ class OpenRosaResponseParserImpl :
                 var filename: String? = null
                 var hash: String? = null
                 var downloadUrl: String? = null
+                var integrityUrl: String? = null
                 // don't process descriptionUrl
                 val childCount = mediaFileElement.childCount
                 for (j in 0 until childCount) {
@@ -203,6 +204,9 @@ class OpenRosaResponseParserImpl :
                                 downloadUrl = null
                             }
                         }
+                        "integrityUrl" -> {
+                            integrityUrl = XFormParser.getXMLText(child, true)
+                        }
                     }
                 }
 
@@ -210,7 +214,7 @@ class OpenRosaResponseParserImpl :
                     return null
                 }
 
-                files.add(MediaFile(filename, hash, downloadUrl, type == "entityList"))
+                files.add(MediaFile(filename, hash, downloadUrl, type == "entityList", integrityUrl))
             }
         }
         return files

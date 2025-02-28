@@ -114,4 +114,24 @@ class OpenRosaResponseParserImplTest {
         assertThat(mediaFiles.size, equalTo(1))
         assertThat(mediaFiles[0].isEntityList, equalTo(false))
     }
+
+    @Test
+    fun `parseManifest() includes integrityUrl when there is one`() {
+        val response = StringBuilder()
+            .appendLine("<?xml version='1.0' encoding='UTF-8' ?>")
+            .appendLine("<manifest xmlns=\"http://openrosa.org/xforms/xformsManifest\">")
+            .appendLine("<mediaFile>")
+            .appendLine("<filename>badgers.csv</filename>")
+            .appendLine("<hash>blah</hash>")
+            .appendLine("<downloadUrl>http://funk.appspot.com/binaryData?blobKey=%3A477e3</downloadUrl>")
+            .appendLine("<integrityUrl>https://some.server/forms/12/integrity</integrityUrl>")
+            .appendLine("</mediaFile>")
+            .appendLine("</manifest>")
+            .toString()
+
+        val doc = XFormParser.getXMLDocument(response.reader())
+        val mediaFiles = OpenRosaResponseParserImpl().parseManifest(doc)!!
+        assertThat(mediaFiles.size, equalTo(1))
+        assertThat(mediaFiles[0].integrityUrl, equalTo("https://some.server/forms/12/integrity"))
+    }
 }
