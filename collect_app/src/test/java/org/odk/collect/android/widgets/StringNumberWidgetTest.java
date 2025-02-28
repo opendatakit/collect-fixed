@@ -27,7 +27,7 @@ public class StringNumberWidgetTest extends GeneralStringWidgetTest<StringNumber
     @Override
     public StringNumberWidget createWidget() {
         when(formEntryPrompt.getDataType()).thenReturn(Constants.DATATYPE_TEXT);
-        return new StringNumberWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride));
+        return new StringNumberWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride), dependencies);
     }
 
     @NonNull

@@ -131,201 +131,202 @@ public class WidgetFactory {
     public QuestionWidget createWidgetFromPrompt(FormEntryPrompt prompt, PermissionsProvider permissionsProvider) {
         String appearance = Appearances.getSanitizedAppearanceHint(prompt);
         QuestionDetails questionDetails = new QuestionDetails(prompt, readOnlyOverride);
+        QuestionWidget.Dependencies dependencies = new QuestionWidget.Dependencies(audioPlayer);
 
         final QuestionWidget questionWidget;
         switch (prompt.getControlType()) {
             case Constants.CONTROL_INPUT:
                 switch (prompt.getDataType()) {
                     case Constants.DATATYPE_DATE_TIME:
-                        questionWidget = new DateTimeWidget(activity, questionDetails, new DateTimeWidgetUtils(), waitingForDataRegistry);
+                        questionWidget = new DateTimeWidget(activity, questionDetails, new DateTimeWidgetUtils(), waitingForDataRegistry, dependencies);
                         break;
                     case Constants.DATATYPE_DATE:
-                        questionWidget = new DateWidget(activity, questionDetails, new DateTimeWidgetUtils(), waitingForDataRegistry);
+                        questionWidget = new DateWidget(activity, questionDetails, new DateTimeWidgetUtils(), waitingForDataRegistry, dependencies);
                         break;
                     case Constants.DATATYPE_TIME:
-                        questionWidget = new TimeWidget(activity, questionDetails, new DateTimeWidgetUtils(), waitingForDataRegistry);
+                        questionWidget = new TimeWidget(activity, questionDetails, new DateTimeWidgetUtils(), waitingForDataRegistry, dependencies);
                         break;
                     case Constants.DATATYPE_DECIMAL:
                         if (appearance.contains(Appearances.EX)) {
-                            questionWidget = new ExDecimalWidget(activity, questionDetails, waitingForDataRegistry, stringRequester);
+                            questionWidget = new ExDecimalWidget(activity, questionDetails, waitingForDataRegistry, stringRequester, dependencies);
                         } else if (appearance.equals(Appearances.BEARING)) {
                             questionWidget = new BearingWidget(activity, questionDetails, waitingForDataRegistry,
-                                    (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE));
+                                    (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE), dependencies);
                         } else {
-                            questionWidget = new DecimalWidget(activity, questionDetails);
+                            questionWidget = new DecimalWidget(activity, questionDetails, dependencies);
                         }
                         break;
                     case Constants.DATATYPE_INTEGER:
                         if (appearance.equals(Appearances.COUNTER)) {
-                            questionWidget = new CounterWidget(activity, questionDetails);
+                            questionWidget = new CounterWidget(activity, questionDetails, dependencies);
                         } else if (appearance.contains(Appearances.EX)) {
-                            questionWidget = new ExIntegerWidget(activity, questionDetails, waitingForDataRegistry, stringRequester);
+                            questionWidget = new ExIntegerWidget(activity, questionDetails, waitingForDataRegistry, stringRequester, dependencies);
                         } else {
-                            questionWidget = new IntegerWidget(activity, questionDetails);
+                            questionWidget = new IntegerWidget(activity, questionDetails, dependencies);
                         }
                         break;
                     case Constants.DATATYPE_GEOPOINT:
                         if (hasAppearance(questionDetails.getPrompt(), PLACEMENT_MAP) || hasAppearance(questionDetails.getPrompt(), MAPS)) {
                             questionWidget = new GeoPointMapWidget(activity, questionDetails, waitingForDataRegistry,
-                                    new ActivityGeoDataRequester(permissionsProvider, activity));
+                                    new ActivityGeoDataRequester(permissionsProvider, activity), dependencies);
                         } else {
                             questionWidget = new GeoPointWidget(activity, questionDetails, waitingForDataRegistry,
-                                    new ActivityGeoDataRequester(permissionsProvider, activity));
+                                    new ActivityGeoDataRequester(permissionsProvider, activity), dependencies);
                         }
                         break;
                     case Constants.DATATYPE_GEOSHAPE:
                         questionWidget = new GeoShapeWidget(activity, questionDetails, waitingForDataRegistry,
-                                new ActivityGeoDataRequester(permissionsProvider, activity));
+                                new ActivityGeoDataRequester(permissionsProvider, activity), dependencies);
                         break;
                     case Constants.DATATYPE_GEOTRACE:
                         questionWidget = new GeoTraceWidget(activity, questionDetails, waitingForDataRegistry,
-                                MapConfiguratorProvider.getConfigurator(), new ActivityGeoDataRequester(permissionsProvider, activity));
+                                MapConfiguratorProvider.getConfigurator(), new ActivityGeoDataRequester(permissionsProvider, activity), dependencies);
                         break;
                     case Constants.DATATYPE_BARCODE:
-                        questionWidget = new BarcodeWidget(activity, questionDetails, waitingForDataRegistry, new CameraUtils());
+                        questionWidget = new BarcodeWidget(activity, questionDetails, waitingForDataRegistry, new CameraUtils(), dependencies);
                         break;
                     case Constants.DATATYPE_TEXT:
                         String query = prompt.getQuestion().getAdditionalAttribute(null, "query");
                         if (query != null) {
-                            questionWidget = getSelectOneWidget(appearance, questionDetails);
+                            questionWidget = getSelectOneWidget(appearance, questionDetails, dependencies);
                         } else if (appearance.equals(Appearances.PRINTER)) {
-                            questionWidget = new PrinterWidget(activity, questionDetails, printerWidgetViewModel, questionMediaManager);
+                            questionWidget = new PrinterWidget(activity, questionDetails, printerWidgetViewModel, questionMediaManager, dependencies);
                         } else if (appearance.contains(Appearances.EX)) {
-                            questionWidget = new ExStringWidget(activity, questionDetails, waitingForDataRegistry, stringRequester);
+                            questionWidget = new ExStringWidget(activity, questionDetails, waitingForDataRegistry, stringRequester, dependencies);
                         } else if (appearance.contains(Appearances.NUMBERS)) {
-                            questionWidget = new StringNumberWidget(activity, questionDetails);
+                            questionWidget = new StringNumberWidget(activity, questionDetails, dependencies);
                         } else if (appearance.equals(Appearances.URL)) {
-                            questionWidget = new UrlWidget(activity, questionDetails, new ExternalWebPageHelper());
+                            questionWidget = new UrlWidget(activity, questionDetails, new ExternalWebPageHelper(), dependencies);
                         } else {
-                            questionWidget = new StringWidget(activity, questionDetails);
+                            questionWidget = new StringWidget(activity, questionDetails, dependencies);
                         }
                         break;
                     default:
-                        questionWidget = new StringWidget(activity, questionDetails);
+                        questionWidget = new StringWidget(activity, questionDetails, dependencies);
                         break;
                 }
                 break;
             case Constants.CONTROL_FILE_CAPTURE:
                 if (appearance.startsWith(Appearances.EX)) {
-                    questionWidget = new ExArbitraryFileWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, fileRequester);
+                    questionWidget = new ExArbitraryFileWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, fileRequester, dependencies);
                 } else {
-                    questionWidget = new ArbitraryFileWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry);
+                    questionWidget = new ArbitraryFileWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, dependencies);
                 }
                 break;
             case Constants.CONTROL_IMAGE_CHOOSE:
                 if (appearance.equals(Appearances.SIGNATURE)) {
-                    questionWidget = new SignatureWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, new StoragePathProvider().getTmpImageFilePath());
+                    questionWidget = new SignatureWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, new StoragePathProvider().getTmpImageFilePath(), dependencies);
                 } else if (appearance.contains(Appearances.ANNOTATE)) {
-                    questionWidget = new AnnotateWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, new StoragePathProvider().getTmpImageFilePath());
+                    questionWidget = new AnnotateWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, new StoragePathProvider().getTmpImageFilePath(), dependencies);
                 } else if (appearance.equals(Appearances.DRAW)) {
-                    questionWidget = new DrawWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, new StoragePathProvider().getTmpImageFilePath());
+                    questionWidget = new DrawWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, new StoragePathProvider().getTmpImageFilePath(), dependencies);
                 } else if (appearance.startsWith(Appearances.EX)) {
-                    questionWidget = new ExImageWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, fileRequester);
+                    questionWidget = new ExImageWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, fileRequester, dependencies);
                 } else {
-                    questionWidget = new ImageWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, new StoragePathProvider().getTmpImageFilePath());
+                    questionWidget = new ImageWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, new StoragePathProvider().getTmpImageFilePath(), dependencies);
                 }
                 break;
             case Constants.CONTROL_OSM_CAPTURE:
                 questionWidget = new OSMWidget(activity, questionDetails, waitingForDataRegistry,
-                        IntentLauncherImpl.INSTANCE, formController);
+                        IntentLauncherImpl.INSTANCE, formController, dependencies);
                 break;
             case Constants.CONTROL_AUDIO_CAPTURE:
                 RecordingRequester recordingRequester = recordingRequesterProvider.create(prompt, useExternalRecorder);
                 GetContentAudioFileRequester audioFileRequester = new GetContentAudioFileRequester(activity, IntentLauncherImpl.INSTANCE, waitingForDataRegistry);
 
                 if (appearance.startsWith(Appearances.EX)) {
-                    questionWidget = new ExAudioWidget(activity, questionDetails, questionMediaManager, audioPlayer, waitingForDataRegistry, fileRequester);
+                    questionWidget = new ExAudioWidget(activity, questionDetails, questionMediaManager, audioPlayer, waitingForDataRegistry, fileRequester, dependencies);
                 } else {
-                    questionWidget = new AudioWidget(activity, questionDetails, questionMediaManager, audioPlayer, recordingRequester, audioFileRequester, new AudioRecorderRecordingStatusHandler(audioRecorder, formEntryViewModel, viewLifecycle));
+                    questionWidget = new AudioWidget(activity, questionDetails, questionMediaManager, audioPlayer, recordingRequester, audioFileRequester, new AudioRecorderRecordingStatusHandler(audioRecorder, formEntryViewModel, viewLifecycle), dependencies);
                 }
                 break;
             case Constants.CONTROL_VIDEO_CAPTURE:
                 if (appearance.startsWith(Appearances.EX)) {
-                    questionWidget = new ExVideoWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, fileRequester);
+                    questionWidget = new ExVideoWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, fileRequester, dependencies);
                 } else {
-                    questionWidget = new VideoWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry);
+                    questionWidget = new VideoWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, dependencies);
                 }
                 break;
             case Constants.CONTROL_SELECT_ONE:
-                questionWidget = getSelectOneWidget(appearance, questionDetails);
+                questionWidget = getSelectOneWidget(appearance, questionDetails, dependencies);
                 break;
             case Constants.CONTROL_SELECT_MULTI:
                 // search() appearance/function (not part of XForms spec) added by SurveyCTO gets
                 // considered in each widget by calls to ExternalDataUtil.getSearchXPathExpression.
                 if (appearance.contains(Appearances.MINIMAL)) {
-                    questionWidget = new SelectMultiMinimalWidget(activity, questionDetails, waitingForDataRegistry, formEntryViewModel);
+                    questionWidget = new SelectMultiMinimalWidget(activity, questionDetails, waitingForDataRegistry, formEntryViewModel, dependencies);
                 } else if (appearance.contains(Appearances.LIST_NO_LABEL)) {
-                    questionWidget = new ListMultiWidget(activity, questionDetails, false, formEntryViewModel);
+                    questionWidget = new ListMultiWidget(activity, questionDetails, false, formEntryViewModel, dependencies);
                 } else if (appearance.contains(Appearances.LIST)) {
-                    questionWidget = new ListMultiWidget(activity, questionDetails, true, formEntryViewModel);
+                    questionWidget = new ListMultiWidget(activity, questionDetails, true, formEntryViewModel, dependencies);
                 } else if (appearance.contains(Appearances.LABEL)) {
-                    questionWidget = new LabelWidget(activity, questionDetails, formEntryViewModel);
+                    questionWidget = new LabelWidget(activity, questionDetails, formEntryViewModel, dependencies);
                 } else if (appearance.contains(Appearances.IMAGE_MAP)) {
-                    questionWidget = new SelectMultiImageMapWidget(activity, questionDetails, formEntryViewModel);
+                    questionWidget = new SelectMultiImageMapWidget(activity, questionDetails, formEntryViewModel, dependencies);
                 } else {
-                    questionWidget = new SelectMultiWidget(activity, questionDetails, formEntryViewModel);
+                    questionWidget = new SelectMultiWidget(activity, questionDetails, formEntryViewModel, dependencies);
                 }
                 break;
             case Constants.CONTROL_RANK:
-                questionWidget = new RankingWidget(activity, questionDetails, waitingForDataRegistry, formEntryViewModel);
+                questionWidget = new RankingWidget(activity, questionDetails, waitingForDataRegistry, formEntryViewModel, dependencies);
                 break;
             case Constants.CONTROL_TRIGGER:
-                questionWidget = new TriggerWidget(activity, questionDetails);
+                questionWidget = new TriggerWidget(activity, questionDetails, dependencies);
                 break;
             case Constants.CONTROL_RANGE:
                 if (appearance.startsWith(Appearances.RATING)) {
-                    questionWidget = new RatingWidget(activity, questionDetails);
+                    questionWidget = new RatingWidget(activity, questionDetails, dependencies);
                 } else {
                     switch (prompt.getDataType()) {
                         case Constants.DATATYPE_INTEGER:
                             if (prompt.getAppearanceHint() != null && prompt.getAppearanceHint().contains(PICKER_APPEARANCE)) {
-                                questionWidget = new RangePickerIntegerWidget(activity, questionDetails);
+                                questionWidget = new RangePickerIntegerWidget(activity, questionDetails, dependencies);
                             } else {
-                                questionWidget = new RangeIntegerWidget(activity, questionDetails);
+                                questionWidget = new RangeIntegerWidget(activity, questionDetails, dependencies);
                             }
                             break;
                         case Constants.DATATYPE_DECIMAL:
                             if (prompt.getAppearanceHint() != null && prompt.getAppearanceHint().contains(PICKER_APPEARANCE)) {
-                                questionWidget = new RangePickerDecimalWidget(activity, questionDetails);
+                                questionWidget = new RangePickerDecimalWidget(activity, questionDetails, dependencies);
                             } else {
-                                questionWidget = new RangeDecimalWidget(activity, questionDetails);
+                                questionWidget = new RangeDecimalWidget(activity, questionDetails, dependencies);
                             }
                             break;
                         default:
-                            questionWidget = new StringWidget(activity, questionDetails);
+                            questionWidget = new StringWidget(activity, questionDetails, dependencies);
                             break;
                     }
                 }
                 break;
             default:
-                questionWidget = new StringWidget(activity, questionDetails);
+                questionWidget = new StringWidget(activity, questionDetails, dependencies);
                 break;
         }
 
         return questionWidget;
     }
 
-    private QuestionWidget getSelectOneWidget(String appearance, QuestionDetails questionDetails) {
+    private QuestionWidget getSelectOneWidget(String appearance, QuestionDetails questionDetails, QuestionWidget.Dependencies dependencies) {
         final QuestionWidget questionWidget;
         boolean isQuick = appearance.contains(Appearances.QUICK);
         // search() appearance/function (not part of XForms spec) added by SurveyCTO gets
         // considered in each widget by calls to ExternalDataUtil.getSearchXPathExpression.
         if (appearance.contains(Appearances.MINIMAL)) {
-            questionWidget = new SelectOneMinimalWidget(activity, questionDetails, isQuick, waitingForDataRegistry, formEntryViewModel);
+            questionWidget = new SelectOneMinimalWidget(activity, questionDetails, isQuick, waitingForDataRegistry, formEntryViewModel, dependencies);
         } else if (appearance.contains(Appearances.LIKERT)) {
-            questionWidget = new LikertWidget(activity, questionDetails, formEntryViewModel);
+            questionWidget = new LikertWidget(activity, questionDetails, formEntryViewModel, dependencies);
         } else if (appearance.contains(Appearances.LIST_NO_LABEL)) {
-            questionWidget = new ListWidget(activity, questionDetails, false, isQuick, formEntryViewModel);
+            questionWidget = new ListWidget(activity, questionDetails, false, isQuick, formEntryViewModel, dependencies);
         } else if (appearance.contains(Appearances.LIST)) {
-            questionWidget = new ListWidget(activity, questionDetails, true, isQuick, formEntryViewModel);
+            questionWidget = new ListWidget(activity, questionDetails, true, isQuick, formEntryViewModel, dependencies);
         } else if (appearance.contains(Appearances.LABEL)) {
-            questionWidget = new LabelWidget(activity, questionDetails, formEntryViewModel);
+            questionWidget = new LabelWidget(activity, questionDetails, formEntryViewModel, dependencies);
         } else if (appearance.contains(Appearances.IMAGE_MAP)) {
-            questionWidget = new SelectOneImageMapWidget(activity, questionDetails, isQuick, formEntryViewModel);
+            questionWidget = new SelectOneImageMapWidget(activity, questionDetails, isQuick, formEntryViewModel, dependencies);
         } else if (appearance.contains(Appearances.MAP)) {
-            questionWidget = new SelectOneFromMapWidget(activity, questionDetails, isQuick, advanceToNextListener);
+            questionWidget = new SelectOneFromMapWidget(activity, questionDetails, isQuick, advanceToNextListener, dependencies);
         } else {
-            questionWidget = new SelectOneWidget(activity, questionDetails, isQuick, formController, formEntryViewModel);
+            questionWidget = new SelectOneWidget(activity, questionDetails, isQuick, formController, formEntryViewModel, dependencies);
         }
         return questionWidget;
     }

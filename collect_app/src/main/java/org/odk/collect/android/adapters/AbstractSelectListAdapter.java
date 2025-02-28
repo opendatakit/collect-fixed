@@ -16,6 +16,10 @@
 
 package org.odk.collect.android.adapters;
 
+import static org.odk.collect.android.formentry.media.FormMediaUtils.getClip;
+import static org.odk.collect.android.formentry.media.FormMediaUtils.getClipID;
+import static org.odk.collect.android.formentry.media.FormMediaUtils.getPlayableAudioURI;
+
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -37,13 +41,13 @@ import org.javarosa.core.reference.ReferenceManager;
 import org.javarosa.form.api.FormEntryCaption;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.odk.collect.android.R;
-import org.odk.collect.android.audio.AudioHelper;
 import org.odk.collect.android.dynamicpreload.ExternalSelectChoice;
 import org.odk.collect.android.formentry.questions.AudioVideoImageTextLabel;
 import org.odk.collect.android.formentry.questions.NoButtonsItem;
-import org.odk.collect.android.utilities.MediaUtils;
-import org.odk.collect.android.utilities.HtmlUtils;
 import org.odk.collect.android.utilities.Appearances;
+import org.odk.collect.android.utilities.HtmlUtils;
+import org.odk.collect.android.utilities.MediaUtils;
+import org.odk.collect.android.widgets.utilities.AudioPlayer;
 import org.odk.collect.android.widgets.utilities.QuestionFontSizeUtils;
 import org.odk.collect.audioclips.Clip;
 import org.odk.collect.imageloader.GlideImageLoader;
@@ -55,33 +59,29 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
-import static org.odk.collect.android.formentry.media.FormMediaUtils.getClip;
-import static org.odk.collect.android.formentry.media.FormMediaUtils.getClipID;
-import static org.odk.collect.android.formentry.media.FormMediaUtils.getPlayableAudioURI;
-
 public abstract class AbstractSelectListAdapter extends RecyclerView.Adapter<AbstractSelectListAdapter.ViewHolder>
         implements Filterable {
 
+    private AudioPlayer audioPlayer;
     protected Context context;
     protected List<SelectChoice> items;
     protected List<SelectChoice> filteredItems;
     protected final FormEntryPrompt prompt;
     protected final ReferenceManager referenceManager;
-    protected AudioHelper audioHelper;
     protected final int playColor;
     protected final int numColumns;
     protected boolean noButtonsMode;
     private final MediaUtils mediaUtils;
 
     AbstractSelectListAdapter(Context context, List<SelectChoice> items, FormEntryPrompt prompt,
-                              ReferenceManager referenceManager, AudioHelper audioHelper,
+                              ReferenceManager referenceManager, AudioPlayer audioPlayer,
                               int playColor, int numColumns, boolean noButtonsMode, MediaUtils mediaUtils) {
         this.context = context;
         this.items = items;
         this.filteredItems = items;
         this.prompt = prompt;
         this.referenceManager = referenceManager;
-        this.audioHelper = audioHelper;
+        this.audioPlayer = audioPlayer;
         this.playColor = playColor;
         this.numColumns = numColumns;
         this.noButtonsMode = noButtonsMode;
@@ -155,16 +155,16 @@ public abstract class AbstractSelectListAdapter extends RecyclerView.Adapter<Abs
         return filteredItems;
     }
 
-    public AudioHelper getAudioHelper() {
-        return audioHelper;
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
     }
 
     public void setContext(Context context) {
         this.context = context;
     }
 
-    public void setAudioHelper(AudioHelper audioHelper) {
-        this.audioHelper = audioHelper;
+    public void setAudioPlayer(AudioPlayer audioPlayer) {
+        this.audioPlayer = audioPlayer;
     }
 
     abstract class ViewHolder extends RecyclerView.ViewHolder {
@@ -246,7 +246,7 @@ public abstract class AbstractSelectListAdapter extends RecyclerView.Adapter<Abs
                     audioVideoImageTextLabel.setVideo(new File(referenceManager.deriveReference(videoURI).getLocalURI()));
                 }
                 if (audioURI != null) {
-                    audioVideoImageTextLabel.setAudio(audioURI, audioHelper);
+                    audioVideoImageTextLabel.setAudio(audioURI, audioPlayer);
                 }
             } catch (InvalidReferenceException e) {
                 Timber.d(e, "Invalid media reference due to %s ", e.getMessage());
@@ -280,10 +280,10 @@ public abstract class AbstractSelectListAdapter extends RecyclerView.Adapter<Abs
     }
 
     public void playAudio(SelectChoice selectChoice) {
-        audioHelper.stop();
+        audioPlayer.stop();
         Clip clip = getClip(prompt, selectChoice, referenceManager);
         if (clip != null) {
-            audioHelper.play(clip);
+            audioPlayer.play(clip);
         }
     }
 

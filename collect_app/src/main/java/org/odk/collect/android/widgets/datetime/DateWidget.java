@@ -41,8 +41,8 @@ public class DateWidget extends QuestionWidget implements WidgetDataReceiver {
     private LocalDateTime selectedDate;
     private DatePickerDetails datePickerDetails;
 
-    public DateWidget(Context context, QuestionDetails prompt, DateTimeWidgetUtils widgetUtils, WaitingForDataRegistry waitingForDataRegistry) {
-        super(context, prompt);
+    public DateWidget(Context context, QuestionDetails prompt, DateTimeWidgetUtils widgetUtils, WaitingForDataRegistry waitingForDataRegistry, Dependencies dependencies) {
+        super(context, dependencies, prompt);
         render();
 
         this.widgetUtils = widgetUtils;

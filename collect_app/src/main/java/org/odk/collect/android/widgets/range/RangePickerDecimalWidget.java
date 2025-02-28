@@ -27,8 +27,8 @@ public class RangePickerDecimalWidget extends QuestionWidget {
 
     private int progress;
 
-    public RangePickerDecimalWidget(Context context, QuestionDetails questionDetails) {
-        super(context, questionDetails);
+    public RangePickerDecimalWidget(Context context, QuestionDetails questionDetails, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
     }
 

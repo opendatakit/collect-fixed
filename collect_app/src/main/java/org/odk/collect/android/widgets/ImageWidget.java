@@ -47,8 +47,8 @@ public class ImageWidget extends BaseImageWidget {
 
     private boolean selfie;
 
-    public ImageWidget(Context context, final QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath) {
-        super(context, prompt, questionMediaManager, waitingForDataRegistry, tmpImageFilePath);
+    public ImageWidget(Context context, final QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath, Dependencies dependencies) {
+        super(context, prompt, questionMediaManager, waitingForDataRegistry, tmpImageFilePath, dependencies);
         imageClickHandler = new ViewImageClickHandler();
         imageCaptureHandler = new ImageCaptureHandler();
 

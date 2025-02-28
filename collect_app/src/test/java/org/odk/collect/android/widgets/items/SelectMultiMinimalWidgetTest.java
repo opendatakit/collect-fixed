@@ -32,7 +32,7 @@ public class SelectMultiMinimalWidgetTest extends GeneralSelectMultiWidgetTest<S
     @NonNull
     @Override
     public SelectMultiMinimalWidget createWidget() {
-        return new SelectMultiMinimalWidget(activity, new QuestionDetails(formEntryPrompt), new FakeWaitingForDataRegistry(), new FormEntryPromptSelectChoiceLoader());
+        return new SelectMultiMinimalWidget(activity, new QuestionDetails(formEntryPrompt), new FakeWaitingForDataRegistry(), new FormEntryPromptSelectChoiceLoader(), dependencies);
     }
 
     @Test

@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mockValueChangedListener;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithQuestionDefAndAnswer;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnlyAndQuestionDef;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetTestActivity;
 
 @RunWith(AndroidJUnit4.class)
@@ -218,7 +219,7 @@ public class RangeIntegerWidgetTest {
     }
 
     private RangeIntegerWidget createWidget(FormEntryPrompt prompt) {
-        RangeIntegerWidget widget = new RangeIntegerWidget(widgetTestActivity(), new QuestionDetails(prompt));
+        RangeIntegerWidget widget = new RangeIntegerWidget(widgetTestActivity(), new QuestionDetails(prompt), widgetDependencies());
         widget.slider.layout(0, 0, 100, 10);
         return widget;
     }

@@ -70,7 +70,7 @@ public class ExAudioWidgetTest extends FileWidgetTest<ExAudioWidget> {
     @Override
     public ExAudioWidget createWidget() {
         return new ExAudioWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride),
-                new FakeQuestionMediaManager(), audioPlayer, new FakeWaitingForDataRegistry(), fileRequester);
+                new FakeQuestionMediaManager(), audioPlayer, new FakeWaitingForDataRegistry(), fileRequester, dependencies);
     }
 
     @Test

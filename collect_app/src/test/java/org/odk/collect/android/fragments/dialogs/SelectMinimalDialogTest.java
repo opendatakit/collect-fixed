@@ -2,8 +2,11 @@ package org.odk.collect.android.fragments.dialogs;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -17,6 +20,7 @@ import org.odk.collect.android.support.CollectHelpers;
 import org.odk.collect.android.support.MockFormEntryPromptBuilder;
 import org.odk.collect.android.support.WidgetTestActivity;
 import org.odk.collect.android.utilities.MediaUtils;
+import org.odk.collect.audioclips.AudioClipViewModel;
 import org.odk.collect.testshared.RobolectricHelpers;
 
 import java.util.List;
@@ -37,6 +41,20 @@ public class SelectMinimalDialogTest {
     @Before
     public void setup() {
         FragmentActivity activity = CollectHelpers.createThemedActivity(WidgetTestActivity.class);
+
+        // Set up AudioClipViewModel used by the dialog
+        new ViewModelProvider(activity, new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                if (modelClass == AudioClipViewModel.class) {
+                    return (T) mock(AudioClipViewModel.class);
+                } else {
+                    return ViewModelProvider.Factory.super.create(modelClass);
+                }
+            }
+        }).get(AudioClipViewModel.class);
+
         fragmentManager = activity.getSupportFragmentManager();
     }
 

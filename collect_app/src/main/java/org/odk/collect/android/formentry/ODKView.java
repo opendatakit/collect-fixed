@@ -54,7 +54,6 @@ import org.javarosa.form.api.FormEntryPrompt;
 import org.odk.collect.android.R;
 import org.odk.collect.android.activities.FormFillingActivity;
 import org.odk.collect.android.application.Collect;
-import org.odk.collect.android.audio.AudioHelper;
 import org.odk.collect.android.exception.ExternalParamsException;
 import org.odk.collect.android.exception.JavaRosaException;
 import org.odk.collect.android.dynamicpreload.ExternalAppsUtils;
@@ -66,7 +65,6 @@ import org.odk.collect.android.utilities.ExternalAppIntentProvider;
 import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.android.utilities.HtmlUtils;
 import org.odk.collect.android.utilities.QuestionMediaManager;
-import org.odk.collect.android.utilities.ScreenContext;
 import org.odk.collect.android.utilities.ThemeUtils;
 import org.odk.collect.android.widgets.QuestionWidget;
 import org.odk.collect.android.widgets.StringWidget;
@@ -113,7 +111,6 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
     private final LinearLayout widgetsList;
     private final LinearLayout.LayoutParams layout;
     private final ArrayList<QuestionWidget> widgets;
-    private final AudioHelper audioHelper;
 
     private WidgetValueChangedListener widgetValueChangedListener;
 
@@ -131,6 +128,7 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
 
     private final WidgetFactory widgetFactory;
     private final LifecycleOwner viewLifecycle;
+    private final AudioPlayer audioPlayer;
     private final FormController formController;
 
     /**
@@ -153,13 +151,13 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
             PrinterWidgetViewModel printerWidgetViewModel,
             InternalRecordingRequester internalRecordingRequester,
             ExternalAppRecordingRequester externalAppRecordingRequester,
-            AudioHelper audioHelper
+            LifecycleOwner viewLifecycle
     ) {
         super(context);
-        viewLifecycle = ((ScreenContext) context).getViewLifecycle();
+        this.viewLifecycle = viewLifecycle;
+        this.audioPlayer = audioPlayer;
 
         getComponent(context).inject(this);
-        this.audioHelper = audioHelper;
         inflate(getContext(), R.layout.odk_view, this); // keep in an xml file to enable the vertical scrollbar
 
         // when the grouped fields are populated by an external app, this will get true.
@@ -192,7 +190,7 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
                 formEntryViewModel,
                 printerWidgetViewModel,
                 audioRecorder,
-                viewLifecycle,
+                this.viewLifecycle,
                 new FileRequesterImpl(intentLauncher, externalAppIntentProvider, formController),
                 new StringRequesterImpl(intentLauncher, externalAppIntentProvider, formController),
                 formController,
@@ -216,7 +214,7 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
     }
 
     private void setupAudioErrors() {
-        audioHelper.getError().observe(viewLifecycle, e -> {
+        audioPlayer.onPlaybackError(e -> {
             if (e instanceof PlaybackFailedException) {
                 final PlaybackFailedException playbackFailedException = (PlaybackFailedException) e;
                 Toast.makeText(
@@ -224,14 +222,11 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
                         getContext().getString(playbackFailedException.getExceptionMsg() == 0 ? org.odk.collect.strings.R.string.file_missing : org.odk.collect.strings.R.string.file_invalid, playbackFailedException.getURI()),
                         Toast.LENGTH_SHORT
                 ).show();
-
-                audioHelper.errorDisplayed();
             }
         });
     }
 
     private void autoplayIfNeeded(boolean advancingPage) {
-
         // see if there is an autoplay option.
         // Only execute it during forward swipes through the form
         if (advancingPage && widgets.size() == 1) {
@@ -247,7 +242,7 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
 
     private Boolean autoplayAudio(FormEntryPrompt firstPrompt) {
         PromptAutoplayer promptAutoplayer = new PromptAutoplayer(
-                audioHelper,
+                audioPlayer,
                 ReferenceManager.instance()
         );
 

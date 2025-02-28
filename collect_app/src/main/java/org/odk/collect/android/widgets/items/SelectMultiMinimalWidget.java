@@ -26,8 +26,8 @@ import java.util.List;
 public class SelectMultiMinimalWidget extends SelectMinimalWidget {
     private List<Selection> selectedItems;
 
-    public SelectMultiMinimalWidget(Context context, QuestionDetails prompt, WaitingForDataRegistry waitingForDataRegistry, SelectChoiceLoader selectChoiceLoader) {
-        super(context, prompt, waitingForDataRegistry, selectChoiceLoader);
+    public SelectMultiMinimalWidget(Context context, QuestionDetails prompt, WaitingForDataRegistry waitingForDataRegistry, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, prompt, waitingForDataRegistry, selectChoiceLoader, dependencies);
         render();
 
         selectedItems = getFormEntryPrompt().getAnswerValue() == null

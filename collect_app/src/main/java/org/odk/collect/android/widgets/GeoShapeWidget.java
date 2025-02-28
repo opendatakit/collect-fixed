@@ -38,8 +38,8 @@ public class GeoShapeWidget extends QuestionWidget implements WidgetDataReceiver
     private final GeoDataRequester geoDataRequester;
 
     public GeoShapeWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry,
-                          GeoDataRequester geoDataRequester) {
-        super(context, questionDetails);
+                          GeoDataRequester geoDataRequester, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         this.waitingForDataRegistry = waitingForDataRegistry;

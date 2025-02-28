@@ -21,8 +21,8 @@ public abstract class BaseArbitraryFileWidget extends QuestionWidget implements 
     protected File answerFile;
 
     public BaseArbitraryFileWidget(Context context, QuestionDetails questionDetails, QuestionMediaManager questionMediaManager,
-                                   WaitingForDataRegistry waitingForDataRegistry) {
-        super(context, questionDetails);
+                                   WaitingForDataRegistry waitingForDataRegistry, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         this.questionMediaManager = questionMediaManager;
         this.waitingForDataRegistry = waitingForDataRegistry;
         render();

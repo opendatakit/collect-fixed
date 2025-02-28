@@ -94,8 +94,8 @@ public class ExStringWidget extends QuestionWidget implements WidgetDataReceiver
     private boolean hasExApp = true;
     private final StringRequester stringRequester;
 
-    public ExStringWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, StringRequester stringRequester) {
-        super(context, questionDetails);
+    public ExStringWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, StringRequester stringRequester, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         this.waitingForDataRegistry = waitingForDataRegistry;

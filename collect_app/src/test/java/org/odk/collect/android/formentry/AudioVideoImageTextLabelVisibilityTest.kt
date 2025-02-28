@@ -14,7 +14,6 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.odk.collect.android.R
-import org.odk.collect.android.audio.AudioHelper
 import org.odk.collect.android.formentry.questions.AudioVideoImageTextLabel
 import org.odk.collect.android.logic.FileReference
 import org.odk.collect.android.support.CollectHelpers
@@ -40,7 +39,6 @@ class AudioVideoImageTextLabelVisibilityTest(
     private lateinit var textView: TextView
     private var isReferenceManagerStubbed = false
     private var imageFileExists = false
-    private lateinit var audioHelper: AudioHelper
 
     @Before
     fun setUp() {
@@ -49,14 +47,6 @@ class AudioVideoImageTextLabelVisibilityTest(
         textView = TextView(ApplicationProvider.getApplicationContext())
         val activity = CollectHelpers.createThemedActivity(
             WidgetTestActivity::class.java
-        )
-        audioHelper = AudioHelper(
-            activity,
-            activity.viewLifecycle,
-            mock(),
-            {
-                mock()
-            }
         )
         audioVideoImageTextLabel = AudioVideoImageTextLabel(activity)
         audioButton = audioVideoImageTextLabel.findViewById(R.id.audioButton)
@@ -96,7 +86,7 @@ class AudioVideoImageTextLabelVisibilityTest(
             audioVideoImageTextLabel.setVideo(videoFile)
         }
         if (audioURI != null && isReferenceManagerStubbed) {
-            audioVideoImageTextLabel.setAudio(audioURI, audioHelper)
+            audioVideoImageTextLabel.setAudio(audioURI, mock())
         }
 
         // we do not check for the validity of the URIs for the audio and video while loading MediaLayout

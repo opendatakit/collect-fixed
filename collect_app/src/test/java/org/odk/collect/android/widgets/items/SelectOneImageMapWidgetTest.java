@@ -14,7 +14,7 @@ public class SelectOneImageMapWidgetTest extends SelectImageMapWidgetTest<Select
     @NonNull
     @Override
     public SelectOneImageMapWidget createWidget() {
-        return new SelectOneImageMapWidget(activity, new QuestionDetails(formEntryPrompt), false, new FormEntryPromptSelectChoiceLoader());
+        return new SelectOneImageMapWidget(activity, new QuestionDetails(formEntryPrompt), false, new FormEntryPromptSelectChoiceLoader(), dependencies);
     }
 
     @NonNull

@@ -151,6 +151,10 @@ public interface AppDependencyComponent {
 
     void inject(InstanceUploaderListActivity activity);
 
+    /**
+     * @deprecated should use {@link QuestionWidget.Dependencies} instead
+     */
+    @Deprecated
     void inject(QuestionWidget questionWidget);
 
     void inject(ODKView odkView);

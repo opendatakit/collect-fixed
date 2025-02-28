@@ -41,8 +41,8 @@ public class ExAudioWidget extends QuestionWidget implements FileWidget, WidgetD
     File answerFile;
 
     public ExAudioWidget(Context context, QuestionDetails questionDetails, QuestionMediaManager questionMediaManager,
-                         AudioPlayer audioPlayer, WaitingForDataRegistry waitingForDataRegistry, FileRequester fileRequester) {
-        super(context, questionDetails);
+                         AudioPlayer audioPlayer, WaitingForDataRegistry waitingForDataRegistry, FileRequester fileRequester, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
 
         this.audioPlayer = audioPlayer;
         this.waitingForDataRegistry = waitingForDataRegistry;

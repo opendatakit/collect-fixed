@@ -37,8 +37,8 @@ public class TriggerWidget extends QuestionWidget {
 
     private AppCompatCheckBox triggerButton;
 
-    public TriggerWidget(Context context, QuestionDetails prompt) {
-        super(context, prompt);
+    public TriggerWidget(Context context, QuestionDetails prompt, Dependencies dependencies) {
+        super(context, dependencies, prompt);
         render();
     }
 

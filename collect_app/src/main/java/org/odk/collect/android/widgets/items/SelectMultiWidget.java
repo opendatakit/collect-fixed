@@ -40,8 +40,8 @@ import java.util.List;
  */
 @SuppressLint("ViewConstructor")
 public class SelectMultiWidget extends BaseSelectListWidget {
-    public SelectMultiWidget(Context context, QuestionDetails prompt, SelectChoiceLoader selectChoiceLoader) {
-        super(context, prompt, selectChoiceLoader);
+    public SelectMultiWidget(Context context, QuestionDetails prompt, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, prompt, selectChoiceLoader, dependencies);
         SpacesInUnderlyingValuesWarning
                 .forQuestionWidget(this)
                 .renderWarningIfNecessary(items);
@@ -53,7 +53,7 @@ public class SelectMultiWidget extends BaseSelectListWidget {
         boolean noButtonsMode = Appearances.isCompactAppearance(getFormEntryPrompt()) || Appearances.isNoButtonsAppearance(getFormEntryPrompt());
 
         recyclerViewAdapter = new SelectMultipleListAdapter(getSelectedItems(), this, getContext(),
-                items, getFormEntryPrompt(), getReferenceManager(), getAudioHelper(),
+                items, getFormEntryPrompt(), getReferenceManager(), audioPlayer,
                 getPlayColor(getFormEntryPrompt(), themeUtils), numColumns, noButtonsMode, mediaUtils);
         return recyclerViewAdapter;
     }

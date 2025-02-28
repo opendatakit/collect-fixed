@@ -40,8 +40,8 @@ public class GeoPointWidget extends QuestionWidget implements WidgetDataReceiver
     private String answerText;
 
     public GeoPointWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry,
-                          GeoDataRequester geoDataRequester) {
-        super(context, questionDetails);
+                          GeoDataRequester geoDataRequester, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         this.waitingForDataRegistry = waitingForDataRegistry;

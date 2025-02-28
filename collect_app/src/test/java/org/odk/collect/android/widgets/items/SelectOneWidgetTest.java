@@ -3,7 +3,6 @@ package org.odk.collect.android.widgets.items;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -20,7 +19,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.flexbox.FlexboxLayoutManager;
@@ -34,9 +32,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.odk.collect.android.audio.AudioButton;
-import org.odk.collect.android.audio.AudioHelper;
-import org.odk.collect.android.formentry.media.AudioHelperFactory;
+import org.odk.collect.android.R;
 import org.odk.collect.android.formentry.questions.AudioVideoImageTextLabel;
 import org.odk.collect.android.formentry.questions.NoButtonsItem;
 import org.odk.collect.android.formentry.questions.QuestionDetails;
@@ -47,10 +43,11 @@ import org.odk.collect.android.support.CollectHelpers;
 import org.odk.collect.android.support.MockFormEntryPromptBuilder;
 import org.odk.collect.android.utilities.Appearances;
 import org.odk.collect.android.utilities.SoftKeyboardController;
+import org.odk.collect.android.widgets.QuestionWidget;
 import org.odk.collect.android.widgets.base.GeneralSelectOneWidgetTest;
 import org.odk.collect.android.widgets.support.FormEntryPromptSelectChoiceLoader;
+import org.odk.collect.android.widgets.utilities.AudioPlayer;
 import org.odk.collect.android.widgets.utilities.QuestionFontSizeUtils;
-import org.odk.collect.async.Scheduler;
 import org.odk.collect.audioclips.Clip;
 
 import java.util.List;
@@ -65,7 +62,7 @@ public class SelectOneWidgetTest extends GeneralSelectOneWidgetTest<SelectOneWid
     @NonNull
     @Override
     public SelectOneWidget createWidget() {
-        SelectOneWidget selectOneWidget = new SelectOneWidget(activity, new QuestionDetails(formEntryPrompt), isQuick(), null, new FormEntryPromptSelectChoiceLoader());
+        SelectOneWidget selectOneWidget = new SelectOneWidget(activity, new QuestionDetails(formEntryPrompt), isQuick(), null, new FormEntryPromptSelectChoiceLoader(), dependencies);
         if (isQuick()) {
             selectOneWidget.setListener(listener);
         }
@@ -76,13 +73,9 @@ public class SelectOneWidgetTest extends GeneralSelectOneWidgetTest<SelectOneWid
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
 
-    @Mock
-    public AudioHelper audioHelper;
-
     @Before
     public void setup() throws Exception {
         overrideDependencyModule();
-        when(audioHelper.setAudio(any(AudioButton.class), any())).thenReturn(new MutableLiveData<>());
     }
 
     @Test
@@ -224,7 +217,7 @@ public class SelectOneWidgetTest extends GeneralSelectOneWidgetTest<SelectOneWid
     }
 
     @Test
-    public void whenChoicesHaveAudio_audioButtonUsesIndexAsClipID() throws Exception {
+    public void whenChoicesHaveAudio_audioButtonUsesIndexAsClipID() {
         formEntryPrompt = new MockFormEntryPromptBuilder()
                 .withIndex("i am index")
                 .withSelectChoices(asList(
@@ -237,9 +230,14 @@ public class SelectOneWidgetTest extends GeneralSelectOneWidgetTest<SelectOneWid
                 ))
                 .build();
 
+        AudioPlayer audioPlayer = mock();
+        dependencies = new QuestionWidget.Dependencies(audioPlayer);
         populateRecyclerView(getWidget());
-        verify(audioHelper).setAudio(any(AudioButton.class), eq(new Clip("i am index 0", REFERENCES.get(0).second)));
-        verify(audioHelper).setAudio(any(AudioButton.class), eq(new Clip("i am index 1", REFERENCES.get(1).second)));
+
+        getChoiceView(getWidget(), 0).findViewById(R.id.audioButton).performClick();
+        verify(audioPlayer).play(eq(new Clip("i am index 0", REFERENCES.get(0).second)));
+        getChoiceView(getWidget(), 1).findViewById(R.id.audioButton).performClick();
+        verify(audioPlayer).play(eq(new Clip("i am index 1", REFERENCES.get(1).second)));
     }
 
     @Test
@@ -334,11 +332,6 @@ public class SelectOneWidgetTest extends GeneralSelectOneWidgetTest<SelectOneWid
             @Override
             public ReferenceManager providesReferenceManager() {
                 return referenceManager;
-            }
-
-            @Override
-            public AudioHelperFactory providesAudioHelperFactory(Scheduler scheduler) {
-                return context -> audioHelper;
             }
 
             @Override

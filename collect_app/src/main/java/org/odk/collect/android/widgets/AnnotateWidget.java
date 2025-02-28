@@ -49,8 +49,8 @@ import java.util.Locale;
 public class AnnotateWidget extends BaseImageWidget {
     AnnotateWidgetBinding binding;
 
-    public AnnotateWidget(Context context, QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath) {
-        super(context, prompt, questionMediaManager, waitingForDataRegistry, tmpImageFilePath);
+    public AnnotateWidget(Context context, QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath, Dependencies dependencies) {
+        super(context, prompt, questionMediaManager, waitingForDataRegistry, tmpImageFilePath, dependencies);
         imageClickHandler = new DrawImageClickHandler(DrawActivity.OPTION_ANNOTATE, RequestCodes.ANNOTATE_IMAGE, org.odk.collect.strings.R.string.annotate_image);
         imageCaptureHandler = new ImageCaptureHandler();
 

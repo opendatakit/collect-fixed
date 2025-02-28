@@ -58,12 +58,12 @@ public class VideoWidget extends QuestionWidget implements FileWidget, WidgetDat
     private String binaryName;
     VideoWidgetBinding binding;
 
-    public VideoWidget(Context context, QuestionDetails prompt,  QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry) {
-        this(context, prompt, waitingForDataRegistry, questionMediaManager);
+    public VideoWidget(Context context, QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, Dependencies dependencies) {
+        this(context, prompt, waitingForDataRegistry, questionMediaManager, dependencies);
     }
 
-    public VideoWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, QuestionMediaManager questionMediaManager) {
-        super(context, questionDetails);
+    public VideoWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, QuestionMediaManager questionMediaManager, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         this.waitingForDataRegistry = waitingForDataRegistry;
         this.questionMediaManager = questionMediaManager;
         binaryName = questionDetails.getPrompt().getAnswerText();

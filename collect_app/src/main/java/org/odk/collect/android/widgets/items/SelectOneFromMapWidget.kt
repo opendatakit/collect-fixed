@@ -27,8 +27,9 @@ class SelectOneFromMapWidget(
     context: Context,
     questionDetails: QuestionDetails,
     private val autoAdvance: Boolean,
-    private val autoAdvanceListener: AdvanceToNextListener
-) : QuestionWidget(context, questionDetails), WidgetDataReceiver {
+    private val autoAdvanceListener: AdvanceToNextListener,
+    dependencies: Dependencies
+) : QuestionWidget(context, dependencies, questionDetails), WidgetDataReceiver {
 
     init {
         render()

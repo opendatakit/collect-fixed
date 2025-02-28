@@ -21,6 +21,10 @@ public final class QuestionWidgetHelpers {
         return CollectHelpers.buildThemedActivity(WidgetTestActivity.class).get();
     }
 
+    public static QuestionWidget.Dependencies widgetDependencies() {
+        return new QuestionWidget.Dependencies(mock());
+    }
+
     public static <T extends QuestionWidget> WidgetValueChangedListener mockValueChangedListener(T widget) {
         WidgetValueChangedListener valueChangedListener = mock(WidgetValueChangedListener.class);
         widget.setValueChangedListener(valueChangedListener);

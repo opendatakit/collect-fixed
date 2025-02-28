@@ -42,8 +42,8 @@ public class RatingWidget extends QuestionWidget {
 
     RatingWidgetAnswerBinding binding;
 
-    public RatingWidget(Context context, QuestionDetails questionDetails) {
-        super(context, questionDetails);
+    public RatingWidget(Context context, QuestionDetails questionDetails, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
     }
 

@@ -32,7 +32,7 @@ public class ExIntegerWidgetTest extends GeneralExStringWidgetTest<ExIntegerWidg
     @Override
     public ExIntegerWidget createWidget() {
         when(formEntryPrompt.getDataType()).thenReturn(Constants.DATATYPE_INTEGER);
-        return new ExIntegerWidget(activity, new QuestionDetails(formEntryPrompt), new FakeWaitingForDataRegistry(), stringRequester);
+        return new ExIntegerWidget(activity, new QuestionDetails(formEntryPrompt), new FakeWaitingForDataRegistry(), stringRequester, dependencies);
     }
 
     @NonNull

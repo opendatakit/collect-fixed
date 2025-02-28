@@ -75,8 +75,8 @@ public abstract class SelectImageMapWidget extends QuestionWidget {
 
     final List<SelectChoice> items;
 
-    public SelectImageMapWidget(Context context, QuestionDetails prompt, SelectChoiceLoader selectChoiceLoader) {
-        super(context, prompt);
+    public SelectImageMapWidget(Context context, QuestionDetails prompt, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, dependencies, prompt);
         render();
 
         items = ItemsWidgetUtils.loadItemsAndHandleErrors(this, questionDetails.getPrompt(), selectChoiceLoader);

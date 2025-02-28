@@ -14,7 +14,11 @@ import org.odk.collect.android.widgets.support.QuestionWidgetHelpers
 
 class CounterWidgetTest : QuestionWidgetTest<CounterWidget, IAnswerData>() {
 
-    override fun createWidget() = CounterWidget(activity, QuestionDetails(formEntryPrompt))
+    override fun createWidget() = CounterWidget(
+        activity,
+        QuestionDetails(formEntryPrompt),
+        dependencies
+    )
 
     override fun getNextAnswer() = IntegerData(10)
 

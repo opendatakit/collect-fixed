@@ -1,9 +1,26 @@
 package org.odk.collect.android.widgets;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mockValueChangedListener;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAnswer;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnly;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnlyAndAnswer;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
+import static org.odk.collect.testshared.RobolectricHelpers.setupMediaPlayerDataSource;
+import static org.robolectric.shadows.ShadowDialog.getLatestDialog;
+
 import android.util.Pair;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -20,9 +37,9 @@ import org.odk.collect.android.listeners.WidgetValueChangedListener;
 import org.odk.collect.android.support.CollectHelpers;
 import org.odk.collect.android.support.WidgetTestActivity;
 import org.odk.collect.android.utilities.Appearances;
+import org.odk.collect.android.widgets.support.FakeAudioPlayer;
 import org.odk.collect.android.widgets.support.FakeQuestionMediaManager;
 import org.odk.collect.android.widgets.utilities.AudioFileRequester;
-import org.odk.collect.android.widgets.utilities.AudioPlayer;
 import org.odk.collect.android.widgets.utilities.RecordingRequester;
 import org.odk.collect.android.widgets.utilities.RecordingStatusHandler;
 import org.odk.collect.audioclips.Clip;
@@ -32,23 +49,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.odk.collect.testshared.RobolectricHelpers.setupMediaPlayerDataSource;
-import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mockValueChangedListener;
-import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAnswer;
-import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnly;
-import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnlyAndAnswer;
-import static org.robolectric.shadows.ShadowDialog.getLatestDialog;
 
 @RunWith(AndroidJUnit4.class)
 public class AudioWidgetTest {
@@ -501,8 +501,8 @@ public class AudioWidgetTest {
                 audioPlayer,
                 recordingRequester,
                 audioFileRequester,
-                recordingRequester
-        );
+                recordingRequester,
+                widgetDependencies());
     }
 
     public AudioWidget createWidget(FormEntryPrompt prompt, boolean readOnlyOverride) {
@@ -513,8 +513,8 @@ public class AudioWidgetTest {
                 audioPlayer,
                 recordingRequester,
                 audioFileRequester,
-                recordingRequester
-        );
+                recordingRequester,
+                widgetDependencies());
     }
 
     @NotNull
@@ -523,63 +523,6 @@ public class AudioWidgetTest {
                 "audio:" + prompt.getIndex().toString(),
                 questionMediaManager.getAnswerFile(fileName).getAbsolutePath()
         );
-    }
-
-    private static class FakeAudioPlayer implements AudioPlayer {
-
-        private final Map<String, Consumer<Boolean>> playingChangedListeners = new HashMap<>();
-        private final Map<String, Consumer<Integer>> positionChangedListeners = new HashMap<>();
-        private final Map<String, Integer> positions = new HashMap<>();
-
-        private boolean paused;
-        private Clip clip;
-
-        @Override
-        public void play(Clip clip) {
-            this.clip = clip;
-            paused = false;
-            playingChangedListeners.get(clip.getClipID()).accept(true);
-        }
-
-        @Override
-        public void pause() {
-            paused = true;
-            playingChangedListeners.get(clip.getClipID()).accept(false);
-        }
-
-        @Override
-        public void setPosition(String clipId, Integer position) {
-            positions.put(clipId, position);
-            positionChangedListeners.get(clipId).accept(position);
-        }
-
-        @Override
-        public void onPlayingChanged(String clipID, Consumer<Boolean> playingConsumer) {
-            playingChangedListeners.put(clipID, playingConsumer);
-        }
-
-        @Override
-        public void onPositionChanged(String clipID, Consumer<Integer> positionConsumer) {
-            positionChangedListeners.put(clipID, positionConsumer);
-        }
-
-        @Override
-        public void stop() {
-            clip = null;
-        }
-
-        @Nullable
-        public Clip getCurrentClip() {
-            return clip;
-        }
-
-        public boolean isPaused() {
-            return paused;
-        }
-
-        public Integer getPosition(String clipId) {
-            return positions.get(clipId);
-        }
     }
 
     private static class FakeRecordingRequester implements RecordingRequester, RecordingStatusHandler {

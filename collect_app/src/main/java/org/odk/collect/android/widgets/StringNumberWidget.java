@@ -28,8 +28,8 @@ import org.odk.collect.android.widgets.utilities.StringWidgetUtils;
 @SuppressLint("ViewConstructor")
 public class StringNumberWidget extends StringWidget {
 
-    public StringNumberWidget(Context context, QuestionDetails questionDetails) {
-        super(context, questionDetails);
+    public StringNumberWidget(Context context, QuestionDetails questionDetails, Dependencies dependencies) {
+        super(context, questionDetails, dependencies);
 
         boolean useThousandSeparator = Appearances.useThousandSeparator(questionDetails.getPrompt());
         String answer = questionDetails.getPrompt().getAnswerValue() == null

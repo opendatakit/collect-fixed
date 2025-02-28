@@ -66,8 +66,8 @@ public class AudioWidget extends QuestionWidget implements FileWidget, WidgetDat
     private boolean recordingInProgress;
     private String binaryName;
 
-    public AudioWidget(Context context, QuestionDetails questionDetails, QuestionMediaManager questionMediaManager, AudioPlayer audioPlayer, RecordingRequester recordingRequester, AudioFileRequester audioFileRequester, RecordingStatusHandler recordingStatusHandler) {
-        super(context, questionDetails);
+    public AudioWidget(Context context, QuestionDetails questionDetails, QuestionMediaManager questionMediaManager, AudioPlayer audioPlayer, RecordingRequester recordingRequester, AudioFileRequester audioFileRequester, RecordingStatusHandler recordingStatusHandler, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         this.audioPlayer = audioPlayer;

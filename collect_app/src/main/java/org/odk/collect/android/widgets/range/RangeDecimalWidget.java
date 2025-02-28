@@ -40,8 +40,8 @@ public class RangeDecimalWidget extends QuestionWidget implements Slider.OnChang
     TrackingTouchSlider slider;
     TextView currentValue;
 
-    public RangeDecimalWidget(Context context, QuestionDetails prompt) {
-        super(context, prompt);
+    public RangeDecimalWidget(Context context, QuestionDetails prompt, Dependencies dependencies) {
+        super(context, dependencies, prompt);
         render();
     }
 

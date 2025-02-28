@@ -34,8 +34,8 @@ public abstract class BaseSelectListWidget extends QuestionWidget implements Mul
 
     final List<SelectChoice> items;
 
-    public BaseSelectListWidget(Context context, QuestionDetails questionDetails, SelectChoiceLoader selectChoiceLoader) {
-        super(context, questionDetails);
+    public BaseSelectListWidget(Context context, QuestionDetails questionDetails, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         items = ItemsWidgetUtils.loadItemsAndHandleErrors(this, questionDetails.getPrompt(), selectChoiceLoader);

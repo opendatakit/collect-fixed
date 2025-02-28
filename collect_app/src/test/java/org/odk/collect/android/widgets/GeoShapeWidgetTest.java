@@ -23,6 +23,7 @@ import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mock
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAnswer;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnly;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnlyAndAnswer;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetTestActivity;
 
 @RunWith(AndroidJUnit4.class)
@@ -184,6 +185,6 @@ public class GeoShapeWidgetTest {
 
     private GeoShapeWidget createWidget(FormEntryPrompt prompt) {
         return new GeoShapeWidget(widgetTestActivity(), new QuestionDetails(prompt),
-                waitingForDataRegistry, geoDataRequester);
+                waitingForDataRegistry, geoDataRequester, widgetDependencies());
     }
 }

@@ -41,6 +41,7 @@ import static org.mockito.Mockito.when;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mockValueChangedListener;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAnswer;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnly;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetTestActivity;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -238,7 +239,7 @@ public class OSMWidgetTest {
         when(questionDef.getOsmTags()).thenReturn(ImmutableList.<OSMTag>of());
 
         return new OSMWidget(widgetActivity, new QuestionDetails(prompt),
-                fakeWaitingForDataRegistry, intentLauncher, formController);
+                fakeWaitingForDataRegistry, intentLauncher, formController, widgetDependencies());
     }
 
     private void assertIntentExtrasEquals(String fileName) {

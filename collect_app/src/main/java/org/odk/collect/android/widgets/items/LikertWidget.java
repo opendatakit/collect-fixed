@@ -56,8 +56,8 @@ public class LikertWidget extends QuestionWidget {
 
     HashMap<RadioButton, String> buttonsToName;
 
-    public LikertWidget(Context context, QuestionDetails questionDetails, SelectChoiceLoader selectChoiceLoader) {
-        super(context, questionDetails);
+    public LikertWidget(Context context, QuestionDetails questionDetails, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         items = ItemsWidgetUtils.loadItemsAndHandleErrors(this, questionDetails.getPrompt(), selectChoiceLoader);
 
         setMainViewLayoutParameters();

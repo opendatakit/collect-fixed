@@ -37,8 +37,8 @@ import static org.odk.collect.android.utilities.ApplicationConstants.RequestCode
 public class DrawWidget extends BaseImageWidget {
     DrawWidgetBinding binding;
 
-    public DrawWidget(Context context, QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath) {
-        super(context, prompt, questionMediaManager, waitingForDataRegistry, tmpImageFilePath);
+    public DrawWidget(Context context, QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath, Dependencies dependencies) {
+        super(context, prompt, questionMediaManager, waitingForDataRegistry, tmpImageFilePath, dependencies);
         imageClickHandler = new DrawImageClickHandler(DrawActivity.OPTION_DRAW, RequestCodes.DRAW_IMAGE, org.odk.collect.strings.R.string.draw_image);
 
         render();

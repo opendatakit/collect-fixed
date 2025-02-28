@@ -38,7 +38,7 @@ public class ExStringWidgetTest extends GeneralExStringWidgetTest<ExStringWidget
     @Override
     public ExStringWidget createWidget() {
         when(formEntryPrompt.getDataType()).thenReturn(Constants.DATATYPE_TEXT);
-        return new ExStringWidget(activity, new QuestionDetails(formEntryPrompt), new FakeWaitingForDataRegistry(), stringRequester);
+        return new ExStringWidget(activity, new QuestionDetails(formEntryPrompt), new FakeWaitingForDataRegistry(), stringRequester, dependencies);
     }
 
     @NonNull

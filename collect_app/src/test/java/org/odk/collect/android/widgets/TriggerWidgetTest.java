@@ -20,6 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mockValueChangedListener;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAnswer;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnly;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetTestActivity;
 
 @RunWith(AndroidJUnit4.class)
@@ -94,6 +95,6 @@ public class TriggerWidgetTest {
     }
 
     private TriggerWidget createWidget(FormEntryPrompt prompt) {
-        return new TriggerWidget(widgetTestActivity(), new QuestionDetails(prompt));
+        return new TriggerWidget(widgetTestActivity(), new QuestionDetails(prompt), widgetDependencies());
     }
 }

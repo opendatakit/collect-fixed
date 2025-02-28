@@ -24,8 +24,8 @@ public abstract class SelectMinimalWidget extends QuestionWidget implements Widg
     SelectMinimalWidgetAnswerBinding binding;
     private final WaitingForDataRegistry waitingForDataRegistry;
 
-    public SelectMinimalWidget(Context context, QuestionDetails prompt, WaitingForDataRegistry waitingForDataRegistry, SelectChoiceLoader selectChoiceLoader) {
-        super(context, prompt);
+    public SelectMinimalWidget(Context context, QuestionDetails prompt, WaitingForDataRegistry waitingForDataRegistry, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, dependencies, prompt);
         this.waitingForDataRegistry = waitingForDataRegistry;
         items = ItemsWidgetUtils.loadItemsAndHandleErrors(this, questionDetails.getPrompt(), selectChoiceLoader);
     }

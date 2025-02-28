@@ -27,8 +27,8 @@ public class RangePickerIntegerWidget extends QuestionWidget {
 
     private int progress;
 
-    public RangePickerIntegerWidget(Context context, QuestionDetails questionDetails) {
-        super(context, questionDetails);
+    public RangePickerIntegerWidget(Context context, QuestionDetails questionDetails, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
     }
 

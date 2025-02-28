@@ -48,8 +48,8 @@ public class BearingWidget extends QuestionWidget implements WidgetDataReceiver 
     private final WaitingForDataRegistry waitingForDataRegistry;
     private final SensorManager sensorManager;
 
-    public BearingWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, SensorManager sensorManager) {
-        super(context, questionDetails);
+    public BearingWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, SensorManager sensorManager, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         this.waitingForDataRegistry = waitingForDataRegistry;

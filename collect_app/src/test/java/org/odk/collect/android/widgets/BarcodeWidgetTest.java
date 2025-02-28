@@ -11,6 +11,7 @@ import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mock
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAnswer;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAppearance;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnly;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetTestActivity;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -206,6 +207,6 @@ public class BarcodeWidgetTest {
 
     public BarcodeWidget createWidget(FormEntryPrompt prompt) {
         return new BarcodeWidget(widgetTestActivity, new QuestionDetails(prompt),
-                waitingForDataRegistry, cameraUtils);
+                waitingForDataRegistry, cameraUtils, widgetDependencies());
     }
 }

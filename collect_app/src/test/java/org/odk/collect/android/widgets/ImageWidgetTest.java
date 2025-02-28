@@ -65,7 +65,7 @@ public class ImageWidgetTest extends FileWidgetTest<ImageWidget> {
             }
         };
         return new ImageWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride),
-                fakeQuestionMediaManager, new FakeWaitingForDataRegistry(), TempFiles.getPathInTempDir());
+                fakeQuestionMediaManager, new FakeWaitingForDataRegistry(), TempFiles.getPathInTempDir(), dependencies);
     }
 
     @NonNull

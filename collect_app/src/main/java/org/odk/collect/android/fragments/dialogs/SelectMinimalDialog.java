@@ -1,5 +1,7 @@
 package org.odk.collect.android.fragments.dialogs;
 
+import static org.odk.collect.android.injection.DaggerUtils.getComponent;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,15 +18,12 @@ import org.jetbrains.annotations.NotNull;
 import org.odk.collect.android.R;
 import org.odk.collect.android.adapters.AbstractSelectListAdapter;
 import org.odk.collect.android.databinding.SelectMinimalDialogLayoutBinding;
-import org.odk.collect.android.formentry.media.AudioHelperFactory;
 import org.odk.collect.android.fragments.viewmodels.SelectMinimalViewModel;
+import org.odk.collect.android.widgets.utilities.ViewModelAudioPlayer;
+import org.odk.collect.audioclips.AudioClipViewModel;
 import org.odk.collect.material.MaterialFullScreenDialogFragment;
 
 import java.util.List;
-
-import javax.inject.Inject;
-
-import static org.odk.collect.android.injection.DaggerUtils.getComponent;
 
 public abstract class SelectMinimalDialog extends MaterialFullScreenDialogFragment {
 
@@ -36,9 +35,6 @@ public abstract class SelectMinimalDialog extends MaterialFullScreenDialogFragme
     protected SelectMinimalViewModel viewModel;
     protected SelectMinimalDialogListener listener;
     protected AbstractSelectListAdapter adapter;
-
-    @Inject
-    public AudioHelperFactory audioHelperFactory;
 
     public interface SelectMinimalDialogListener {
         void updateSelectedItems(List<Selection> items);
@@ -81,7 +77,7 @@ public abstract class SelectMinimalDialog extends MaterialFullScreenDialogFragme
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewModel.getSelectListAdapter().getAudioHelper().stop();
+        viewModel.getSelectListAdapter().getAudioPlayer().stop();
         binding = null;
     }
 
@@ -141,7 +137,7 @@ public abstract class SelectMinimalDialog extends MaterialFullScreenDialogFragme
 
     private void initRecyclerView() {
         viewModel.getSelectListAdapter().setContext(getActivity());
-        viewModel.getSelectListAdapter().setAudioHelper(audioHelperFactory.create(getActivity()));
+        viewModel.getSelectListAdapter().setAudioPlayer(new ViewModelAudioPlayer(new ViewModelProvider(requireActivity()).get(AudioClipViewModel.class), getViewLifecycleOwner()));
         binding.choicesRecyclerView.initRecyclerView(viewModel.getSelectListAdapter(), viewModel.isFlex());
     }
 

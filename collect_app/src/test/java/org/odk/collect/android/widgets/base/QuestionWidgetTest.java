@@ -23,10 +23,10 @@ import org.mockito.Mock;
 import org.odk.collect.android.R;
 import org.odk.collect.android.javarosawrapper.FormController;
 import org.odk.collect.android.listeners.WidgetValueChangedListener;
-import org.odk.collect.android.support.CollectHelpers;
 import org.odk.collect.android.support.WidgetTestActivity;
 import org.odk.collect.android.widgets.QuestionWidget;
 import org.odk.collect.android.widgets.interfaces.Widget;
+import org.odk.collect.android.widgets.support.QuestionWidgetHelpers;
 
 import java.util.List;
 import java.util.Random;
@@ -35,7 +35,8 @@ public abstract class QuestionWidgetTest<W extends Widget, A extends IAnswerData
         extends WidgetTest {
 
     protected Random random = new Random();
-    protected Activity activity = CollectHelpers.buildThemedActivity(WidgetTestActivity.class).get();
+    protected Activity activity = QuestionWidgetHelpers.widgetTestActivity();
+    protected QuestionWidget.Dependencies dependencies = QuestionWidgetHelpers.widgetDependencies();
 
     private W widget;
     private W actualWidget;

@@ -48,8 +48,8 @@ public class RankingWidget extends QuestionWidget implements WidgetDataReceiver 
     private final List<SelectChoice> items;
     RankingWidgetBinding binding;
 
-    public RankingWidget(Context context, QuestionDetails prompt, WaitingForDataRegistry waitingForDataRegistry, SelectChoiceLoader selectChoiceLoader) {
-        super(context, prompt);
+    public RankingWidget(Context context, QuestionDetails prompt, WaitingForDataRegistry waitingForDataRegistry, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, dependencies, prompt);
         this.waitingForDataRegistry = waitingForDataRegistry;
         items = ItemsWidgetUtils.loadItemsAndHandleErrors(this, questionDetails.getPrompt(), selectChoiceLoader);
         readSavedItems();

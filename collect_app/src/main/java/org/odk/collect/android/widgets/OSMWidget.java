@@ -55,8 +55,8 @@ public class OSMWidget extends QuestionWidget implements WidgetDataReceiver {
     private final int formId;
 
     public OSMWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry,
-                     IntentLauncher intentLauncher, FormController formController) {
-        super(context, questionDetails);
+                     IntentLauncher intentLauncher, FormController formController, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         this.waitingForDataRegistry = waitingForDataRegistry;

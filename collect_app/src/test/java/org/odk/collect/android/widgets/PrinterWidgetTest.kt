@@ -26,7 +26,13 @@ class PrinterWidgetTest : QuestionWidgetTest<PrinterWidget, IAnswerData>() {
     private val qrCodeCreator = mock<QRCodeCreator>()
     private val htmlPrinter = mock<HtmlPrinter>()
 
-    override fun createWidget() = PrinterWidget(activity, QuestionDetails(formEntryPrompt), PrinterWidgetViewModel(scheduler, qrCodeCreator, htmlPrinter), questionMediaManager)
+    override fun createWidget() = PrinterWidget(
+        activity,
+        QuestionDetails(formEntryPrompt),
+        PrinterWidgetViewModel(scheduler, qrCodeCreator, htmlPrinter),
+        questionMediaManager,
+        dependencies
+    )
 
     @Test
     fun `clicking the button should trigger printing html document if answer exists`() {

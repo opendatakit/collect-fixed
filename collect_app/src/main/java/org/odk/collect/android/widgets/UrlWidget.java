@@ -34,8 +34,8 @@ public class UrlWidget extends QuestionWidget {
 
     private final ExternalWebPageHelper externalWebPageHelper;
 
-    public UrlWidget(Context context, QuestionDetails questionDetails, ExternalWebPageHelper externalWebPageHelper) {
-        super(context, questionDetails);
+    public UrlWidget(Context context, QuestionDetails questionDetails, ExternalWebPageHelper externalWebPageHelper, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         this.externalWebPageHelper = externalWebPageHelper;

@@ -39,8 +39,8 @@ import java.io.Serializable;
 @SuppressLint("ViewConstructor")
 public class ExDecimalWidget extends ExStringWidget {
 
-    public ExDecimalWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, StringRequester stringRequester) {
-        super(context, questionDetails, waitingForDataRegistry, stringRequester);
+    public ExDecimalWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, StringRequester stringRequester, Dependencies dependencies) {
+        super(context, questionDetails, waitingForDataRegistry, stringRequester, dependencies);
 
         boolean useThousandSeparator = Appearances.useThousandSeparator(questionDetails.getPrompt());
         Double answer = StringWidgetUtils.getDoubleAnswerValueFromIAnswerData(questionDetails.getPrompt().getAnswerValue());

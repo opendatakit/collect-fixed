@@ -22,7 +22,7 @@ public class ListWidgetTest extends GeneralSelectOneWidgetTest<ListWidget> {
     @NonNull
     @Override
     public ListWidget createWidget() {
-        return new ListWidget(activity, new QuestionDetails(formEntryPrompt), false, false, new FormEntryPromptSelectChoiceLoader());
+        return new ListWidget(activity, new QuestionDetails(formEntryPrompt), false, false, new FormEntryPromptSelectChoiceLoader(), dependencies);
     }
 
     @Test

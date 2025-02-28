@@ -28,8 +28,8 @@ public class SelectOneMinimalWidget extends SelectMinimalWidget {
     private final boolean autoAdvance;
     private AdvanceToNextListener autoAdvanceListener;
 
-    public SelectOneMinimalWidget(Context context, QuestionDetails prompt, boolean autoAdvance, WaitingForDataRegistry waitingForDataRegistry, SelectChoiceLoader selectChoiceLoader) {
-        super(context, prompt, waitingForDataRegistry, selectChoiceLoader);
+    public SelectOneMinimalWidget(Context context, QuestionDetails prompt, boolean autoAdvance, WaitingForDataRegistry waitingForDataRegistry, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, prompt, waitingForDataRegistry, selectChoiceLoader, dependencies);
         render();
 
         selectedItem = SelectOneWidgetUtils.getSelectedItem(prompt.getPrompt(), items);

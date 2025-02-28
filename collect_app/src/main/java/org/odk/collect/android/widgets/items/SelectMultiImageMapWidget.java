@@ -35,8 +35,8 @@ import java.util.List;
  */
 @SuppressLint("ViewConstructor")
 public class SelectMultiImageMapWidget extends SelectImageMapWidget {
-    public SelectMultiImageMapWidget(Context context, QuestionDetails questionDetails, SelectChoiceLoader selectChoiceLoader) {
-        super(context, questionDetails, selectChoiceLoader);
+    public SelectMultiImageMapWidget(Context context, QuestionDetails questionDetails, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, questionDetails, selectChoiceLoader, dependencies);
 
         if (questionDetails.getPrompt().getAnswerValue() != null) {
             selections = (List<Selection>) getFormEntryPrompt().getAnswerValue().getValue();

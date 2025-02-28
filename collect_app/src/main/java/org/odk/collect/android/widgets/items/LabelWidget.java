@@ -59,8 +59,8 @@ public class LabelWidget extends QuestionWidget {
 
     private final List<SelectChoice> items;
 
-    public LabelWidget(Context context, QuestionDetails questionDetails, SelectChoiceLoader selectChoiceLoader) {
-        super(context, questionDetails);
+    public LabelWidget(Context context, QuestionDetails questionDetails, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         items = ItemsWidgetUtils.loadItemsAndHandleErrors(this, questionDetails.getPrompt(), selectChoiceLoader);

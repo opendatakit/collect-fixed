@@ -1,22 +1,5 @@
 package org.odk.collect.android.views.helpers;
 
-import androidx.core.util.Pair;
-
-import org.javarosa.core.model.Constants;
-import org.javarosa.core.model.SelectChoice;
-import org.javarosa.core.reference.ReferenceManager;
-import org.javarosa.form.api.FormEntryCaption;
-import org.javarosa.form.api.FormEntryPrompt;
-import org.junit.Before;
-import org.junit.Test;
-import org.odk.collect.android.audio.AudioHelper;
-import org.odk.collect.android.formentry.media.PromptAutoplayer;
-import org.odk.collect.android.support.MockFormEntryPromptBuilder;
-import org.odk.collect.audioclips.Clip;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,17 +10,34 @@ import static org.odk.collect.android.support.CollectHelpers.setupFakeReferenceM
 import static org.odk.collect.android.utilities.Appearances.COMPACT;
 import static org.odk.collect.android.utilities.Appearances.MINIMAL;
 import static org.odk.collect.android.utilities.Appearances.NO_BUTTONS;
+import static java.util.Arrays.asList;
+
+import androidx.core.util.Pair;
+
+import org.javarosa.core.model.Constants;
+import org.javarosa.core.model.SelectChoice;
+import org.javarosa.core.reference.ReferenceManager;
+import org.javarosa.form.api.FormEntryCaption;
+import org.javarosa.form.api.FormEntryPrompt;
+import org.junit.Before;
+import org.junit.Test;
+import org.odk.collect.android.formentry.media.PromptAutoplayer;
+import org.odk.collect.android.support.MockFormEntryPromptBuilder;
+import org.odk.collect.android.widgets.utilities.AudioPlayer;
+import org.odk.collect.audioclips.Clip;
+
+import java.util.List;
 
 public class PromptAutoplayerTest {
 
-    private final AudioHelper audioHelper = mock(AudioHelper.class);
+    private final AudioPlayer audioPlayer = mock(AudioPlayer.class);
 
     private PromptAutoplayer autoplayer;
 
     @Before
     public void setup() throws Exception {
         ReferenceManager referenceManager = setupFakeReferenceManager(REFERENCES);
-        autoplayer = new PromptAutoplayer(audioHelper, referenceManager);
+        autoplayer = new PromptAutoplayer(audioPlayer, referenceManager);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
+        verify(audioPlayer).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
+        verify(audioPlayer).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(false));
-        verify(audioHelper, never()).playInOrder(any());
+        verify(audioPlayer, never()).playInOrder(any());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(
+        verify(audioPlayer).playInOrder(asList(
                 new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second),
                 new Clip(prompt.getIndex().toString() + " 0", REFERENCES.get(1).second),
                 new Clip(prompt.getIndex().toString() + " 1", REFERENCES.get(2).second)
@@ -114,7 +114,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(
+        verify(audioPlayer).playInOrder(asList(
                 new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second),
                 new Clip(prompt.getIndex().toString() + " 0", REFERENCES.get(1).second),
                 new Clip(prompt.getIndex().toString() + " 1", REFERENCES.get(2).second)
@@ -137,7 +137,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(
+        verify(audioPlayer).playInOrder(asList(
                 new Clip(prompt.getIndex().toString() + " 0", REFERENCES.get(0).second),
                 new Clip(prompt.getIndex().toString() + " 1", REFERENCES.get(1).second)
         ));
@@ -156,7 +156,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
+        verify(audioPlayer).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
     }
 
     @Test
@@ -177,7 +177,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
+        verify(audioPlayer).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
     }
 
     @Test
@@ -198,7 +198,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
+        verify(audioPlayer).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
     }
 
     @Test
@@ -219,7 +219,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(true));
-        verify(audioHelper).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
+        verify(audioPlayer).playInOrder(asList(new Clip(prompt.getIndex().toString(), REFERENCES.get(0).second)));
     }
 
     @Test // We only support audio autoplaying with the helper right now
@@ -229,7 +229,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(false));
-        verify(audioHelper, never()).playInOrder(any());
+        verify(audioPlayer, never()).playInOrder(any());
     }
 
     @Test
@@ -239,7 +239,7 @@ public class PromptAutoplayerTest {
                 .build();
 
         assertThat(autoplayer.autoplayIfNeeded(prompt), equalTo(false));
-        verify(audioHelper, never()).playInOrder(any());
+        verify(audioPlayer, never()).playInOrder(any());
     }
 
     private static final List<Pair<String, String>> REFERENCES = asList(

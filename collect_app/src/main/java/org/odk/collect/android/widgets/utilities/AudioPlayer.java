@@ -2,6 +2,7 @@ package org.odk.collect.android.widgets.utilities;
 
 import org.odk.collect.audioclips.Clip;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public interface AudioPlayer {
@@ -16,5 +17,9 @@ public interface AudioPlayer {
 
     void onPositionChanged(String clipID, Consumer<Integer> positionConsumer);
 
+    void onPlaybackError(Consumer<Exception> error);
+
     void stop();
+
+    void playInOrder(List<Clip> clips);
 }

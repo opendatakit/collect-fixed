@@ -65,7 +65,7 @@ public class SignatureWidgetTest extends FileWidgetTest<SignatureWidget> {
             }
         };
         return new SignatureWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride),
-                fakeQuestionMediaManager, new FakeWaitingForDataRegistry(), TempFiles.getPathInTempDir());
+                fakeQuestionMediaManager, new FakeWaitingForDataRegistry(), TempFiles.getPathInTempDir(), dependencies);
     }
 
     @NonNull

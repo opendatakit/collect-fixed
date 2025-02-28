@@ -79,8 +79,8 @@ public class ListWidget extends QuestionWidget implements MultiChoiceWidget, OnC
     private final boolean displayLabel;
     private final List<SelectChoice> items;
 
-    public ListWidget(Context context, QuestionDetails questionDetails, boolean displayLabel, boolean autoAdvance, SelectChoiceLoader selectChoiceLoader) {
-        super(context, questionDetails);
+    public ListWidget(Context context, QuestionDetails questionDetails, boolean displayLabel, boolean autoAdvance, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         items = ItemsWidgetUtils.loadItemsAndHandleErrors(this, questionDetails.getPrompt(), selectChoiceLoader);

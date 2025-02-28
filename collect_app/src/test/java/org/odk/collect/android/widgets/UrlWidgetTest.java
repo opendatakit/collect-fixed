@@ -26,6 +26,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAnswer;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetTestActivity;
 
 /**
@@ -126,6 +127,6 @@ public class UrlWidgetTest {
     }
 
     private UrlWidget createWidget(FormEntryPrompt prompt) {
-        return new UrlWidget(spyActivity, new QuestionDetails(prompt), externalWebPageHelper);
+        return new UrlWidget(spyActivity, new QuestionDetails(prompt), externalWebPageHelper, widgetDependencies());
     }
 }

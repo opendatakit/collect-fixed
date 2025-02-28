@@ -37,8 +37,8 @@ import org.odk.collect.android.widgets.utilities.WaitingForDataRegistry;
 public class SignatureWidget extends BaseImageWidget {
     SignatureWidgetBinding binding;
 
-    public SignatureWidget(Context context, QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath) {
-        super(context, prompt, questionMediaManager, waitingForDataRegistry, tmpImageFilePath);
+    public SignatureWidget(Context context, QuestionDetails prompt, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath, Dependencies dependencies) {
+        super(context, prompt, questionMediaManager, waitingForDataRegistry, tmpImageFilePath, dependencies);
         imageClickHandler = new DrawImageClickHandler(DrawActivity.OPTION_SIGNATURE, RequestCodes.SIGNATURE_CAPTURE, org.odk.collect.strings.R.string.signature_capture);
 
         render();

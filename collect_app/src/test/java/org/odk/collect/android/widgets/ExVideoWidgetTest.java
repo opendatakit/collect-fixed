@@ -66,7 +66,7 @@ public class ExVideoWidgetTest extends FileWidgetTest<ExVideoWidget> {
     @Override
     public ExVideoWidget createWidget() {
         return new ExVideoWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride),
-                new FakeQuestionMediaManager(), new FakeWaitingForDataRegistry(), fileRequester);
+                new FakeQuestionMediaManager(), new FakeWaitingForDataRegistry(), fileRequester, dependencies);
     }
 
     @Test

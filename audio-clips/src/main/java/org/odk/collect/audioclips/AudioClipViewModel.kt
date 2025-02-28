@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.map
+import org.odk.collect.androidshared.data.Consumable
 import org.odk.collect.async.Cancellable
 import org.odk.collect.async.Scheduler
 import java.io.File
@@ -20,7 +21,7 @@ class AudioClipViewModel(private val mediaPlayerFactory: Supplier<MediaPlayer>, 
     private var _mediaPlayer: MediaPlayer? = null
 
     private val currentlyPlaying = MutableLiveData<CurrentlyPlaying?>(null)
-    private val error = MutableLiveData<Exception?>()
+    private val error = MutableLiveData<Consumable<Exception>?>()
     private val positions: MutableMap<String, MutableLiveData<Int>?> = HashMap()
     private var positionUpdatesCancellable: Cancellable? = null
     private val isLoading = MutableLiveData(false)
@@ -93,7 +94,7 @@ class AudioClipViewModel(private val mediaPlayerFactory: Supplier<MediaPlayer>, 
                     },
                     onLoadFailure = {
                         error.value =
-                            PlaybackFailedException(nextClip.uRI, getExceptionMsg(nextClip.uRI))
+                            Consumable(PlaybackFailedException(nextClip.uRI, getExceptionMsg(nextClip.uRI)))
                         playNext(playlist)
                     }
                 )
@@ -153,12 +154,8 @@ class AudioClipViewModel(private val mediaPlayerFactory: Supplier<MediaPlayer>, 
         return liveData
     }
 
-    fun getError(): LiveData<Exception?> {
+    fun getError(): LiveData<Consumable<Exception>?> {
         return error
-    }
-
-    fun errorDisplayed() {
-        error.value = null
     }
 
     private fun schedulePositionUpdates() {

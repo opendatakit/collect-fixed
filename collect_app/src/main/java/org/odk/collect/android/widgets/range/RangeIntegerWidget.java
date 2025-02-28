@@ -40,8 +40,8 @@ public class RangeIntegerWidget extends QuestionWidget implements Slider.OnChang
     TrackingTouchSlider slider;
     TextView currentValue;
 
-    public RangeIntegerWidget(Context context, QuestionDetails prompt) {
-        super(context, prompt);
+    public RangeIntegerWidget(Context context, QuestionDetails prompt, Dependencies dependencies) {
+        super(context, dependencies, prompt);
         render();
     }
 

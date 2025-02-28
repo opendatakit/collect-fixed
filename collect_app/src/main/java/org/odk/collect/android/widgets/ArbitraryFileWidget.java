@@ -39,8 +39,8 @@ public class ArbitraryFileWidget extends BaseArbitraryFileWidget implements File
     private final WaitingForDataRegistry waitingForDataRegistry;
 
     ArbitraryFileWidget(Context context, QuestionDetails questionDetails,
-                        QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry) {
-        super(context, questionDetails, questionMediaManager, waitingForDataRegistry);
+                        QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, Dependencies dependencies) {
+        super(context, questionDetails, questionMediaManager, waitingForDataRegistry, dependencies);
         this.waitingForDataRegistry = waitingForDataRegistry;
     }
 

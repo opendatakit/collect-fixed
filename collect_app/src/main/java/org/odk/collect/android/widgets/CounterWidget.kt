@@ -12,8 +12,9 @@ import java.util.Locale
 
 class CounterWidget(
     context: Context,
-    questionDetails: QuestionDetails
-) : QuestionWidget(context, questionDetails) {
+    questionDetails: QuestionDetails,
+    dependencies: Dependencies
+) : QuestionWidget(context, dependencies, questionDetails) {
     lateinit var binding: CounterWidgetBinding
 
     private var value: Int? = null

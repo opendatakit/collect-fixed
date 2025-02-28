@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mockValueChangedListener;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithAnswer;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnly;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetTestActivity;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -215,7 +216,7 @@ public class BearingWidgetTest {
     }
 
     private BearingWidget createWidget(FormEntryPrompt prompt) {
-        return new BearingWidget(widgetActivity, new QuestionDetails(prompt), fakeWaitingForDataRegistry, sensorManager);
+        return new BearingWidget(widgetActivity, new QuestionDetails(prompt), fakeWaitingForDataRegistry, sensorManager, widgetDependencies());
     }
 
     private void assertNoIntentLaunchedWhenSensorIsUnavailable(int sensorType) {

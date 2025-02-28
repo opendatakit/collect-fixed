@@ -42,8 +42,8 @@ public class SelectOneImageMapWidget extends SelectImageMapWidget {
 
     private final boolean autoAdvance;
 
-    public SelectOneImageMapWidget(Context context, QuestionDetails questionDetails, boolean autoAdvance, SelectChoiceLoader selectChoiceLoader) {
-        super(context, questionDetails, selectChoiceLoader);
+    public SelectOneImageMapWidget(Context context, QuestionDetails questionDetails, boolean autoAdvance, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, questionDetails, selectChoiceLoader, dependencies);
 
         this.autoAdvance = autoAdvance;
 

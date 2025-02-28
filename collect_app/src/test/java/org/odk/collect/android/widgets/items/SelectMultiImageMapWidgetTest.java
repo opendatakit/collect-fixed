@@ -26,7 +26,7 @@ public class SelectMultiImageMapWidgetTest extends SelectImageMapWidgetTest<Sele
     @NonNull
     @Override
     public SelectMultiImageMapWidget createWidget() {
-        return new SelectMultiImageMapWidget(activity, new QuestionDetails(formEntryPrompt), new FormEntryPromptSelectChoiceLoader());
+        return new SelectMultiImageMapWidget(activity, new QuestionDetails(formEntryPrompt), new FormEntryPromptSelectChoiceLoader(), dependencies);
     }
 
     @NonNull

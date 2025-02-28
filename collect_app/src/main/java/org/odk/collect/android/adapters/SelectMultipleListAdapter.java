@@ -31,11 +31,11 @@ import org.javarosa.core.model.data.helper.Selection;
 import org.javarosa.core.reference.ReferenceManager;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.odk.collect.android.R;
-import org.odk.collect.android.audio.AudioHelper;
 import org.odk.collect.android.formentry.questions.AudioVideoImageTextLabel;
 import org.odk.collect.android.formentry.questions.NoButtonsItem;
 import org.odk.collect.android.listeners.SelectItemClickListener;
 import org.odk.collect.android.utilities.MediaUtils;
+import org.odk.collect.android.widgets.utilities.AudioPlayer;
 import org.odk.collect.imageloader.GlideImageLoader;
 
 import java.util.ArrayList;
@@ -49,9 +49,9 @@ public class SelectMultipleListAdapter extends AbstractSelectListAdapter {
 
     public SelectMultipleListAdapter(List<Selection> selectedItems, SelectItemClickListener listener,
                                      Context context, List<SelectChoice> items,
-                                     FormEntryPrompt prompt, ReferenceManager referenceManager, AudioHelper audioHelper,
+                                     FormEntryPrompt prompt, ReferenceManager referenceManager, AudioPlayer audioPlayer,
                                      int playColor, int numColumns, boolean noButtonsMode, MediaUtils mediaUtils) {
-        super(context, items, prompt, referenceManager, audioHelper, playColor, numColumns, noButtonsMode, mediaUtils);
+        super(context, items, prompt, referenceManager, audioPlayer, playColor, numColumns, noButtonsMode, mediaUtils);
         this.originallySelectedItems = new ArrayList<>(selectedItems);
         this.selectedItems = selectedItems;
         this.listener = listener;
@@ -129,7 +129,7 @@ public class SelectMultipleListAdapter extends AbstractSelectListAdapter {
             if (view != null) {
                 view.setBackground(null);
             }
-            audioHelper.stop();
+            getAudioPlayer().stop();
         } else {
             addItem(selection);
             if (view != null) {

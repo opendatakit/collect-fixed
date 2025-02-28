@@ -66,7 +66,7 @@ public class ExImageWidgetTest extends FileWidgetTest<ExImageWidget> {
     @Override
     public ExImageWidget createWidget() {
         return new ExImageWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride),
-                new FakeQuestionMediaManager(), new FakeWaitingForDataRegistry(), fileRequester);
+                new FakeQuestionMediaManager(), new FakeWaitingForDataRegistry(), fileRequester, dependencies);
     }
 
     @Test

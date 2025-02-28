@@ -25,7 +25,7 @@ public class IntegerWidgetTest extends GeneralStringWidgetTest<IntegerWidget, In
     @Override
     public IntegerWidget createWidget() {
         when(formEntryPrompt.getDataType()).thenReturn(Constants.DATATYPE_INTEGER);
-        return new IntegerWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride));
+        return new IntegerWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride), dependencies);
     }
 
     @NonNull

@@ -29,15 +29,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 
 import org.odk.collect.android.R;
-import org.odk.collect.android.audio.AudioHelper;
+import org.odk.collect.android.audio.AudioButton;
 import org.odk.collect.android.databinding.AudioVideoImageTextLabelBinding;
 import org.odk.collect.android.listeners.SelectItemClickListener;
 import org.odk.collect.android.utilities.FormEntryPromptUtils;
 import org.odk.collect.android.utilities.MediaUtils;
-import org.odk.collect.android.utilities.ScreenContext;
+import org.odk.collect.android.widgets.utilities.AudioPlayer;
 import org.odk.collect.audioclips.Clip;
 import org.odk.collect.imageloader.ImageLoader;
 
@@ -96,8 +95,34 @@ public class AudioVideoImageTextLabel extends RelativeLayout implements View.OnC
         }
     }
 
-    public void setAudio(String audioURI, AudioHelper audioHelper) {
-        setupAudioButton(audioURI, audioHelper);
+    public void setAudio(String audioURI, AudioPlayer audioPlayer) {
+        String clipID = getTag() != null ? getTag().toString() : "";
+
+        originalTextColor = textLabel.getTextColors().getDefaultColor();
+        audioPlayer.onPlayingChanged(clipID, isPlaying -> {
+            binding.audioButton.setPlaying(isPlaying);
+
+            if (isPlaying) {
+                textLabel.setTextColor(playTextColor);
+            } else {
+                textLabel.setTextColor(originalTextColor);
+            }
+        });
+
+        binding.audioButton.setListener(new AudioButton.Listener() {
+            @Override
+            public void onPlayClicked() {
+                audioPlayer.play(new Clip(clipID, audioURI));
+            }
+
+            @Override
+            public void onStopClicked() {
+                audioPlayer.stop();
+            }
+        });
+
+        binding.audioButton.setVisibility(VISIBLE);
+        binding.mediaButtons.setVisibility(VISIBLE);
     }
 
     public void setImage(@NonNull File imageFile, ImageLoader imageLoader) {
@@ -194,32 +219,6 @@ public class AudioVideoImageTextLabel extends RelativeLayout implements View.OnC
         }
         if (listener != null) {
             listener.onItemClicked();
-        }
-    }
-
-    private void setupAudioButton(String audioURI, AudioHelper audioHelper) {
-        binding.audioButton.setVisibility(VISIBLE);
-        binding.mediaButtons.setVisibility(VISIBLE);
-
-        ScreenContext activity = getScreenContext();
-        String clipID = getTag() != null ? getTag().toString() : "";
-        LiveData<Boolean> isPlayingLiveData = audioHelper.setAudio(binding.audioButton, new Clip(clipID, audioURI));
-
-        originalTextColor = textLabel.getTextColors().getDefaultColor();
-        isPlayingLiveData.observe(activity.getViewLifecycle(), isPlaying -> {
-            if (isPlaying) {
-                textLabel.setTextColor(playTextColor);
-            } else {
-                textLabel.setTextColor(originalTextColor);
-            }
-        });
-    }
-
-    private ScreenContext getScreenContext() {
-        try {
-            return (ScreenContext) getContext();
-        } catch (ClassCastException e) {
-            throw new RuntimeException(getContext().toString() + " must implement " + ScreenContext.class.getName());
         }
     }
 

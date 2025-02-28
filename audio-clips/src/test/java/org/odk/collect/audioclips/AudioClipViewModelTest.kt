@@ -417,7 +417,7 @@ class AudioClipViewModelTest {
         viewModel.play(Clip("clip1", "file://missing.mp3"))
         fakeScheduler.flush()
 
-        assertThat(error.getOrAwaitValue(), equalTo<Exception?>(PlaybackFailedException("file://missing.mp3", 0)))
+        assertThat(error.getOrAwaitValue()!!.value, equalTo(PlaybackFailedException("file://missing.mp3", 0)))
     }
 
     @Test
@@ -428,18 +428,7 @@ class AudioClipViewModelTest {
         viewModel.play(Clip("clip1", invalid.absolutePath))
         fakeScheduler.flush()
 
-        assertThat(error.getOrAwaitValue(), equalTo<Exception?>(PlaybackFailedException(invalid.absolutePath, 1)))
-    }
-
-    @Test
-    fun dismissError_removesErrorValue() {
-        val error = viewModel.getError()
-        doThrow(IOException::class.java).`when`(mediaPlayer).setDataSource("file://missing.mp3")
-        viewModel.play(Clip("clip1", "file://missing.mp3"))
-        fakeScheduler.flush()
-
-        viewModel.errorDisplayed()
-        assertThat(error.getOrAwaitValue(), equalTo<Exception?>(null))
+        assertThat(error.getOrAwaitValue()!!.value, equalTo(PlaybackFailedException(invalid.absolutePath, 1)))
     }
 
     @Test

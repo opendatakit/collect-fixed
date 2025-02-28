@@ -57,7 +57,7 @@ public class ArbitraryFileWidgetTest extends FileWidgetTest<ArbitraryFileWidget>
     @Override
     public ArbitraryFileWidget createWidget() {
         return new ArbitraryFileWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride),
-                new FakeQuestionMediaManager(), new FakeWaitingForDataRegistry());
+                new FakeQuestionMediaManager(), new FakeWaitingForDataRegistry(), dependencies);
     }
 
     @Test

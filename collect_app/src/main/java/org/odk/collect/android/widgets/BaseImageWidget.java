@@ -62,8 +62,8 @@ public abstract class BaseImageWidget extends QuestionWidget implements FileWidg
     protected final String tmpImageFilePath;
 
     public BaseImageWidget(Context context, QuestionDetails prompt, QuestionMediaManager questionMediaManager,
-                           WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath) {
-        super(context, prompt);
+                           WaitingForDataRegistry waitingForDataRegistry, String tmpImageFilePath, Dependencies dependencies) {
+        super(context, dependencies, prompt);
         this.questionMediaManager = questionMediaManager;
         this.waitingForDataRegistry = waitingForDataRegistry;
         this.tmpImageFilePath = tmpImageFilePath;

@@ -28,6 +28,7 @@ import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.mock
 
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithQuestionAndAnswer;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.promptWithReadOnlyAndQuestionDef;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetTestActivity;
 
 @RunWith(AndroidJUnit4.class)
@@ -211,6 +212,6 @@ public class RatingWidgetTest {
     }
 
     private RatingWidget createWidget(FormEntryPrompt prompt) {
-        return new RatingWidget(widgetTestActivity(), new QuestionDetails(prompt));
+        return new RatingWidget(widgetTestActivity(), new QuestionDetails(prompt), widgetDependencies());
     }
 }

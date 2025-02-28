@@ -71,7 +71,7 @@ public class AnnotateWidgetTest extends FileWidgetTest<AnnotateWidget> {
         };
         return new AnnotateWidget(activity,
                 new QuestionDetails(formEntryPrompt, readOnlyOverride),
-                questionMediaManager, new FakeWaitingForDataRegistry(), TempFiles.getPathInTempDir());
+                questionMediaManager, new FakeWaitingForDataRegistry(), TempFiles.getPathInTempDir(), dependencies);
     }
 
     @NonNull

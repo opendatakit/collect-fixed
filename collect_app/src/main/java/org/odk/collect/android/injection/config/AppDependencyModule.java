@@ -8,7 +8,6 @@ import static java.util.Collections.singletonList;
 
 import android.app.Application;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.webkit.MimeTypeMap;
 
 import androidx.work.WorkManager;
@@ -46,8 +45,6 @@ import org.odk.collect.android.entities.EntitiesRepositoryProvider;
 import org.odk.collect.android.external.InstancesContract;
 import org.odk.collect.android.formentry.AppStateFormSessionRepository;
 import org.odk.collect.android.formentry.FormSessionRepository;
-import org.odk.collect.android.formentry.media.AudioHelperFactory;
-import org.odk.collect.android.formentry.media.ScreenContextAudioHelperFactory;
 import org.odk.collect.android.formlists.blankformlist.BlankFormListViewModel;
 import org.odk.collect.android.formmanagement.CollectFormEntryControllerFactory;
 import org.odk.collect.android.formmanagement.FormSourceProvider;
@@ -207,11 +204,6 @@ public class AppDependencyModule {
     @Provides
     public ReferenceManager providesReferenceManager() {
         return ReferenceManager.instance();
-    }
-
-    @Provides
-    public AudioHelperFactory providesAudioHelperFactory(Scheduler scheduler) {
-        return new ScreenContextAudioHelperFactory(scheduler, MediaPlayer::new);
     }
 
     @Provides

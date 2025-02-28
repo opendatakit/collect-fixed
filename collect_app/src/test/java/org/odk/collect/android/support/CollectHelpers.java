@@ -1,5 +1,8 @@
 package org.odk.collect.android.support;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import android.app.Application;
 import android.content.Intent;
 
@@ -21,9 +24,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.android.controller.ActivityController;
 
 import java.util.List;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public final class CollectHelpers {
 

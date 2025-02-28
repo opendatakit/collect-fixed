@@ -17,8 +17,9 @@ class PrinterWidget(
     context: Context,
     questionDetails: QuestionDetails,
     private val printer: Printer,
-    private val questionMediaManager: QuestionMediaManager
-) : QuestionWidget(context, questionDetails) {
+    private val questionMediaManager: QuestionMediaManager,
+    dependencies: Dependencies
+) : QuestionWidget(context, dependencies, questionDetails) {
 
     init {
         render()

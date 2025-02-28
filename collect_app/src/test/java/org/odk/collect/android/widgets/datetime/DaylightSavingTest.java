@@ -19,6 +19,7 @@ package org.odk.collect.android.widgets.datetime;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.odk.collect.android.widgets.support.QuestionWidgetHelpers.widgetDependencies;
 
 import android.app.DatePickerDialog;
 import android.widget.DatePicker;
@@ -119,7 +120,7 @@ public class DaylightSavingTest {
         when(datePickerDialog.getDatePicker().getMonth()).thenReturn(month);
         when(datePickerDialog.getDatePicker().getDayOfMonth()).thenReturn(day);
 
-        return new DateWidget(widgetActivity, new QuestionDetails(formEntryPromptStub), widgetUtils, null);
+        return new DateWidget(widgetActivity, new QuestionDetails(formEntryPromptStub), widgetUtils, null, widgetDependencies());
     }
 
     private DateTimeWidget prepareDateTimeWidget(int year, int month, int day, int hour, int minute) {
@@ -135,7 +136,7 @@ public class DaylightSavingTest {
         when(formEntryPromptStub.getFormElement()).thenReturn(iformElementStub);
         when(formEntryPromptStub.getAppearanceHint()).thenReturn("no-calendar");
 
-        DateTimeWidget dateTimeWidget = new DateTimeWidget(widgetActivity, new QuestionDetails(formEntryPromptStub), widgetUtils, null);
+        DateTimeWidget dateTimeWidget = new DateTimeWidget(widgetActivity, new QuestionDetails(formEntryPromptStub), widgetUtils, null, widgetDependencies());
         dateTimeWidget.setData(new LocalDateTime().withDate(year, month, day));
         dateTimeWidget.setData(new DateTime().withTime(hour, minute, 0, 0));
 

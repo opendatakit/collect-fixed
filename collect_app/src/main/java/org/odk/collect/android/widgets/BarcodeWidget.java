@@ -49,8 +49,8 @@ public class BarcodeWidget extends QuestionWidget implements WidgetDataReceiver 
     private final CameraUtils cameraUtils;
 
     public BarcodeWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry,
-                         CameraUtils cameraUtils) {
-        super(context, questionDetails);
+                         CameraUtils cameraUtils, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         this.waitingForDataRegistry = waitingForDataRegistry;

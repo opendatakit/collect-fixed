@@ -74,8 +74,8 @@ public class ListMultiWidget extends QuestionWidget implements MultiChoiceWidget
     private final List<SelectChoice> items;
 
     @SuppressWarnings("unchecked")
-    public ListMultiWidget(Context context, QuestionDetails questionDetails, boolean displayLabel, SelectChoiceLoader selectChoiceLoader) {
-        super(context, questionDetails);
+    public ListMultiWidget(Context context, QuestionDetails questionDetails, boolean displayLabel, SelectChoiceLoader selectChoiceLoader, Dependencies dependencies) {
+        super(context, dependencies, questionDetails);
         render();
 
         items = ItemsWidgetUtils.loadItemsAndHandleErrors(this, questionDetails.getPrompt(), selectChoiceLoader);

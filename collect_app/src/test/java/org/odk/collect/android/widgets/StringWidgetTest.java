@@ -31,7 +31,7 @@ public class StringWidgetTest extends GeneralStringWidgetTest<StringWidget, Stri
     @Override
     public StringWidget createWidget() {
         when(formEntryPrompt.getDataType()).thenReturn(Constants.DATATYPE_TEXT);
-        return new StringWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride));
+        return new StringWidget(activity, new QuestionDetails(formEntryPrompt, readOnlyOverride), dependencies);
     }
 
     @NonNull
