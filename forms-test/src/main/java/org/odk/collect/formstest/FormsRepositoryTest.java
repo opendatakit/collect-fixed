@@ -252,6 +252,25 @@ public abstract class FormsRepositoryTest {
     }
 
     @Test
+    public void save_withNewFormVersion_copiesLanguageFromLatestFormVersion() {
+        FormsRepository formsRepository = buildSubject();
+
+        Form formV1 = formsRepository.save(FormUtils.buildForm("id", "1", getFormFilesPath()).build());
+        formsRepository.save(new Form.Builder(formV1)
+                .language("Spanish")
+                .build());
+
+        Form formV2 = formsRepository.save(FormUtils.buildForm(formV1.getFormId(), "2", getFormFilesPath()).build());
+        formsRepository.save(new Form.Builder(formV2)
+                .language("Polish")
+                .build());
+
+        Form formV3 = formsRepository.save(FormUtils.buildForm(formV1.getFormId(), "3", getFormFilesPath()).build());
+
+        assertThat(formsRepository.get(formV3.getDbId()).getLanguage(), is("Polish"));
+    }
+
+    @Test
     public void delete_deletesFiles() throws Exception {
         FormsRepository formsRepository = buildSubject();
         Form form = formsRepository.save(FormUtils.buildForm("id", "version", getFormFilesPath()).build());

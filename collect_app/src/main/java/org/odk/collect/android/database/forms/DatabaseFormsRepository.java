@@ -46,6 +46,7 @@ import org.odk.collect.shared.strings.Md5;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -170,6 +171,12 @@ public class DatabaseFormsRepository implements FormsRepository {
 
         if (form.getDbId() == null) {
             values.put(DATE, clock.get());
+
+            List<Form> existingFormsWithSameFormId = getAllByFormId(form.getFormId());
+            if (!existingFormsWithSameFormId.isEmpty()) {
+                Form latestFormWithSameFormId = Collections.max(existingFormsWithSameFormId, Comparator.comparing(Form::getDate));
+                values.put(LANGUAGE, latestFormWithSameFormId.getLanguage());
+            }
 
             Long idFromUri = insertForm(values);
             if (idFromUri == -1) {
