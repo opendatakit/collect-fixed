@@ -176,6 +176,7 @@ class ServerFormUseCasesTest {
             File(TempFiles.createTempDir(), "temp").absolutePath,
             TempFiles.createTempDir(),
             InMemEntitiesRepository(),
+            mock(),
             mock()
         )
 
@@ -219,6 +220,7 @@ class ServerFormUseCasesTest {
             File(TempFiles.createTempDir(), "temp").absolutePath,
             TempFiles.createTempDir(),
             InMemEntitiesRepository(),
+            mock(),
             mock()
         )
 

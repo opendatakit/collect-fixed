@@ -1,5 +1,7 @@
 package org.odk.collect.openrosa.forms
 
+import android.net.Uri
+import org.odk.collect.entities.server.EntitySource
 import org.odk.collect.forms.FormListItem
 import org.odk.collect.forms.FormSource
 import org.odk.collect.forms.FormSourceException
@@ -23,7 +25,7 @@ class OpenRosaClient(
     openRosaHttpInterface: OpenRosaHttpInterface?,
     private val webCredentialsProvider: WebCredentialsProvider,
     private val openRosaResponseParser: OpenRosaResponseParser
-) : FormSource {
+) : FormSource, EntitySource {
     private val openRosaXMLFetcher =
         OpenRosaXmlFetcher(openRosaHttpInterface, this.webCredentialsProvider)
 
@@ -148,5 +150,16 @@ class OpenRosaClient(
 
         downloadListUrl += OpenRosaConstants.FORM_LIST
         return downloadListUrl
+    }
+
+    override fun isDeleted(integrityUrl: String, ids: List<String>): List<Pair<String, Boolean>> {
+        val uri = Uri.parse(integrityUrl)
+            .buildUpon()
+            .appendQueryParameter("id", ids.joinToString(","))
+            .build()
+
+        val result = openRosaXMLFetcher.getXML(uri.toString())
+        return openRosaResponseParser
+            .parseIntegrityResponse(result.doc).map { Pair(it.id, it.deleted) }
     }
 }

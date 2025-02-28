@@ -12,6 +12,7 @@ import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.android.utilities.FormNameUtils;
 import org.odk.collect.androidshared.utils.Validator;
 import org.odk.collect.async.OngoingWorkListener;
+import org.odk.collect.entities.server.EntitySource;
 import org.odk.collect.entities.storage.EntitiesRepository;
 import org.odk.collect.forms.Form;
 import org.odk.collect.forms.FormSource;
@@ -99,7 +100,7 @@ public class ServerFormDownloader implements FormDownloader {
 
             // download media files if there are any
             if (fd.getManifest() != null && !fd.getManifest().getMediaFiles().isEmpty()) {
-                mediaFilesDownloadResult = ServerFormUseCases.downloadMediaFiles(fd, formSource, formsRepository, tempMediaPath, tempDir, entitiesRepository, stateListener);
+                mediaFilesDownloadResult = ServerFormUseCases.downloadMediaFiles(fd, formSource, formsRepository, tempMediaPath, tempDir, entitiesRepository, (EntitySource) formSource, stateListener);
             } else {
                 mediaFilesDownloadResult = new MediaFilesDownloadResult(false, false);
             }

@@ -3,8 +3,10 @@ package org.odk.collect.openrosa.parse
 import org.javarosa.xform.parse.XFormParser
 import org.kxml2.kdom.Document
 import org.kxml2.kdom.Element
+import org.kxml2.kdom.Node
 import org.odk.collect.forms.FormListItem
 import org.odk.collect.forms.MediaFile
+import org.odk.collect.openrosa.forms.EntityIntegrity
 import org.odk.collect.shared.strings.StringUtils.isBlank
 import java.io.File
 
@@ -218,6 +220,15 @@ class OpenRosaResponseParserImpl :
             }
         }
         return files
+    }
+
+    override fun parseIntegrityResponse(doc: Document): List<EntityIntegrity> {
+        val entities = doc.rootElement.getElement(0)
+        return 0.until(entities.childCount).map {
+            val entity = entities.getElement(0)
+            val deleted = (entity.getChild(0) as Node).getChild(0) as String
+            EntityIntegrity(entity.getAttributeValue(null, "id"), deleted.toBoolean())
+        }
     }
 
     companion object {
