@@ -54,7 +54,6 @@ class ExArbitraryFileWidget(
         } else {
             binding.answerViewContainer.visibility = GONE
         }
-        widgetAnswer.setTextSize(answerFontSize.toFloat())
         binding.answerViewContainer.addView(widgetAnswer)
 
         return binding.root

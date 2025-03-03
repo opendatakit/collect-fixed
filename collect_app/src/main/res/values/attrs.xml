@@ -19,5 +19,6 @@
 
     <declare-styleable name="CollectCustomAttributes">
         <attr name="widgetButtonIconQuestionWidgetStyle" format="reference" />
+        <attr name="widgetAnswerTextViewStyle" format="reference" />
     </declare-styleable>
 </resources>

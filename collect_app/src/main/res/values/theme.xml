@@ -104,6 +104,7 @@
 
         <!-- Custom style for buttons used in question widgets -->
         <item name="widgetButtonIconQuestionWidgetStyle">@style/Widget.Collect.Button.Icon.QuestionWidget</item>
+        <item name="widgetAnswerTextViewStyle">@style/Widget.Collect.TextView.WidgetAnswer</item>
 
         <!-- Custom theme text appearance for larger buttons -->
         <item name="textAppearanceLabelExtraLarge">@style/TextAppearance.Collect.LabelExtraLarge</item>
