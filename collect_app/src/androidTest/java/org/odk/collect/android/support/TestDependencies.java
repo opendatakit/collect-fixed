@@ -7,12 +7,12 @@ import android.webkit.MimeTypeMap;
 import androidx.work.WorkManager;
 
 import org.odk.collect.android.injection.config.AppDependencyModule;
-import org.odk.collect.android.openrosa.OpenRosaHttpInterface;
 import org.odk.collect.android.storage.StoragePathProvider;
 import org.odk.collect.android.version.VersionInformation;
 import org.odk.collect.android.views.BarcodeViewDecoder;
 import org.odk.collect.async.Scheduler;
 import org.odk.collect.async.network.NetworkStateProvider;
+import org.odk.collect.openrosa.http.OpenRosaHttpInterface;
 import org.odk.collect.utilities.UserAgentProvider;
 
 public class TestDependencies extends AppDependencyModule {

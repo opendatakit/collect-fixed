@@ -43,9 +43,9 @@ playServicesLocation = { group = "com.google.android.gms", name = "play-services
 playServicesOssLicenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version = "17.1.0" }
 mapboxAndroidSdk = { group = "com.mapbox.maps", name = "android", version = "10.16.4" } # Check if https://github.com/mapbox/mapbox-maps-android/issues/2389#issuecomment-2432018812 no longer takes place before upgrading
 osmdroid = { group = "org.osmdroid", name = "osmdroid-android", version = "6.1.20" }
-squareupOkhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
-squareupOkhttpTls = { group = "com.squareup.okhttp3", name = "okhttp-tls", version.ref = "okhttp3" }
-burgstallerOkhttpDigest = { group = "io.github.rburgst", name = "okhttp-digest", version = "3.1.1" }
+okHttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
+okHttpTls = { group = "com.squareup.okhttp3", name = "okhttp-tls", version.ref = "okhttp3" }
+okHttpDigest = { group = "io.github.rburgst", name = "okhttp-digest", version = "3.1.1" }
 persianJodaTime = { group = "com.github.mohamadian", name = "persianjodatime", version = "1.2" }
 myanmarCalendar = { group = "com.github.chanmratekoko", name = "myanmar-calendar", version = "1.0.6.RC3" } # Check if https://github.com/chanmratekoko/mmcalendar/issues/4 no longer takes place before upgrading
 bikramSambat = { group = "bikramsambat", name = "bikram-sambat", version = "1.1.0" }

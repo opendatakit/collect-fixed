@@ -11,8 +11,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.odk.collect.android.notifications.Notifier
-import org.odk.collect.android.openrosa.HttpGetResult
-import org.odk.collect.android.openrosa.OpenRosaHttpInterface
 import org.odk.collect.android.projects.ProjectDependencyModule
 import org.odk.collect.android.utilities.ChangeLocks
 import org.odk.collect.androidshared.data.AppState
@@ -26,6 +24,8 @@ import org.odk.collect.formstest.FormFixtures
 import org.odk.collect.formstest.InMemFormsRepository
 import org.odk.collect.formstest.InMemInstancesRepository
 import org.odk.collect.formstest.InstanceFixtures
+import org.odk.collect.openrosa.http.HttpGetResult
+import org.odk.collect.openrosa.http.OpenRosaHttpInterface
 import org.odk.collect.projects.ProjectDependencyFactory
 import org.odk.collect.settings.keys.ProjectKeys
 import org.odk.collect.shared.locks.BooleanChangeLock
@@ -102,7 +102,14 @@ class InstancesDataServiceTest {
         instancesRepository.save(InstanceFixtures.instance(form = form, status = STATUS_COMPLETE))
 
         whenever(httpInterface.executeGetRequest(any(), any(), any()))
-            .doReturn(HttpGetResult(null, emptyMap(), "", 500))
+            .doReturn(
+                HttpGetResult(
+                    null,
+                    emptyMap(),
+                    "",
+                    500
+                )
+            )
 
         val result = instancesDataService.sendInstances(projectId)
         assertThat(result, equalTo(false))

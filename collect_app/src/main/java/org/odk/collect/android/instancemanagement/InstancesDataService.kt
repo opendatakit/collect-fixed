@@ -11,7 +11,6 @@ import org.odk.collect.android.instancemanagement.autosend.FormAutoSendMode
 import org.odk.collect.android.instancemanagement.autosend.InstanceAutoSendFetcher
 import org.odk.collect.android.instancemanagement.autosend.getAutoSendMode
 import org.odk.collect.android.notifications.Notifier
-import org.odk.collect.android.openrosa.OpenRosaHttpInterface
 import org.odk.collect.android.projects.ProjectDependencyModule
 import org.odk.collect.android.state.DataKeys
 import org.odk.collect.android.utilities.ExternalizableFormDefCache
@@ -21,6 +20,7 @@ import org.odk.collect.androidshared.data.DataService
 import org.odk.collect.forms.Form
 import org.odk.collect.forms.instances.Instance
 import org.odk.collect.metadata.PropertyManager
+import org.odk.collect.openrosa.http.OpenRosaHttpInterface
 import org.odk.collect.projects.ProjectDependencyFactory
 import java.io.File
 
