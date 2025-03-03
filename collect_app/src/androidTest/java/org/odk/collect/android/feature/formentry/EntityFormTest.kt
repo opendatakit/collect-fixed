@@ -143,12 +143,12 @@ class EntityFormTest {
         testDependencies.server.apply {
             addForm(
                 "one-question-entity-update.xml",
-                listOf(EntityListItem("people.csv"))
+                listOf(EntityListItem("people.csv", "people.csv", 1))
             )
 
             addForm(
                 "one-question-entity-follow-up.xml",
-                listOf(EntityListItem("people.csv", "updated-people.csv"))
+                listOf(EntityListItem("people.csv", "updated-people.csv", 2))
             )
         }
 
@@ -246,13 +246,7 @@ class EntityFormTest {
             .fillOutAndFinalize(FormEntryPage.QuestionAndAnswer("Name", "Logan Roy"))
 
             .also {
-                testDependencies.server.deleteEntity("Logan Roy")
-
-                testDependencies.server.removeForm("One Question Entity Update")
-                testDependencies.server.addForm(
-                    "one-question-entity-update.xml",
-                    listOf(EntityListItem("people.csv", "updated-people.csv"))
-                )
+                testDependencies.server.deleteEntity("people.csv", "Logan Roy")
             }
 
             .clickFillBlankForm()
@@ -260,7 +254,7 @@ class EntityFormTest {
 
             .clickOnForm("One Question Entity Update")
             .assertQuestion("Select person")
-            .assertText("Ro-Ro Roy")
+            .assertText("Roman Roy")
             .assertTextDoesNotExist("Logan Roy")
     }
 }

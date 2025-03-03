@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -288,6 +289,8 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
 
                 if (noHashPrefixInMediaFiles) {
                     stringBuilder.append("<hash>" + mediaFileHash + " </hash>\n");
+                } else if (mediaFile instanceof EntityListItem) {
+                    stringBuilder.append("<hash>md5:" + ((EntityListItem) mediaFile).getVersion() + " </hash>\n");
                 } else {
                     stringBuilder.append("<hash>md5:" + mediaFileHash + " </hash>\n");
                 }
@@ -351,8 +354,18 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
         forms.add(new XFormItem(formMetadata.getTitle(), formXML, formMetadata.getId(), formMetadata.getVersion(), mediaFiles));
     }
 
-    public void deleteEntity(@NotNull String id) {
+    public void deleteEntity(String list, @NotNull String id) {
         deletedEntities.add(id);
+
+        for (XFormItem form : forms) {
+            Optional<MediaFileItem> entityList = form.getMediaFiles().stream().filter(mediaFileItem -> {
+                return mediaFileItem instanceof EntityListItem && mediaFileItem.getName().equals(list);
+            }).findFirst();
+
+            if (entityList.isPresent()) {
+                ((EntityListItem) entityList.get()).incrementVersion();
+            }
+        }
     }
 
     private static class XFormItem {
@@ -435,12 +448,28 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
     }
 
     public static class EntityListItem extends MediaFileItem {
+
+        private int version = 1;
+
         public EntityListItem(String name, String file) {
             super(name, file, name);
         }
 
+        public EntityListItem(String name, String file, int version) {
+            super(name, file);
+            this.version = version;
+        }
+
         public EntityListItem(String name) {
             super(name, name, name);
+        }
+
+        public int getVersion() {
+            return version;
+        }
+
+        public void incrementVersion() {
+            this.version++;
         }
     }
 
