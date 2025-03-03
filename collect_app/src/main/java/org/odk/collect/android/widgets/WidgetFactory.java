@@ -207,9 +207,9 @@ public class WidgetFactory {
                 break;
             case Constants.CONTROL_FILE_CAPTURE:
                 if (appearance.startsWith(Appearances.EX)) {
-                    questionWidget = new ExArbitraryFileWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry, fileRequester);
+                    questionWidget = new ExArbitraryFileWidget(activity, questionDetails, new ArbitraryFileWidgetAnswer(activity), questionMediaManager, waitingForDataRegistry, fileRequester);
                 } else {
-                    questionWidget = new ArbitraryFileWidget(activity, questionDetails, questionMediaManager, waitingForDataRegistry);
+                    questionWidget = new ArbitraryFileWidget(activity, questionDetails, new ArbitraryFileWidgetAnswer(activity), questionMediaManager, waitingForDataRegistry);
                 }
                 break;
             case Constants.CONTROL_IMAGE_CHOOSE:

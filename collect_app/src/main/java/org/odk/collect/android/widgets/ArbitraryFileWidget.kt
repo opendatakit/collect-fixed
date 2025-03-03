@@ -3,7 +3,6 @@ package org.odk.collect.android.widgets
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.util.TypedValue
 import android.view.View
 import org.javarosa.form.api.FormEntryPrompt
 import org.odk.collect.android.databinding.ArbitraryFileWidgetBinding
@@ -18,6 +17,7 @@ import org.odk.collect.android.widgets.utilities.WaitingForDataRegistry
 class ArbitraryFileWidget(
     context: Context,
     questionDetails: QuestionDetails,
+    private val widgetAnswer: WidgetAnswer,
     questionMediaManager: QuestionMediaManager,
     waitingForDataRegistry: WaitingForDataRegistry
 ) : BaseArbitraryFileWidget(
@@ -28,35 +28,37 @@ class ArbitraryFileWidget(
     ), FileWidget, WidgetDataReceiver {
     lateinit var binding: ArbitraryFileWidgetBinding
 
+    init {
+        render()
+    }
+
     override fun onCreateAnswerView(context: Context, prompt: FormEntryPrompt, answerFontSize: Int): View {
         binding = ArbitraryFileWidgetBinding.inflate((context as Activity).layoutInflater)
         setupAnswerFile(prompt.answerText)
 
-        binding.arbitraryFileAnswerText.setTextSize(
-            TypedValue.COMPLEX_UNIT_DIP,
-            answerFontSize.toFloat()
-        )
-
         binding.arbitraryFileButton.visibility = if (questionDetails.isReadOnly) GONE else VISIBLE
         binding.arbitraryFileButton.setOnClickListener { onButtonClick() }
-        binding.arbitraryFileAnswerText.setOnClickListener {
+        binding.answerViewContainer.setOnClickListener {
             mediaUtils.openFile(
                 getContext(),
                 answerFile!!,
                 null
             )
         }
-
         if (answerFile != null) {
-            binding.arbitraryFileAnswerText.text = answerFile!!.name
-            binding.arbitraryFileAnswerText.visibility = VISIBLE
+            widgetAnswer.setAnswer(answerFile!!.name)
+            binding.answerViewContainer.visibility = VISIBLE
+        } else {
+            binding.answerViewContainer.visibility = GONE
         }
+        widgetAnswer.setTextSize(answerFontSize.toFloat())
+        binding.answerViewContainer.addView(widgetAnswer)
 
         return binding.root
     }
 
     override fun clearAnswer() {
-        binding.arbitraryFileAnswerText.visibility = GONE
+        binding.answerViewContainer.visibility = GONE
         deleteFile()
         widgetValueChanged()
     }
@@ -72,15 +74,15 @@ class ArbitraryFileWidget(
 
     override fun setOnLongClickListener(listener: OnLongClickListener?) {
         binding.arbitraryFileButton.setOnLongClickListener(listener)
-        binding.arbitraryFileAnswerText.setOnLongClickListener(listener)
+        binding.answerViewContainer.setOnLongClickListener(listener)
     }
 
     override fun showAnswerText() {
-        binding.arbitraryFileAnswerText.text = answerFile!!.name
-        binding.arbitraryFileAnswerText.visibility = VISIBLE
+        widgetAnswer.setAnswer(answerFile!!.name)
+        binding.answerViewContainer.visibility = VISIBLE
     }
 
     override fun hideAnswerText() {
-        binding.arbitraryFileAnswerText.visibility = GONE
+        binding.answerViewContainer.visibility = GONE
     }
 }

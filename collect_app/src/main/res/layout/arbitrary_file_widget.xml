@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,15 +10,16 @@
         android:text="@string/choose_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:icon="@drawable/ic_baseline_attach_file_white_24" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <FrameLayout
+        android:id="@+id/answer_view_container"
         android:layout_width="wrap_content"
-        android:id="@+id/arbitrary_file_answer_text"
-        style="@style/Widget.Collect.TextView.WidgetAnswer"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:drawableStart="@drawable/ic_attachment"
-        android:tag="ArbitraryFileWidgetAnswer"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/arbitrary_file_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
