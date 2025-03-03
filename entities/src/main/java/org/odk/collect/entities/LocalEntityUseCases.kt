@@ -115,24 +115,38 @@ object LocalEntityUseCases {
             }
         }
 
-        missingFromServer.values.forEach {
-            when (it.state) {
-                Entity.State.ONLINE -> {
-                    entitiesRepository.delete(list, it.id)
-                }
+        handleMissingEntities(
+            list,
+            missingFromServer.values,
+            entitiesRepository,
+            entitySource,
+            integrityUrl
+        )
+        entitiesRepository.save(list, *newAndUpdated.toTypedArray())
+        entitiesRepository.updateListHash(list, listHash)
+    }
 
-                Entity.State.OFFLINE -> {
-                    if (integrityUrl != null) {
-                        if (entitySource.isDeleted(integrityUrl, listOf(it.id)).first().second) {
-                            entitiesRepository.delete(list, it.id)
-                        }
-                    }
+    private fun handleMissingEntities(
+        list: String,
+        missingFromServer: Collection<Entity.Saved>,
+        entitiesRepository: EntitiesRepository,
+        entitySource: EntitySource,
+        integrityUrl: String?
+    ) {
+        val missingOnline = missingFromServer.filter { it.state == Entity.State.ONLINE }
+        val missingOffline = missingFromServer.filter { it.state == Entity.State.OFFLINE }
+
+        missingOnline.forEach {
+            entitiesRepository.delete(list, it.id)
+        }
+
+        if (integrityUrl != null && missingOffline.isNotEmpty()) {
+            entitySource.isDeleted(integrityUrl, missingOffline.map { it.id }).forEach {
+                if (it.second) {
+                    entitiesRepository.delete(list, it.first)
                 }
             }
         }
-
-        entitiesRepository.save(list, *newAndUpdated.toTypedArray())
-        entitiesRepository.updateListHash(list, listHash)
     }
 
     private fun getListHash(serverList: File): String {

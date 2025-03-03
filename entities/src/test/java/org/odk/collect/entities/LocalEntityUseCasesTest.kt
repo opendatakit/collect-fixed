@@ -535,6 +535,39 @@ class LocalEntityUseCasesTest {
     }
 
     @Test
+    fun `updateLocalEntitiesFromServer only checks for deletions with the entity source once`() {
+        entitiesRepository.save("songs", Entity.New("noah", "Noah"))
+        entitiesRepository.save("songs", Entity.New("midnightCity", "Midnight City"))
+        entitySource.delete("noah")
+        entitySource.delete("midnightCity")
+
+        val csv = createEntityList()
+        LocalEntityUseCases.updateLocalEntitiesFromServer(
+            "songs",
+            csv,
+            entitiesRepository,
+            entitySource,
+            entitySource.integrityUrl
+        )
+
+        assertThat(entitySource.accesses, equalTo(1))
+    }
+
+    @Test
+    fun `updateLocalEntitiesFromServer does not check for deletions with the entity source if it does not need to`() {
+        val csv = createEntityList()
+        LocalEntityUseCases.updateLocalEntitiesFromServer(
+            "songs",
+            csv,
+            entitiesRepository,
+            entitySource,
+            entitySource.integrityUrl
+        )
+
+        assertThat(entitySource.accesses, equalTo(0))
+    }
+
+    @Test
     fun `updateLocalEntitiesFromServer removes offline entity that was in online list, but isn't any longer`() {
         entitiesRepository.save("songs", Entity.New("cathedrals", "Cathedrals"))
 
@@ -685,10 +718,14 @@ private class MeasurableEntitiesRepository(private val wrapped: EntitiesReposito
 private class FakeEntitySource : EntitySource {
 
     val integrityUrl = "http://example.com/${UUID.randomUUID()}"
+    var accesses: Int = 0
+        private set
 
     private val deleted = mutableListOf<String>()
 
     override fun isDeleted(integrityUrl: String, ids: List<String>): List<Pair<String, Boolean>> {
+        accesses += 1
+
         if (integrityUrl == this.integrityUrl) {
             return ids.map {
                 Pair(it, deleted.contains(it))
