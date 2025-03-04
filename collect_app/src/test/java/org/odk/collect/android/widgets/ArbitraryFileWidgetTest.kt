@@ -18,6 +18,7 @@ import org.odk.collect.android.utilities.MediaUtils
 import org.odk.collect.android.widgets.base.FileWidgetTest
 import org.odk.collect.android.widgets.support.FakeQuestionMediaManager
 import org.odk.collect.android.widgets.support.FakeWaitingForDataRegistry
+import org.odk.collect.android.widgets.support.QuestionWidgetHelpers
 import org.odk.collect.android.widgets.utilities.QuestionFontSizeUtils
 import org.odk.collect.android.widgets.utilities.QuestionFontSizeUtils.getFontSize
 import org.odk.collect.androidshared.system.IntentLauncher
@@ -27,6 +28,7 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
     private val mediaUtils = mock<MediaUtils>().also {
         whenever(it.isAudioFile(any())).thenReturn(true)
     }
+    private val widgetAnswer = ArbitraryFileWidgetAnswer(QuestionWidgetHelpers.widgetTestActivity())
 
     @Before
     fun setup() {
@@ -47,7 +49,7 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
 
     override fun createWidget(): ArbitraryFileWidget {
         return ArbitraryFileWidget(
-            activity, QuestionDetails(formEntryPrompt, readOnlyOverride),
+            activity, QuestionDetails(formEntryPrompt, readOnlyOverride), widgetAnswer,
             FakeQuestionMediaManager(), FakeWaitingForDataRegistry()
         )
     }
@@ -64,19 +66,11 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
                 )
             )
         )
-        assertThat(
-            widget!!.binding.arbitraryFileAnswerText.textSize.toInt(), equalTo(
-                getFontSize(
-                    settingsProvider.getUnprotectedSettings(),
-                    QuestionFontSizeUtils.FontSize.HEADLINE_6
-                )
-            )
-        )
     }
 
     @Test
     fun `Hide the answer text when there is no answer`() {
-        assertThat(widget!!.binding.arbitraryFileAnswerText.visibility, equalTo(View.GONE))
+        assertThat(widget!!.binding.answerViewContainer.visibility, equalTo(View.GONE))
     }
 
     @Test
@@ -84,8 +78,8 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
         whenever(formEntryPrompt.answerText).thenReturn(initialAnswer.displayText)
 
         val widget = widget!!
-        assertThat(widget.binding.arbitraryFileAnswerText.visibility, equalTo(View.VISIBLE))
-        assertThat(widget.binding.arbitraryFileAnswerText.text, equalTo(initialAnswer.displayText))
+        assertThat(widget.binding.answerViewContainer.visibility, equalTo(View.VISIBLE))
+        assertThat(widgetAnswer.getAnswer(), equalTo(initialAnswer.displayText))
     }
 
     @Test
@@ -99,7 +93,7 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
         whenever(formEntryPrompt.answerText).thenReturn(initialAnswer.displayText)
 
         val widget = widget!!
-        widget.binding.arbitraryFileAnswerText.performClick()
+        widget.binding.answerViewContainer.performClick()
         verify(mediaUtils).openFile(activity, widget.answerFile!!, null)
     }
 
@@ -109,7 +103,7 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
 
         val widget = widget!!
         widget.clearAnswer()
-        assertThat(widget.binding.arbitraryFileAnswerText.visibility, equalTo(View.GONE))
+        assertThat(widget.binding.answerViewContainer.visibility, equalTo(View.GONE))
     }
 
     @Test
@@ -119,7 +113,7 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
         val widget = widget!!
         widget.setData(null)
         assertThat(widget.answer, equalTo(null))
-        assertThat(widget.binding.arbitraryFileAnswerText.visibility, equalTo(View.GONE))
+        assertThat(widget.binding.answerViewContainer.visibility, equalTo(View.GONE))
     }
 
     @Test
@@ -130,9 +124,9 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
 
         val widget = widget!!
         assertThat(widget.binding.arbitraryFileButton.visibility, equalTo(View.GONE))
-        assertThat(widget.binding.arbitraryFileAnswerText.visibility, equalTo(View.VISIBLE))
-        assertThat(widget.binding.arbitraryFileAnswerText.text, equalTo(initialAnswer.displayText))
-        assertThat(widget.binding.arbitraryFileAnswerText.hasOnClickListeners(), equalTo(true))
+        assertThat(widget.binding.answerViewContainer.visibility, equalTo(View.VISIBLE))
+        assertThat(widgetAnswer.getAnswer(), equalTo(initialAnswer.displayText))
+        assertThat(widget.binding.answerViewContainer.hasOnClickListeners(), equalTo(true))
     }
 
     @Test
@@ -142,8 +136,8 @@ class ArbitraryFileWidgetTest : FileWidgetTest<ArbitraryFileWidget?>() {
 
         val widget = widget!!
         assertThat(widget.binding.arbitraryFileButton.visibility, equalTo(View.GONE))
-        assertThat(widget.binding.arbitraryFileAnswerText.visibility, equalTo(View.VISIBLE))
-        assertThat(widget.binding.arbitraryFileAnswerText.text, equalTo(initialAnswer.displayText))
-        assertThat(widget.binding.arbitraryFileAnswerText.hasOnClickListeners(), equalTo(true))
+        assertThat(widget.binding.answerViewContainer.visibility, equalTo(View.VISIBLE))
+        assertThat(widgetAnswer.getAnswer(), equalTo(initialAnswer.displayText))
+        assertThat(widget.binding.answerViewContainer.hasOnClickListeners(), equalTo(true))
     }
 }
