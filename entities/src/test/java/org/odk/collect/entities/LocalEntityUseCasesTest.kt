@@ -662,6 +662,22 @@ class LocalEntityUseCasesTest {
         assertThat(songs.isEmpty(), equalTo(true))
     }
 
+    @Test
+    fun `updateLocalEntitiesFromServer updates the list hash with server prefix`() {
+        val csv = createEntityList()
+        LocalEntityUseCases.updateLocalEntitiesFromServer(
+            "songs",
+            csv,
+            entitiesRepository,
+            entitySource,
+            "hash",
+            null
+        )
+
+        val hash = entitiesRepository.getListHash("songs")
+        assertThat(hash, equalTo("server:hash"))
+    }
+
     private fun createEntityList(vararg entities: Entity): File {
         if (entities.isNotEmpty()) {
             val header = listOf(

@@ -67,8 +67,9 @@ object LocalEntityUseCases {
         serverListHash: String,
         integrityUrl: String?
     ) {
+        val newListHash = "server:$serverListHash"
         val existingListHash = entitiesRepository.getListHash(list)
-        if (serverListHash == existingListHash) {
+        if (newListHash == existingListHash) {
             return
         }
 
@@ -122,7 +123,7 @@ object LocalEntityUseCases {
             integrityUrl
         )
         entitiesRepository.save(list, *newAndUpdated.toTypedArray())
-        entitiesRepository.updateListHash(list, serverListHash)
+        entitiesRepository.updateListHash(list, newListHash)
     }
 
     private fun handleMissingEntities(
