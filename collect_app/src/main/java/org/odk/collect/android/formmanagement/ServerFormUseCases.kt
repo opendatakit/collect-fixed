@@ -122,6 +122,7 @@ object ServerFormUseCases {
                         tempMediaFile,
                         entitiesRepository,
                         entitySource,
+                        mediaFile.hash,
                         mediaFile.integrityUrl
                     )
                     entitiesDownloaded = true

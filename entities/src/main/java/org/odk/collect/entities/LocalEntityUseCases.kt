@@ -9,7 +9,6 @@ import org.odk.collect.entities.server.EntitySource
 import org.odk.collect.entities.storage.EntitiesRepository
 import org.odk.collect.entities.storage.Entity
 import org.odk.collect.shared.Query
-import org.odk.collect.shared.strings.Md5.getMd5Hash
 import java.io.File
 import java.util.UUID
 
@@ -65,11 +64,11 @@ object LocalEntityUseCases {
         serverList: File,
         entitiesRepository: EntitiesRepository,
         entitySource: EntitySource,
-        integrityUrl: String? = null
+        serverListHash: String,
+        integrityUrl: String?
     ) {
-        val listHash = getListHash(serverList)
-        val existingListVersion = entitiesRepository.getListHash(list)
-        if (listHash == existingListVersion) {
+        val existingListHash = entitiesRepository.getListHash(list)
+        if (serverListHash == existingListHash) {
             return
         }
 
@@ -123,7 +122,7 @@ object LocalEntityUseCases {
             integrityUrl
         )
         entitiesRepository.save(list, *newAndUpdated.toTypedArray())
-        entitiesRepository.updateListHash(list, listHash)
+        entitiesRepository.updateListHash(list, serverListHash)
     }
 
     private fun handleMissingEntities(
@@ -147,10 +146,6 @@ object LocalEntityUseCases {
                 }
             }
         }
-    }
-
-    private fun getListHash(serverList: File): String {
-        return "md5:${serverList.getMd5Hash()!!}"
     }
 
     private fun parseEntityFromRecord(record: CSVRecord): ServerEntity? {

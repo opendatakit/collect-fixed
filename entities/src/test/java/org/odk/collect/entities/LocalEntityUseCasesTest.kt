@@ -218,7 +218,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
@@ -240,7 +242,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
@@ -262,7 +266,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
@@ -284,7 +290,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
@@ -305,7 +313,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv1,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         assertThat(entitiesRepository.savedEntities, equalTo(1))
 
@@ -314,7 +324,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv2,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         assertThat(entitiesRepository.savedEntities, equalTo(2))
     }
@@ -329,7 +341,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv1,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
 
         val onlineBranched = Entity.New("noah", "Noah", 3)
@@ -339,7 +353,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv2,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
 
         val songs = entitiesRepository.query("songs")
@@ -368,7 +384,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
@@ -391,7 +409,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
@@ -411,7 +431,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
@@ -431,7 +453,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         assertThat(entitiesRepository.getLists().size, equalTo(0))
     }
@@ -448,7 +472,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         assertThat(entitiesRepository.getLists().size, equalTo(0))
     }
@@ -465,7 +491,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         assertThat(entitiesRepository.getLists().size, equalTo(0))
     }
@@ -478,7 +506,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(1))
@@ -493,7 +523,9 @@ class LocalEntityUseCasesTest {
             "songs",
             file,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         assertThat(entitiesRepository.getLists().size, equalTo(0))
     }
@@ -507,7 +539,9 @@ class LocalEntityUseCasesTest {
             "songs",
             csv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
         val songs = entitiesRepository.query("songs")
         assertThat(songs.size, equalTo(2))
@@ -526,6 +560,7 @@ class LocalEntityUseCasesTest {
             csv,
             entitiesRepository,
             entitySource,
+            UUID.randomUUID().toString(),
             entitySource.integrityUrl
         )
 
@@ -547,6 +582,7 @@ class LocalEntityUseCasesTest {
             csv,
             entitiesRepository,
             entitySource,
+            UUID.randomUUID().toString(),
             entitySource.integrityUrl
         )
 
@@ -561,6 +597,7 @@ class LocalEntityUseCasesTest {
             csv,
             entitiesRepository,
             entitySource,
+            UUID.randomUUID().toString(),
             entitySource.integrityUrl
         )
 
@@ -576,7 +613,9 @@ class LocalEntityUseCasesTest {
             "songs",
             firstCsv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
 
         val secondCsv = createEntityList(Entity.New("noah", "Noah"))
@@ -584,7 +623,9 @@ class LocalEntityUseCasesTest {
             "songs",
             secondCsv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
 
         val songs = entitiesRepository.query("songs")
@@ -602,7 +643,9 @@ class LocalEntityUseCasesTest {
             "songs",
             firstCsv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
 
         val secondCsv = createEntityList()
@@ -610,7 +653,9 @@ class LocalEntityUseCasesTest {
             "songs",
             secondCsv,
             entitiesRepository,
-            entitySource
+            entitySource,
+            UUID.randomUUID().toString(),
+            null
         )
 
         val songs = entitiesRepository.query("songs")
