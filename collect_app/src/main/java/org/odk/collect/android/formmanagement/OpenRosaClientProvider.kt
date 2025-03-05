@@ -21,7 +21,7 @@ class OpenRosaClientProvider(
             serverURL,
             openRosaHttpInterface,
             WebCredentialsUtils(settings),
-            Kxml2OpenRosaResponseParser()
+            Kxml2OpenRosaResponseParser
         )
     }
 }

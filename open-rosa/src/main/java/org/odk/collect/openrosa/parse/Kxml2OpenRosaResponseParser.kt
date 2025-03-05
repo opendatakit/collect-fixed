@@ -10,8 +10,15 @@ import org.odk.collect.openrosa.forms.EntityIntegrity
 import org.odk.collect.shared.strings.StringUtils.isBlank
 import java.io.File
 
-class Kxml2OpenRosaResponseParser :
+object Kxml2OpenRosaResponseParser :
     OpenRosaResponseParser {
+
+    private const val MD5_STRING_PREFIX = "md5:"
+
+    private const val NAMESPACE_OPENROSA_ORG_XFORMS_XFORMS_LIST =
+        "http://openrosa.org/xforms/xformsList"
+    private const val NAMESPACE_OPENROSA_ORG_XFORMS_XFORMS_MANIFEST =
+        "http://openrosa.org/xforms/xformsManifest"
 
     override fun parseFormList(document: Document): List<FormListItem>? {
         // Attempt OpenRosa 1.0 parsing
@@ -231,24 +238,14 @@ class Kxml2OpenRosaResponseParser :
         }
     }
 
-    companion object {
+    private fun isXformsManifestNamespacedElement(e: Element): Boolean {
+        return e.namespace.equals(
+            NAMESPACE_OPENROSA_ORG_XFORMS_XFORMS_MANIFEST,
+            ignoreCase = true
+        )
+    }
 
-        private const val MD5_STRING_PREFIX = "md5:"
-
-        private const val NAMESPACE_OPENROSA_ORG_XFORMS_XFORMS_LIST =
-            "http://openrosa.org/xforms/xformsList"
-        private const val NAMESPACE_OPENROSA_ORG_XFORMS_XFORMS_MANIFEST =
-            "http://openrosa.org/xforms/xformsManifest"
-
-        private fun isXformsListNamespacedElement(e: Element): Boolean {
-            return e.namespace.equals(NAMESPACE_OPENROSA_ORG_XFORMS_XFORMS_LIST, ignoreCase = true)
-        }
-
-        private fun isXformsManifestNamespacedElement(e: Element): Boolean {
-            return e.namespace.equals(
-                NAMESPACE_OPENROSA_ORG_XFORMS_XFORMS_MANIFEST,
-                ignoreCase = true
-            )
-        }
+    private fun isXformsListNamespacedElement(e: Element): Boolean {
+        return e.namespace.equals(NAMESPACE_OPENROSA_ORG_XFORMS_XFORMS_LIST, ignoreCase = true)
     }
 }

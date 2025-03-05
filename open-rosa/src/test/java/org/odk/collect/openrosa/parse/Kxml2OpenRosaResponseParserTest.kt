@@ -10,7 +10,7 @@ class Kxml2OpenRosaResponseParserTest {
 
     @Test
     fun `parseFormList() when document is empty, returns null`() {
-        val formList = Kxml2OpenRosaResponseParser().parseFormList(Document())
+        val formList = Kxml2OpenRosaResponseParser.parseFormList(Document())
         assertThat(formList, equalTo(null))
     }
 
@@ -30,7 +30,7 @@ class Kxml2OpenRosaResponseParserTest {
             .toString()
 
         val doc = XFormParser.getXMLDocument(response.reader())
-        val formList = Kxml2OpenRosaResponseParser().parseFormList(doc)
+        val formList = Kxml2OpenRosaResponseParser.parseFormList(doc)
         assertThat(formList!![0].hash, equalTo(null))
     }
 
@@ -48,13 +48,13 @@ class Kxml2OpenRosaResponseParserTest {
             .toString()
 
         val doc = XFormParser.getXMLDocument(response.reader())
-        val mediaFiles = Kxml2OpenRosaResponseParser().parseManifest(doc)
+        val mediaFiles = Kxml2OpenRosaResponseParser.parseManifest(doc)
         assertThat(mediaFiles, equalTo(null))
     }
 
     @Test
     fun `parseManifest() when document is empty, returns null`() {
-        val formList = Kxml2OpenRosaResponseParser().parseManifest(Document())
+        val formList = Kxml2OpenRosaResponseParser.parseManifest(Document())
         assertThat(formList, equalTo(null))
     }
 
@@ -72,7 +72,7 @@ class Kxml2OpenRosaResponseParserTest {
             .toString()
 
         val doc = XFormParser.getXMLDocument(response.reader())
-        val mediaFiles = Kxml2OpenRosaResponseParser().parseManifest(doc)!!
+        val mediaFiles = Kxml2OpenRosaResponseParser.parseManifest(doc)!!
         assertThat(mediaFiles.size, equalTo(1))
         assertThat(mediaFiles[0].filename, equalTo("badgers.csv"))
     }
@@ -91,7 +91,7 @@ class Kxml2OpenRosaResponseParserTest {
             .toString()
 
         val doc = XFormParser.getXMLDocument(response.reader())
-        val mediaFiles = Kxml2OpenRosaResponseParser().parseManifest(doc)!!
+        val mediaFiles = Kxml2OpenRosaResponseParser.parseManifest(doc)!!
         assertThat(mediaFiles.size, equalTo(1))
         assertThat(mediaFiles[0].isEntityList, equalTo(true))
     }
@@ -110,7 +110,7 @@ class Kxml2OpenRosaResponseParserTest {
             .toString()
 
         val doc = XFormParser.getXMLDocument(response.reader())
-        val mediaFiles = Kxml2OpenRosaResponseParser().parseManifest(doc)!!
+        val mediaFiles = Kxml2OpenRosaResponseParser.parseManifest(doc)!!
         assertThat(mediaFiles.size, equalTo(1))
         assertThat(mediaFiles[0].isEntityList, equalTo(false))
     }
@@ -130,7 +130,7 @@ class Kxml2OpenRosaResponseParserTest {
             .toString()
 
         val doc = XFormParser.getXMLDocument(response.reader())
-        val mediaFiles = Kxml2OpenRosaResponseParser().parseManifest(doc)!!
+        val mediaFiles = Kxml2OpenRosaResponseParser.parseManifest(doc)!!
         assertThat(mediaFiles.size, equalTo(1))
         assertThat(mediaFiles[0].integrityUrl, equalTo("https://some.server/forms/12/integrity"))
     }
