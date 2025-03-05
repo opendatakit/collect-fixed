@@ -134,4 +134,23 @@ class Kxml2OpenRosaResponseParserTest {
         assertThat(mediaFiles.size, equalTo(1))
         assertThat(mediaFiles[0].integrityUrl, equalTo("https://some.server/forms/12/integrity"))
     }
+
+    @Test
+    fun `parseManifest() does not include integrityUrl when there isn't one`() {
+        val response = StringBuilder()
+            .appendLine("<?xml version='1.0' encoding='UTF-8' ?>")
+            .appendLine("<manifest xmlns=\"http://openrosa.org/xforms/xformsManifest\">")
+            .appendLine("<mediaFile>")
+            .appendLine("<filename>badgers.csv</filename>")
+            .appendLine("<hash>blah</hash>")
+            .appendLine("<downloadUrl>http://funk.appspot.com/binaryData?blobKey=%3A477e3</downloadUrl>")
+            .appendLine("</mediaFile>")
+            .appendLine("</manifest>")
+            .toString()
+
+        val doc = XFormParser.getXMLDocument(response.reader())
+        val mediaFiles = Kxml2OpenRosaResponseParser.parseManifest(doc)!!
+        assertThat(mediaFiles.size, equalTo(1))
+        assertThat(mediaFiles[0].integrityUrl, equalTo(null))
+    }
 }
