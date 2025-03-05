@@ -225,7 +225,8 @@ private fun formDownloader(
         projectDependencyModule.formsDir,
         FormMetadataParser,
         clock,
-        projectDependencyModule.entitiesRepository
+        projectDependencyModule.entitiesRepository,
+        projectDependencyModule.entitySource
     )
 }
 

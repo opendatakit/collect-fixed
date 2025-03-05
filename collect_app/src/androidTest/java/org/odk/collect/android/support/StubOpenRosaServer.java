@@ -10,14 +10,14 @@ import androidx.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.odk.collect.android.formmanagement.metadata.FormMetadata;
 import org.odk.collect.android.formmanagement.metadata.FormMetadataParser;
-import org.odk.collect.android.openrosa.CaseInsensitiveEmptyHeaders;
-import org.odk.collect.android.openrosa.CaseInsensitiveHeaders;
-import org.odk.collect.android.openrosa.HttpCredentialsInterface;
-import org.odk.collect.android.openrosa.HttpGetResult;
-import org.odk.collect.android.openrosa.HttpHeadResult;
-import org.odk.collect.android.openrosa.HttpPostResult;
-import org.odk.collect.android.openrosa.OpenRosaConstants;
-import org.odk.collect.android.openrosa.OpenRosaHttpInterface;
+import org.odk.collect.openrosa.http.CaseInsensitiveEmptyHeaders;
+import org.odk.collect.openrosa.http.CaseInsensitiveHeaders;
+import org.odk.collect.openrosa.http.HttpCredentialsInterface;
+import org.odk.collect.openrosa.http.HttpGetResult;
+import org.odk.collect.openrosa.http.HttpHeadResult;
+import org.odk.collect.openrosa.http.HttpPostResult;
+import org.odk.collect.openrosa.http.OpenRosaConstants;
+import org.odk.collect.openrosa.http.OpenRosaHttpInterface;
 import org.odk.collect.shared.strings.Md5;
 import org.odk.collect.shared.strings.RandomString;
 
@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -52,6 +53,7 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
      * A list of submitted forms, maintained in the original order of submission, with the oldest forms appearing first.
      */
     private final List<File> submittedForms = new ArrayList<>();
+    private List<String> deletedEntities = new ArrayList<>();
 
     @NonNull
     @Override
@@ -82,6 +84,8 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
             }
         } else if (uri.getPath().startsWith("/mediaFile")) {
             return new HttpGetResult(getMediaFile(uri), new HashMap<>(), "", 200);
+        } else if (uri.getPath().startsWith("/integrityUrl")) {
+            return new HttpGetResult(getIntegrityResponse(uri), new HashMap<>(), "", 200);
         } else {
             return new HttpGetResult(null, new HashMap<>(), "", 404);
         }
@@ -285,18 +289,49 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
 
                 if (noHashPrefixInMediaFiles) {
                     stringBuilder.append("<hash>" + mediaFileHash + " </hash>\n");
+                } else if (mediaFile instanceof EntityListItem) {
+                    stringBuilder.append("<hash>md5:" + ((EntityListItem) mediaFile).getVersion() + " </hash>\n");
                 } else {
                     stringBuilder.append("<hash>md5:" + mediaFileHash + " </hash>\n");
                 }
 
                 stringBuilder
-                        .append("<downloadUrl>" + getURL() + "/mediaFile/" + formID + "/" + mediaFile.getId() + "</downloadUrl>\n")
-                        .append("</mediaFile>\n");
+                        .append("<downloadUrl>" + getURL() + "/mediaFile/" + formID + "/" + mediaFile.getId() + "</downloadUrl>\n");
+
+                if (mediaFile instanceof EntityListItem) {
+                    stringBuilder.append("<integrityUrl>" + getURL() + "/integrityUrl</integrityUrl>\n");
+                }
+
+                 stringBuilder.append("</mediaFile>\n");
             }
 
             stringBuilder.append("</manifest>");
             return new ByteArrayInputStream(stringBuilder.toString().getBytes());
         }
+    }
+
+    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
+    private InputStream getIntegrityResponse(URI uri) {
+        String[] ids = uri.getQuery().split("=")[1].split(",");
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder
+                .append("<?xml version='1.0' encoding='UTF-8' ?>\n")
+                .append("<data>\n")
+                .append("<entities>\n");
+
+        for (String id : ids) {
+            stringBuilder
+                    .append("<entity id=\"" + id + "\">\n")
+                    .append("<deleted>" + deletedEntities.contains(id) + "</deleted>\n")
+                    .append("</entity>\n");
+        }
+
+        stringBuilder
+                .append("</entities>\n")
+                .append("</data>\n");
+
+        return new ByteArrayInputStream(stringBuilder.toString().getBytes());
     }
 
     @NotNull
@@ -317,6 +352,20 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
     private void addFormFromInputStream(String formXML, List<MediaFileItem> mediaFiles, InputStream formDefStream) {
         FormMetadata formMetadata = FormMetadataParser.readMetadata(formDefStream);
         forms.add(new XFormItem(formMetadata.getTitle(), formXML, formMetadata.getId(), formMetadata.getVersion(), mediaFiles));
+    }
+
+    public void deleteEntity(String list, @NotNull String id) {
+        deletedEntities.add(id);
+
+        for (XFormItem form : forms) {
+            Optional<MediaFileItem> entityList = form.getMediaFiles().stream().filter(mediaFileItem -> {
+                return mediaFileItem instanceof EntityListItem && mediaFileItem.getName().equals(list);
+            }).findFirst();
+
+            if (entityList.isPresent()) {
+                ((EntityListItem) entityList.get()).incrementVersion();
+            }
+        }
     }
 
     private static class XFormItem {
@@ -399,12 +448,28 @@ public class StubOpenRosaServer implements OpenRosaHttpInterface {
     }
 
     public static class EntityListItem extends MediaFileItem {
+
+        private int version = 1;
+
         public EntityListItem(String name, String file) {
             super(name, file, name);
         }
 
+        public EntityListItem(String name, String file, int version) {
+            super(name, file);
+            this.version = version;
+        }
+
         public EntityListItem(String name) {
             super(name, name, name);
+        }
+
+        public int getVersion() {
+            return version;
+        }
+
+        public void incrementVersion() {
+            this.version++;
         }
     }
 

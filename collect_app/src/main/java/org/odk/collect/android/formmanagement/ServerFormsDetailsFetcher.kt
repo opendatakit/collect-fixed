@@ -15,7 +15,6 @@
  */
 package org.odk.collect.android.formmanagement
 
-import org.odk.collect.android.openrosa.OpenRosaFormSource
 import org.odk.collect.android.utilities.FormUtils
 import org.odk.collect.android.utilities.WebCredentialsUtils
 import org.odk.collect.forms.Form
@@ -24,6 +23,7 @@ import org.odk.collect.forms.FormSourceException
 import org.odk.collect.forms.FormsRepository
 import org.odk.collect.forms.ManifestFile
 import org.odk.collect.forms.MediaFile
+import org.odk.collect.openrosa.forms.OpenRosaClient
 import org.odk.collect.shared.strings.Md5.getMd5Hash
 import timber.log.Timber
 import java.io.File
@@ -36,11 +36,11 @@ open class ServerFormsDetailsFetcher(
     private val formSource: FormSource
 ) {
     open fun updateUrl(url: String) {
-        (formSource as OpenRosaFormSource).updateUrl(url)
+        (formSource as OpenRosaClient).updateUrl(url)
     }
 
     open fun updateCredentials(webCredentialsUtils: WebCredentialsUtils) {
-        (formSource as OpenRosaFormSource).updateWebCredentialsUtils(webCredentialsUtils)
+        (formSource as OpenRosaClient).updateWebCredentialsUtils(webCredentialsUtils)
     }
 
     @Throws(FormSourceException::class)

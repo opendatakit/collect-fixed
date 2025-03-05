@@ -34,7 +34,7 @@ import org.odk.collect.android.formentry.saving.SaveAnswerFileErrorDialogFragmen
 import org.odk.collect.android.formentry.saving.SaveFormProgressDialogFragment;
 import org.odk.collect.android.formhierarchy.FormHierarchyFragmentHostActivity;
 import org.odk.collect.android.formlists.blankformlist.BlankFormListActivity;
-import org.odk.collect.android.formmanagement.FormSourceProvider;
+import org.odk.collect.android.formmanagement.OpenRosaClientProvider;
 import org.odk.collect.android.formmanagement.FormsDataService;
 import org.odk.collect.android.fragments.BarCodeScannerFragment;
 import org.odk.collect.android.fragments.dialogs.FormsDownloadResultDialog;
@@ -42,7 +42,6 @@ import org.odk.collect.android.fragments.dialogs.SelectMinimalDialog;
 import org.odk.collect.android.instancemanagement.send.InstanceUploaderActivity;
 import org.odk.collect.android.instancemanagement.send.InstanceUploaderListActivity;
 import org.odk.collect.android.mainmenu.MainMenuActivity;
-import org.odk.collect.android.openrosa.OpenRosaHttpInterface;
 import org.odk.collect.android.preferences.dialogs.AdminPasswordDialogFragment;
 import org.odk.collect.android.preferences.dialogs.ChangeAdminPasswordDialog;
 import org.odk.collect.android.preferences.dialogs.ResetDialogPreferenceFragmentCompat;
@@ -83,6 +82,7 @@ import org.odk.collect.googlemaps.GoogleMapFragment;
 import org.odk.collect.location.LocationClient;
 import org.odk.collect.maps.MapFragmentFactory;
 import org.odk.collect.maps.layers.ReferenceLayerRepository;
+import org.odk.collect.openrosa.http.OpenRosaHttpInterface;
 import org.odk.collect.permissions.PermissionsChecker;
 import org.odk.collect.permissions.PermissionsProvider;
 import org.odk.collect.projects.ProjectsRepository;
@@ -279,7 +279,7 @@ public interface AppDependencyComponent {
 
     SavepointsRepositoryProvider savepointsRepositoryProvider();
 
-    FormSourceProvider formSourceProvider();
+    OpenRosaClientProvider formSourceProvider();
 
     ExistingProjectMigrator existingProjectMigrator();
 

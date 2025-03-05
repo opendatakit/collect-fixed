@@ -143,12 +143,12 @@ class EntityFormTest {
         testDependencies.server.apply {
             addForm(
                 "one-question-entity-update.xml",
-                listOf(EntityListItem("people.csv"))
+                listOf(EntityListItem("people.csv", "people.csv", 1))
             )
 
             addForm(
                 "one-question-entity-follow-up.xml",
-                listOf(EntityListItem("people.csv", "updated-people.csv"))
+                listOf(EntityListItem("people.csv", "updated-people.csv", 2))
             )
         }
 
@@ -231,5 +231,30 @@ class EntityFormTest {
             .startBlankForm("One Question Entity Registration")
             .pressBackAndDiscardForm()
             .startBlankForm("One Question Entity Registration")
+    }
+
+    @Test
+    fun aLocallyCreatedEntity_thatIsDeletedOnTheServer_isNotAvailableToFollowUpForms() {
+        testDependencies.server.addForm("one-question-entity-registration-id.xml")
+        testDependencies.server.addForm(
+            "one-question-entity-update.xml",
+            listOf(EntityListItem("people.csv"))
+        )
+
+        rule.withMatchExactlyProject(testDependencies.server.url)
+            .startBlankForm("One Question Entity Registration")
+            .fillOutAndFinalize(FormEntryPage.QuestionAndAnswer("Name", "Logan Roy"))
+
+            .also {
+                testDependencies.server.deleteEntity("people.csv", "Logan Roy")
+            }
+
+            .clickFillBlankForm()
+            .clickRefresh()
+
+            .clickOnForm("One Question Entity Update")
+            .assertQuestion("Select person")
+            .assertText("Roman Roy")
+            .assertTextDoesNotExist("Logan Roy")
     }
 }

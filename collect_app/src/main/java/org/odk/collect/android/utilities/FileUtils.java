@@ -44,7 +44,6 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -255,14 +254,6 @@ public final class FileUtils {
         } catch (IOException e) {
             Timber.e(e);
         }
-    }
-
-    public static String getFileExtension(String fileName) {
-        int dotIndex = fileName.lastIndexOf('.');
-        if (dotIndex == -1) {
-            return "";
-        }
-        return fileName.substring(dotIndex + 1).toLowerCase(Locale.ROOT);
     }
 
     public static void grantFilePermissions(Intent intent, Uri uri, Context context) {

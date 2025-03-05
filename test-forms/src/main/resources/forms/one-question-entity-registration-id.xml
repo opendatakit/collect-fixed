@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:odk="http://www.opendatakit.org/xforms" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:entities="http://www.opendatakit.org/xforms/entities">
+	<h:head>
+		<h:title>One Question Entity Registration</h:title>
+		<model odk:xforms-version="1.0.0" entities:entities-version="2024.1.0">
+			<instance>
+				<data id="one_question_entity" version="1">
+					<name/>
+					<meta>
+						<instanceID/>
+						<instanceName/>
+						<entity dataset="people" create="1" id="">
+							<label/>
+						</entity>
+					</meta>
+				</data>
+			</instance>
+			<bind nodeset="/data/name" type="string" entities:saveto="full_name"/>
+
+			<bind jr:preload="uid" nodeset="/data/meta/instanceID" readonly="true()" type="string"/>
+
+			<bind nodeset="/data/meta/entity/@id" type="string" calculate="/data/name"/>
+			<bind calculate="/data/name" nodeset="/data/meta/entity/label" type="string"/>
+		</model>
+	</h:head>
+	<h:body>
+		<input ref="/data/name">
+			<label>Name</label>
+		</input>
+	</h:body>
+</h:html>

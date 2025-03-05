@@ -12,6 +12,7 @@ import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.android.utilities.FormNameUtils;
 import org.odk.collect.androidshared.utils.Validator;
 import org.odk.collect.async.OngoingWorkListener;
+import org.odk.collect.entities.server.EntitySource;
 import org.odk.collect.entities.storage.EntitiesRepository;
 import org.odk.collect.forms.Form;
 import org.odk.collect.forms.FormSource;
@@ -41,8 +42,9 @@ public class ServerFormDownloader implements FormDownloader {
     private final FormMetadataParser formMetadataParser;
     private final Supplier<Long> clock;
     private final EntitiesRepository entitiesRepository;
+    private EntitySource entitySource;
 
-    public ServerFormDownloader(FormSource formSource, FormsRepository formsRepository, File cacheDir, String formsDirPath, FormMetadataParser formMetadataParser, Supplier<Long> clock, EntitiesRepository entitiesRepository) {
+    public ServerFormDownloader(FormSource formSource, FormsRepository formsRepository, File cacheDir, String formsDirPath, FormMetadataParser formMetadataParser, Supplier<Long> clock, EntitiesRepository entitiesRepository, EntitySource entitySource) {
         this.formSource = formSource;
         this.cacheDir = cacheDir;
         this.formsDirPath = formsDirPath;
@@ -50,6 +52,7 @@ public class ServerFormDownloader implements FormDownloader {
         this.formMetadataParser = formMetadataParser;
         this.clock = clock;
         this.entitiesRepository = entitiesRepository;
+        this.entitySource = entitySource;
     }
 
     @Override
@@ -99,7 +102,7 @@ public class ServerFormDownloader implements FormDownloader {
 
             // download media files if there are any
             if (fd.getManifest() != null && !fd.getManifest().getMediaFiles().isEmpty()) {
-                mediaFilesDownloadResult = ServerFormUseCases.downloadMediaFiles(fd, formSource, formsRepository, tempMediaPath, tempDir, entitiesRepository, stateListener);
+                mediaFilesDownloadResult = ServerFormUseCases.downloadMediaFiles(fd, formSource, formsRepository, tempMediaPath, tempDir, entitiesRepository, entitySource, stateListener);
             } else {
                 mediaFilesDownloadResult = new MediaFilesDownloadResult(false, false);
             }

@@ -6,6 +6,7 @@ import org.odk.collect.android.formmanagement.download.FormDownloader
 import org.odk.collect.android.utilities.FileUtils
 import org.odk.collect.async.OngoingWorkListener
 import org.odk.collect.entities.LocalEntityUseCases
+import org.odk.collect.entities.server.EntitySource
 import org.odk.collect.entities.storage.EntitiesRepository
 import org.odk.collect.forms.Form
 import org.odk.collect.forms.FormSource
@@ -74,6 +75,7 @@ object ServerFormUseCases {
         tempMediaPath: String,
         tempDir: File,
         entitiesRepository: EntitiesRepository,
+        entitySource: EntitySource,
         stateListener: OngoingWorkListener
     ): MediaFilesDownloadResult {
         var newAttachmentsDownloaded = false
@@ -115,7 +117,14 @@ object ServerFormUseCases {
                  */
                 try {
                     val entityListName = getEntityListFromFileName(mediaFile)
-                    LocalEntityUseCases.updateLocalEntitiesFromServer(entityListName, tempMediaFile, entitiesRepository)
+                    LocalEntityUseCases.updateLocalEntitiesFromServer(
+                        entityListName,
+                        tempMediaFile,
+                        entitiesRepository,
+                        entitySource,
+                        mediaFile.hash,
+                        mediaFile.integrityUrl
+                    )
                     entitiesDownloaded = true
                 } catch (t: Throwable) {
                     throw EntityListUpdateException(t)
