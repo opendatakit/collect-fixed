@@ -10,7 +10,7 @@ import org.odk.collect.openrosa.forms.EntityIntegrity
 import org.odk.collect.shared.strings.StringUtils.isBlank
 import java.io.File
 
-class OpenRosaResponseParserImpl :
+class Kxml2OpenRosaResponseParser :
     OpenRosaResponseParser {
 
     override fun parseFormList(document: Document): List<FormListItem>? {
